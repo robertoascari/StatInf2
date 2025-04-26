@@ -34,18 +34,21 @@ editor: visual
 - Linear and generalized linear models from a Bayesian perspective. 
 
 # Scripts
-1 - [link](Code1.qmd).
+- [Scrip 1:](Script1.qmd) The Bernoulli-Beta model.
+- [Scrip 2:](Script2.qmd) Normal approximation and Monte Carlo.
+- [Scrip 3:](Script3.qmd) MCMC - Gibbs sampling.
+- [Scrip 4:](Script4.qmd) MCMC - Metropolis Hasting.
+- [Scrip 5:](Script5.qmd) MCMC - Stan.
 
-[rrr](data/cardiac.csv)
 
-## Libri di testo
 
--   Albert, J. & M. Rizzo (2012). *R by Example*. Springer.
+## Textbooks
 
--   M. Grigoletto, F. Pauli, L. Ventura, *Modello lineare, teoria e applicazioni con R*. Giappichelli, 2017
+- Hoff, P. (2009). *A first course in Bayesian Statistical Methods*. Springer.
 
--   J. Fox. *Applied regression analysis and generalized linear models*, third edition. Sage.
+- Gelman, A., Carlin, J., Stern, H., Dunson, D., Vehtari, A., and Rubin, D. (2013). *Bayesian Data Analysis*. Chapman \& Hall/CRC Texts in Statistical Science.
 
--   D. Piccolo, *Statistica*, Terza edizione, Il Mulino.
+- Robert, C. and Casella, G. (2004). *Monte Carlo Statistical Methods*. Springer.
+
 
 ------------------------------------------------------------------------
