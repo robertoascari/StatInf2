@@ -1,0 +1,51 @@
+---
+title: "Statistical Inference II"
+subtitle: "Ph.D. program in Economics, Statistics and Data Science."
+author: "[Ascari Roberto]{.text-primary}"
+institute: "_Università degli Studi di Milano-Bicocca_"
+lang: it
+execute:
+  cache: true
+page-layout: full
+format:
+  html:
+    theme: simplex
+    css: styles.css
+    toc: true
+editor: visual
+---
+
+------------------------------------------------------------------------
+
+[**Statistical Inference II**]{.text-primary} provides an introduction to Bayesian data analysis, covering prior and posterior distributions, classical one-parameter models, prior elicitation, posterior-based inference, MCMC methods, and Bayesian approaches to linear and generalized linear models.
+
+
+
+
+
+
+
+## Syllabus
+- Introduction to Bayesian data analysis: prior and posterior distributions for inference.
+- One-parameter models: Binomial-Beta, Poisson-Gamma, Exponential-Gamma, and Normal-Normal.
+- Methods for prior elicitation.
+- Inference based on the posterior distribution (point and interval estimates; hypotheses testing).
+- Simulation-based inference: MCMC methods.
+- Linear and generalized linear models from a Bayesian perspective. 
+
+# Scripts
+1 - [link](Code1.qmd).
+
+
+
+## Libri di testo
+
+-   Albert, J. & M. Rizzo (2012). *R by Example*. Springer.
+
+-   M. Grigoletto, F. Pauli, L. Ventura, *Modello lineare, teoria e applicazioni con R*. Giappichelli, 2017
+
+-   J. Fox. *Applied regression analysis and generalized linear models*, third edition. Sage.
+
+-   D. Piccolo, *Statistica*, Terza edizione, Il Mulino.
+
+------------------------------------------------------------------------

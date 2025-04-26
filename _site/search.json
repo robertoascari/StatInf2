@@ -1,0 +1,51 @@
+[
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Analisi Statistica Multivariata - Modelli Statistici & R",
+    "section": "",
+    "text": "This is the website of the Data Mining course (6 CFU) of the “Corso di Laurea Magistrale in Scienze Statistiche ed Economiche (CLAMSES)”, Università degli Studi di Milano-Bicocca."
+  },
+  {
+    "objectID": "index.html#teaching-material",
+    "href": "index.html#teaching-material",
+    "title": "Analisi Statistica Multivariata - Modelli Statistici & R",
+    "section": "Teaching material",
+    "text": "Teaching material\n\nRequired\n\nAzzalini, A. and Scarpa, B. (2011), Data Analysis and Data Mining, Oxford University Press.\nHastie, T., Tibshirani, R. and Friedman, J. (2009), The Elements of Statistical Learning, Second Edition, Springer.\n\n\n\nOptional\n\nEfron, B. and Hastie, T. (2016), Computer Age Statistical Inference, Cambridge University Press.\nLewis, Kane, Arnold (2019) A Computational Approach to Statistical Learning. Chapman And Hall/Crc.\n\n\n\nSlides and lecture notes\nThe slides are meant to be used in HTML. However, if you really want to convert the HTML slides into pdf files, you can follow the instruction of the quarto documentation.\n\n\n\nTopic\nNotes\nSlides\nCode\n\n\n\n\nIntroduction\nIntroduction\nSlides Introduction\n\n\n\nA-B-C\nUnit A\nSlides Unit A\nCode A\n\n\nLab 1 (Computations for linear models)\n\n\nCode Lab 1\n\n\nExercises\nExercises A\n\n\n\n\nOptimism, conflicts and trade-offs\nUnit B\nSlides Unit B\nCode B\n\n\nExercises\nExercises B\n\n\n\n\nLab 2 (Ames housing)\n\n\nCode Lab 2\n\n\nShrinkage and variable selection\nUnit C\nSlides Unit C\nCode C\n\n\nExercises\nExercises C\n\n\n\n\nLab 3-4 (Ames housing)\n\n\nCode Lab 3-4\n\n\nNonparametric regression\nUnit D\nSlides Unit D\nCode D\n\n\nExercises\nExercises D\n\n\n\n\nLab 5 (Auto)\n\n\nCode Lab 5\n\n\nThe curse of dimensionality\nUnit E\nSlides Unit E\n\n\n\nAdditive models\nUnit F\nSlides Unit F\nCode F\n\n\nExercises\nExercises F\n\n\n\n\nLab 6 (Ames housing)\n\n\nCode Lab 6\n\n\nFAQ - The statistical culture\nUnit G"
+  },
+  {
+    "objectID": "index.html#exam",
+    "href": "index.html#exam",
+    "title": "Analisi Statistica Multivariata - Modelli Statistici & R",
+    "section": "Exam",
+    "text": "Exam\n\nRules\n\nThe exam is made of two parts:\n(20 / 30) Written examination: a pen-and-paper exam about the theoretical aspects of the course.\n(10 / 30) Individual assignment: a data challenge.\n\nYou will be given a prediction task, and you will need to submit your predictions and produce a report of maximum 4 pages;\nYou will make use of the Kaggle platform (optional);\nFurther info will be provided in due time.\n\nBoth parts are mandatory, and you need to submit the assignment before attempting the written part. The report expires after one year from the end of the course.\nThe final grade is obtained as the sum of the above scores.\n\n\n\nMock exam\nAn example of written examination is provided at this link."
+  },
+  {
+    "objectID": "index.html#prerequisites",
+    "href": "index.html#prerequisites",
+    "title": "Analisi Statistica Multivariata - Modelli Statistici & R",
+    "section": "Prerequisites",
+    "text": "Prerequisites\nKnowledge of the topics (i) linear algebra, (ii) linear models, and (iii) generalized linear models (GLMs), is highly recommended.\nKnowledge of topics covered in the courses Probability and Statistics M and Advanced Statistics M is also highly recommended."
+  },
+  {
+    "objectID": "index.html#office-hours",
+    "href": "index.html#office-hours",
+    "title": "Analisi Statistica Multivariata - Modelli Statistici & R",
+    "section": "Office hours",
+    "text": "Office hours\nTo schedule a meeting, please write to tommaso.rigon@unimib.it. Office hours is every Tuesday at 17.30"
+  },
+  {
+    "objectID": "index.html#acknowledgments",
+    "href": "index.html#acknowledgments",
+    "title": "Analisi Statistica Multivariata - Modelli Statistici & R",
+    "section": "Acknowledgments",
+    "text": "Acknowledgments\nThe primary source of this website’s content are the textbooks Azzalini and Scarpa (2011) and Hastie, Tibshirani, and Friedman (2009). A few pictures have been taken from the textbooks; in these cases the original source is cited.\nI have made use of several other books, scientific articles, and datasets to complement the main textbooks. They are all cited at the end of each unit. Students are encouraged to consult the books: these slides are just a concise summary.\nI am also grateful to Aldo Solari, who gracefully shared the material of the courses Data Mining and Statistical Learning. These websites have been used to lay the basis of this course.\nAll the mistakes still present are mine."
+  },
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
+    "section": "",
+    "text": "About this site"
+  }
+]

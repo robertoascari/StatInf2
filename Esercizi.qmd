@@ -1,0 +1,2504 @@
+---
+title: "Esercizi R"
+author: "Roberto Ascari"
+format: html
+editor: visual
+toc: true
+---
+
+Il modo migliore (e forse l'unico) per padroneggiare un linguaggio di programmazione è quello di continuare ad esercitarsi. Si consiglia vivamente di [**non guardare le soluzioni**]{.text-primary} prima di aver provato a ragionare e sbattere la testa in autonomia sulla risoluzione degli esercizi.
+
+Come sempre, non esiste un unico modo per ottenere lo stesso risultato: approcci differenti dalle soluzioni proposte possono comunque portare al risultato corretto!
+
+## Parte 1: Introduzione ad R
+
+### Esercizio 1.1
+
+Si consideri $X \sim N(\mu, \sigma^2)$.
+
+1.  Si calcoli il valore della funzione di densità di $X$, $f(x)$, in corrispondenza del punto $x=-1$ considerando $\mu = 1$ e $\sigma^2 = 2$.
+
+```{r}
+#| echo: true
+#| eval: false
+#| code-fold: true
+#| code-summary: "Soluzione"
+
+mu <- 1
+sigma2 <- 2
+x <- -1
+
+f_x <- (2*pi*sigma2)^(-1/2)*exp(-1/(2*sigma2)*(x-mu)^2); f_x
+```
+
+2.  Mantenendo gli stessi valori per $\mu$ e $\sigma^2$, si rappresenti graficamente la densità di $X$ nel range $(-5, 5)$.
+
+```{r}
+#| echo: true
+#| eval: false
+#| code-fold: true
+#| code-summary: "Soluzione"
+
+curve((2*pi*sigma2)^(-1/2)*exp(-1/(2*sigma2)*(x-mu)^2), xlim=c(-5,5),
+      ylab = "f(x)", xlab="x")
+```
+
+3.  Si sovraimponga al grafico precedente una linea verticale in corrispondenza del punto $-1$ ed una linea orizzontale in corrispondenza del punto $f(-1)$.
+
+```{r}
+#| echo: true
+#| eval: false
+#| code-fold: true
+#| code-summary: "Soluzione"
+
+
+curve((2*pi*sigma2)^(-1/2)*exp(-1/(2*sigma2)*(x-mu)^2), xlim=c(-5,5),
+      ylab = "f(x)", xlab="x")
+abline(h=f_x, v=-1, col="red", lty="dashed")
+```
+
+### Esercizio 1.2
+
+1.  Si sfrutti la funzione `sum()` per calcolare la somma dei primi $n = 600$ numeri interi.
+
+```{r}
+#| echo: true
+#| eval: false
+#| code-fold: true
+#| code-summary: "Soluzione"
+
+
+n <- 600
+x <- 1:n
+
+sum(x)
+```
+
+2.  Si può dimostrare che la somma dei primi $n$ numeri interi è pari a $\displaystyle \sum_{i=1}^n i = \frac{n(n+1)}{2}$. Si utilizzi questo risultato per verificare la correttezza di quanto fatto al punto 1.
+
+```{r}
+#| echo: true
+#| eval: false
+#| code-fold: true
+#| code-summary: "Soluzione"
+
+
+n <- 600
+n*(n+1)/2
+```
+
+### Esercizio 1.3
+
+Si crei un vettore `v` contenente i numeri interi da 1 a 250.
+
+1.  Si estraggano gli elementi in posizione pari e si calcoli la loro somma.
+
+```{r}
+#| echo: true
+#| eval: false
+#| code-fold: true
+#| code-summary: "Soluzione"
+
+v <- 1:250
+sum(v[2*(1:floor(length(v)/2))])
+```
+
+2.  Si utilizzi il vettore `v` per determinare il numero di interi tra 1 e 250 che risultano maggiori di 97 e dispari.
+
+```{r}
+#| echo: true
+#| eval: false
+#| code-fold: true
+#| code-summary: "Soluzione"
+
+v <- 1:250
+booleani <- v > 97 & (v%%2 == 1);booleani
+sum(booleani)
+```
+
+### Esercizio 1.4
+
+1.  Si scriva una funzione che, senza utilizzare la funzione `t()`, restituisca la trasposta di una matrice `mat` ricevuta come argomento.
+
+```{r}
+#| echo: true
+#| eval: false
+#| code-fold: true
+#| code-summary: "Soluzione"
+
+A <- matrix(c(1,3,4,2,9,0), ncol=2)
+
+my_trasp <- function(mat){
+  ncol_mat <- ncol(mat)
+  nrow_mat <- nrow(mat)
+  
+  trasp <- matrix(NA, ncol=nrow_mat, nrow=ncol_mat)
+  
+  for(r in 1:nrow_mat){
+    trasp[,r] <- mat[r,]
+  }
+  return(trasp)
+}
+```
+
+2.  Si costruisca una matrice a piacere con cui verificare che il codice prodotto produca lo stesso risultato della funzione `t()`.
+
+```{r}
+#| echo: true
+#| eval: false
+#| code-fold: true
+#| code-summary: "Soluzione"
+
+A <- matrix(c(1,3,4,2,9,0), ncol=2)
+
+A
+my_trasp(A)
+t(A)
+```
+
+### Esercizio 1.5
+
+Si scriva una funzione che permetta di calcolare il prodotto scalare tra due vettori di stessa lunghezza. Qualora i due vettori dati in input non dovessero avere la stessa lunghezza, la funzione deve portare ad un messaggio di errore.
+
+```{r}
+#| echo: true
+#| eval: false
+#| code-fold: true
+#| code-summary: "Soluzione"
+
+prod_scal <- function(a,b){
+  if(length(a) != length(b)){
+    print("Errore: i due vettori devono avere la stessa dimensione")
+  } else {
+    somma <- 0
+    for(i in 1:length(a)){
+      somma <- somma + (a[i]*b[i])
+    }
+    return(somma)
+  }
+}
+
+a <- c(10, 2, 7)
+b <- 4:6
+c <- c(1, 1, 1, 1)
+
+prod_scal(a, b)
+prod_scal(a, c)
+```
+
+### Esercizio 1.6
+
+Si scriva una funzione che riceva come argomento un numero intero e restituisca `TRUE` se il numero è primo e `FALSE` altrimenti.
+
+```{r}
+#| echo: true
+#| eval: false
+#| code-fold: true
+#| code-summary: "Soluzione"
+
+is.primo <- function(x){
+  divisori <- 2:(x-1)
+  if(any(x%%divisori == 0)) {
+    return(FALSE)
+  } else {
+    return(TRUE)
+  }
+  
+}
+
+is.primo(9)
+is.primo(13)
+```
+
+### Esercizio 1.7
+
+1.  Si scriva una funzione che riceva come argomenti un vettore `voti` ed un vettore `CFU`. La funzione deve restituire una lista, avente come primo elemento la media aritmetica dei voti e come secondo elemento la media aritmetica ponderata degli stessi.
+
+```{r}
+#| echo: true
+#| eval: false
+#| code-fold: true
+#| code-summary: "Soluzione"
+
+medie <- function(voti, CFU){
+  output <- list()
+  output$media <- sum(voti)/length(voti)
+  output$media_ponderata <- sum(voti*CFU)/sum(CFU)
+  
+  return(output)
+}
+
+```
+
+2.  Si utilizzi la funzione appena scritta per calcolare le medie dei propri voti, verificando la correttezza dei risultati tramite il proprio libretto online.
+
+```{r}
+#| echo: true
+#| eval: false
+#| code-fold: true
+#| code-summary: "Soluzione"
+
+# Esempio 1:
+miei_voti <- rep(18, 7)
+miei_CFU <- c(6, 9, 9, 6, 9, 6, 6)
+medie(miei_voti, miei_CFU)
+
+# Esempio 2:
+miei_voti2 <- c(27, 30, 18, 25, 30, 23, 30)
+miei_CFU2 <- c(6, 9, 9, 6, 9, 6, 6)
+medie(miei_voti2, miei_CFU2)
+```
+
+### Esercizio 1.8
+
+Si consideri un vettore numerico a piacere.
+
+1.  Si scriva una funzione che restituisca il vettore standardizzato.
+
+```{r}
+#| echo: true
+#| eval: false
+#| code-fold: true
+#| code-summary: "Soluzione"
+
+x <- seq(5, 271.2, by=.86)
+
+stand <- function(v) {
+  s <- (v-mean(v))/sd(v)
+  return(s)
+}
+s <- stand(x)
+c(mean(s), sd(s))
+```
+
+2.  Si scriva una funzione che normalizzi il vettore (cioè che scali il vettore in modo tale che i suoi elementi assumano valori in $[0,1]$).
+
+```{r}
+#| echo: true
+#| eval: false
+#| code-fold: true
+#| code-summary: "Soluzione"
+
+x <- seq(5, 271.2, by=.86)
+
+norm <- function(v) {
+  n <- (v-min(v))/(max(v)-min(v))
+  return(n)
+}
+n <- norm(x)
+c(min(n), max(n))
+```
+
+### Esercizio 1.9
+
+Si implementi una funzione che riceva due interi $n$ e $k$ e restituisca una [tavola pitagorica](https://it.wikipedia.org/wiki/Tavola_pitagorica) di dimensione $n \times k$.
+
+```{r}
+#| echo: true
+#| eval: false
+#| code-fold: true
+#| code-summary: "Soluzione"
+
+pitag <- function(n, k){
+  out <- matrix(NA, nrow=n, ncol=k)
+  
+  for(i in 1:n){
+    for(j in 1:k){
+      out[i,j] <- i*j
+    }
+  }
+  return(out)
+}
+
+pitag(5,4)
+```
+
+### Esercizio 1.10
+
+Il seguente esercizio è estratto da un tema d'esame del prof. Rigon.
+
+I numeri di Stirling del secondo tipo $S(n,k)$ rappresentano il numero di possibili partizioni di $n$ oggetti formate da $k$ elementi. Si può dimostrare che $$\displaystyle S(n,k) = \frac{1}{k!} \sum_{j=0}^k (-1)^{k-j} {k \choose j} j^n,$$ per $k = 1, \dots, n$. Invece, il numero di Bell $B(n)$ rappresenta il numero di possibili partizioni di un insieme di $n$ elementi, indipendentemente dal numero di termini: $$\displaystyle B(n) = \sum_{k=1}^n S(n,k).$$
+
+1.  Si scrivano le funzioni `my_stirling(n,k)` e `my_bell(n)` che calcolano, rispettivamente, $S(n,k)$ e $B(n)$.
+
+```{r}
+#| echo: true
+#| eval: false
+#| code-fold: true
+#| code-summary: "Soluzione"
+
+my_stirling <- function(n,k){
+  j <- 0:k
+  sum((-1)^(k-j)*choose(k,j)*j^n)/(factorial(k))
+}
+
+my_bell <- function(n){
+  stirling <- numeric(n)
+  for(k in 1:n){
+    stirling[k] <- my_stirling(n,k)
+  }
+  return(sum(stirling))
+}
+```
+
+2.  In quanti modi è possibile dividere un insieme di 10 oggetti utilizzando gruppi di 5 elementi?
+
+```{r}
+#| echo: true
+#| eval: false
+#| code-fold: true
+#| code-summary: "Soluzione"
+
+my_stirling(10,5)
+```
+
+3.  In quanti modi è possibile partizionare un insieme di 10 elementi?
+
+```{r}
+#| echo: true
+#| eval: false
+#| code-fold: true
+#| code-summary: "Soluzione"
+
+my_bell(10)
+```
+
+### Esercizio 1.11
+
+Si considerino le matrici $A$ e $B$ definite nel seguente modo: $$A = \begin{bmatrix}
+   2 & 1 & 5 & 3\\
+   6 & 7 & 9 & 1\\
+   8 & 3 & 0 & 0
+   \end{bmatrix} \text{ e } B = \begin{bmatrix}
+   -2 & 4 & 7 \\
+   -6 & 3 & 5 \\
+   3 & 3 & -8 \\
+   4 & 4 & -2 
+   \end{bmatrix}$$
+
+1.  Si definiscano tali matrici in `R`.
+
+```{r}
+#| echo: true
+#| eval: false
+#| code-fold: true
+#| code-summary: "Soluzione"
+
+A <- matrix(c(2, 1, 5, 3, 6, 7, 9, 1, 8, 3, 0, 0), byrow = T, ncol = 4)
+
+B <- matrix(c(-2, 4, 7,-6, 3, 5, 3, 3, -8, 4, 4, -2), byrow = T, ncol = 3)
+```
+
+2.  Si aggiunga alla matrice $A$ un'ulteriore riga pari all'ultima colonna della matrice $B$.
+
+```{r}
+#| echo: true
+#| eval: false
+#| code-fold: true
+#| code-summary: "Soluzione"
+
+A <- rbind(A, B[,3])
+A
+```
+
+3.  Si consideri e si risolva il seguente sistema lineare:
+
+$$A =  \left\{\begin{array}{l}
+   2x + y + 5z + 3w = -3\\
+   6x + 7y + 9z + w = 1\\
+   8x + 3y = 0  \\
+   7x + 5y  -8z -2w = -10
+   \end{array}\right.$$
+
+```{r}
+#| echo: true
+#| eval: false
+#| code-fold: true
+#| code-summary: "Soluzione"
+
+c <- c(-3, 1, 0, -10)
+
+soluzione <- solve(A) %*% c; soluzione
+```
+
+4.  Si verifichi che la soluzione individuata sia effettivamente una soluzione del sistema proposto.
+
+```{r}
+#| echo: true
+#| eval: false
+#| code-fold: true
+#| code-summary: "Soluzione"
+
+sol <- as.numeric(soluzione)
+
+all(c(round(sum(A[1,] * sol),10) == c[1],
+      round(sum(A[2,] * sol),10) == c[2],
+      round(sum(A[3,] * sol),10) == c[3],
+      round(sum(A[4,] * sol),10) == c[4]))
+```
+
+## Parte 2: Descrittiva
+
+### Esercizio 2.1
+
+Si considerino i dati presenti nel dataset `Prestige` del pacchetto `carData`, riguardanti un certo insieme di professioni. I dati sono stati raccolti nel 1971 in Canada.
+
+1.  Quante professioni sono state analizzate? Quante variabili sono state raccolte?
+
+```{r}
+#| echo: true
+#| eval: false
+#| code-fold: true
+#| code-summary: "Soluzione"
+
+library(carData)
+data(Prestige)
+
+dim(Prestige)
+nrow(Prestige)
+ncol(Prestige)
+```
+
+2.  Si utilizzi la funzione `help()` per comprendere quali variabili sono state raccolte.
+
+```{r}
+#| echo: true
+#| eval: false
+#| code-fold: true
+#| code-summary: "Soluzione"
+ 
+help(Prestige)
+```
+
+3.  Sono presenti dei valori mancanti nel dataset? Se si, si crei un `data.frame` che esclude tutte le unità statistiche con almeno un mancante.
+
+```{r}
+#| echo: true
+#| eval: false
+#| code-fold: true
+#| code-summary: "Soluzione"
+
+anyNA(Prestige)
+
+is.na(Prestige)
+
+quali_con_missing <- rowSums(is.na(Prestige)) > 0
+sum(quali_con_missing) # 4 unità da eliminare
+Prestige2 <- subset(Prestige, !quali_con_missing)
+
+# Oppure:
+quali_complete <- complete.cases(Prestige)
+Prestige2 <- subset(Prestige, quali_complete)
+```
+
+4.  Si rappresenti graficamente la distribuzione delle variabile `women`. Si commenti questo grafico in relazione alle pari opportunità nel mondo del lavoro.
+
+```{r}
+#| echo: true
+#| eval: false
+#| code-fold: true
+#| code-summary: "Soluzione"
+
+hist(Prestige2$women, prob = T, main = "Istogramma variabile women")
+```
+
+4.  Si ottenga la funzione di ripartizione empirica della variabile `women`. La si rappresenti graficamente e si ottenga il suo valore in corrispondenza di 50. Cosa ci dice questo valore, in merito alla disparità di genere?
+
+```{r}
+#| echo: true
+#| eval: false
+#| code-fold: true
+#| code-summary: "Soluzione"
+
+ecdf_women <- ecdf(Prestige2$women)
+
+ecdf_women(50)
+
+plot(ecdf_women)
+```
+
+5.  Si rappresenti graficamente la relazione congiunta di `women` ed `income`. Che relazione sembra esserci tra queste due variabili?
+
+```{r}
+#| echo: true
+#| eval: false
+#| code-fold: true
+#| code-summary: "Soluzione"
+
+plot(Prestige2$women, Prestige2$income, pch = 20)
+```
+
+6.  Si colorino i punti del grafico precedente in modo tale che si possa tenere conto della tipologia del lavoro. Che informazioni si possono trarre?
+
+```{r}
+#| echo: true
+#| eval: false
+#| code-fold: true
+#| code-summary: "Soluzione"
+
+plot(Prestige2$women, Prestige2$income, pch = 20, col = Prestige2$type)
+levels(Prestige2$type) # neri = Colletti blu; rossi = Professionisti, manager e tecnici; verdi = colletti bianchi
+```
+
+7.  Si aggiunga al dataset una variabile `women2`. Questa variabile deve essere un `factor` avente tre livelli: "unbalanced_men" se `women` risulta minore o uguale a 40, "unbalance_women" se `women` è maggiore di 60 e "balanced" altrimenti. Si ottengano le frequenze assolute e relative di `women2`.
+
+```{r}
+#| echo: true
+#| eval: false
+#| code-fold: true
+#| code-summary: "Soluzione"
+
+Prestige2$women2 <- factor(ifelse(Prestige2$women <= 40, "unbalanced_man",
+                        ifelse(Prestige2$women > 60, "unbalanced_women", "balanced")))
+
+table(Prestige2$women2)
+table(Prestige2$women2)/nrow(Prestige2)
+```
+
+### Esercizio 2.2
+
+Si carichino in `R` i dati contenuti nel file `Pokemon.csv`, scaricabili al seguente [link](https://robertoascari.github.io/data/Pokemon.csv). Il dataset contiene dati relativi a 800 Pokémon e le seguetni variabili:
+
+-   `ID`: un numero identificativo del Pokémon;
+-   `Name`: il nome del Pokémon;
+-   `Type1` e `Type2`: il tipo primario e quello secondario del Pokémon;
+-   `Total`: la somma delle statistiche del Pokémon;
+-   `HP`: i Punti Vita (Health Points) del Pokémon;
+-   `Attack` e `SpAtk`: le statistiche attacco e attacco speciale del Pokémon;
+-   `Defense` e `sPDef`: le statistiche difesa e difesa speciale del Pokémon;
+-   `Speed`: la statistica velocità del Pokémon;
+-   `Generation`: la \[generazione\](https://it.wikipedia.org/wiki/Pok%C3%A9mon\_(serie_di_videogiochi) del Pokémon;
+-   `Legendary`: stringa facente riferimento al fatto che il Pokémon sia leggendario (True) o no (False).
+
+```{r}
+#| echo: true
+#| eval: false
+#| code-fold: true
+#| code-summary: "Soluzione"
+
+pkmn <- read.table("Pokemon.csv", header = TRUE, sep = ",", 
+                   stringsAsFactors = FALSE)
+```
+
+1.  Si ispezioni la variabile `Legendary`. Come mai non è di classe `logical`, pur avendo modalità associabili a "Vero" e "Falso"? Si sovrascriva la variabile con una sua versione `logical`.
+
+```{r}
+#| echo: true
+#| eval: false
+#| code-fold: true
+#| code-summary: "Soluzione"
+
+str(pkmn$Legendary)
+table(pkmn$Legendary)
+
+pkmn$Legendary <- pkmn$Legendary == "True"
+
+str(pkmn$Legendary)
+table(pkmn$Legendary)
+```
+
+2.  Si eliminino dal dataset tutti i Pokémon che contengono nel loro nome la stringa "Mega", ad eccezione del Pokémon chiamato "Meganium". Per tale scopo, si utilizzi la funzione `grep()` (dall'help: `grep(value = FALSE) returns a vector of the indices of the elements of x that yielded a match`).
+
+```{r}
+#| echo: true
+#| eval: false
+#| code-fold: true
+#| code-summary: "Soluzione"
+
+righe_mega <- grep("Mega", pkmn$Name); righe_mega
+
+which(pkmn$Name == "Meganium")
+
+# Devo quindi eliminare tutte le righe indicate da righe_mega ad eccezione della 169
+
+which(righe_mega == 169)
+righe_mega2 <- righe_mega[-16]
+
+# Altro modo: mi accorgo che tutti i nomi con Mega, ad eccezione di Meganium,
+# hanno uno spazio (blank) dopo la parola Mega:
+pkmn$Name[righe_mega]
+righe_mega2 <- grep("Mega ", pkmn$Name); righe_mega2
+
+pkmn <- pkmn[-righe_mega,]
+```
+
+3.  Si crei un dataset `pkmn_sub` contenente i dati dei Pokémon appartenenti alla prima o alla seconda generazione. D'ora in poi, si faccia riferimento a questo `data.frame`.
+
+```{r}
+#| echo: true
+#| eval: false
+#| code-fold: true
+#| code-summary: "Soluzione"
+
+pkmn_sub <- subset(pkmn, Generation == 1 | Generation == 2)
+```
+
+4.  Quali variabili dovrebbero essere `factor`? Le si converta.
+
+```{r}
+#| echo: true
+#| eval: false
+#| code-fold: true
+#| code-summary: "Soluzione"
+
+pkmn_sub$Type1 <- as.factor(pkmn_sub$Type1)
+pkmn_sub$Type2 <- as.factor(pkmn_sub$Type2)
+pkmn_sub$Generation <- as.factor(pkmn_sub$Generation)
+```
+
+5.  Come si distribuiscono i Pokémon leggendari tra le due generazioni considerate? Si misuri il grado di connessione con un opportuno indice normalizzato.
+
+```{r}
+#| echo: true
+#| eval: false
+#| code-fold: true
+#| code-summary: "Soluzione"
+
+tt <- table(pkmn_sub$Generation, pkmn_sub$Legendary); tt
+plot(tt)
+
+marginali_gen <- as.numeric(table(pkmn_sub$Generation))
+marginali_leg <- as.numeric(table(pkmn_sub$Legendary))
+
+n_gen <- length(marginali_gen)
+n_leg <- length(marginali_leg)
+n <- nrow(pkmn_sub)
+
+freq_attese <- matrix(NA, nrow = n_gen, ncol = n_leg)
+
+chi2 <- 0
+
+for(i in 1:n_gen){
+  for(j in 1:n_leg){
+    freq_attese[i,j] <- marginali_gen[i]*marginali_leg[j]/n
+    
+    chi2 <- chi2 + (((tt[i,j] - freq_attese[i,j])^2)/(freq_attese[i,j]))
+  }
+}
+chi2
+
+chi2_max <- n*min(n_gen-1, n_leg - 1)
+chi2_Norm <- chi2/chi2_max; chi2_Norm
+```
+
+6.  Si calcoli, tramite la sua definizione, il valore della covarianza tra `Attack` e `Defense`. Si confronti il risultato ottenuto con quello fornito dalla funzione `cov()`.
+
+```{r}
+#| echo: true
+#| eval: false
+#| code-fold: true
+#| code-summary: "Soluzione"
+
+my_cov <- 
+  mean((pkmn_sub$Attack - mean(pkmn_sub$Attack))*(pkmn_sub$Defense - mean(pkmn_sub$Defense)))
+
+cov(pkmn_sub$Attack, pkmn_sub$Defense)
+cov(pkmn_sub$Attack, pkmn_sub$Defense)*(n-1)/n
+```
+
+7.  Si ottengano i boxplot relativi alla distribuzione di `Attack` condizionata per `Type1`.
+
+```{r}
+#| echo: true
+#| eval: false
+#| code-fold: true
+#| code-summary: "Soluzione"
+
+boxplot(pkmn_sub$Attack ~ pkmn_sub$Type1, xlab = "Tipo1", ylab = "Attacco")
+```
+
+8.  Si proponga un metodo per ottenere le medie condizionate di `Attack` entro ogni modalità di `Type1`.
+
+```{r}
+#| echo: true
+#| eval: false
+#| code-fold: true
+#| code-summary: "Soluzione"
+
+quanti_tipi <- length(unique(pkmn_sub$Type1))
+medie_condiz <- numeric(quanti_tipi)
+names(medie_condiz) <- levels(pkmn_sub$Type1)
+
+modalita_type <- levels(pkmn_sub$Type1)
+
+for(i in 1:quanti_tipi){
+  data_temp <- subset(pkmn_sub, Type1 == modalita_type[i])
+  
+  medie_condiz[i] <- mean(data_temp$Attack)
+}
+
+# Oppure:
+help(aggregate)
+medie_condiz_2 <- aggregate(Attack ~ Type1, data = pkmn_sub, FUN = mean, na.rm = TRUE)
+
+medie_condiz
+medie_condiz_2
+```
+
+9.  Si costruisca un `data.frame` contenente esclusivamente le variabili quantitative di `pkmn_sub`. Si utilizzi questo `data.frame` per costruire la matrice di correlazione (arrotondata alla terza cifra decimale) e la matrice di diagrammi a dispersione. Si colorino i punti dei diagrammi a dispersione sulla base del valore di `Legendary`.
+
+```{r}
+#| echo: true
+#| eval: false
+#| code-fold: true
+#| code-summary: "Soluzione"
+
+pkmn_quantit <- subset(pkmn_sub, select = Total:Speed)
+# pkmn_quantit <- subset(pkmn_sub, select = c(Total, HP, Attack, Defense, SpAtk, SpDef, Speed))
+
+round(cor(pkmn_quantit), 3)
+plot(pkmn_quantit, pch = 20, col = as.factor(pkmn_sub$Legendary))
+```
+
+### Esercizio 2.3
+
+Si consideri il dataset `flights` del pacchetto `nycflights13`, relativo a voli aerei partiti da aeroporti di New York nel 2013. Una volta caricato il dataset, si legga la relativa pagina di `help` per comprendere le variabili presenti.
+
+L'oggetto `flights` è di classe `tibble`, una classe proposta negli ultimi anni per gestire dataset in modo differente rispetto ai classici `data.frame`. Possiamo definire i `tibble` come una sottoclasse dei `data.frame` (quindi tutti i `tibble` sono `data.frame`, ma non tutti i `data.frame` sono `tibble`). Si faccia riferimento a questo [link](https://tibble.tidyverse.org/) per maggiori informazioni.
+
+```{r}
+#| echo: true
+#| eval: false
+#| code-fold: true
+#| code-summary: "Soluzione"
+
+library(nycflights13)
+data("flights")
+class(flights)
+
+help("flights")
+```
+
+1.  Si sovrascriva l'oggetto `flights`, forzando la sua classe ad essere `data.frame`. (N.B.: in generale non è obbligatorio convertire la classe di un `tibble` per lavorare con esso.)
+
+```{r}
+#| echo: true
+#| eval: false
+#| code-fold: true
+#| code-summary: "Soluzione"
+
+flights <- as.data.frame(flights)
+```
+
+2.  Quale dei tre aeroporti di New York è quello da cui sono partiti più voli nel 2013?
+
+```{r}
+#| echo: true
+#| eval: false
+#| code-fold: true
+#| code-summary: "Soluzione"
+
+tt <- table(flights$origin); tt
+
+names(tt)[which.max(tt)]
+```
+
+3.  Si vuole indagare l'eterogeneità della variabile `month`, per valutare se le partenze possono ritenersi equiripartite nei mesi dell'anno. Si calcolino quindi l'indice di Gini normalizzato e l'indice di Shannon normalizzato.
+
+```{r}
+#| echo: true
+#| eval: false
+#| code-fold: true
+#| code-summary: "Soluzione"
+
+tt_month <- table(flights$month)
+f <- tt_month/sum(tt_month)
+k <- length(f)
+G <- sum(f*(1-f))
+G_N <- G*k/(k-1); G_N
+
+H <- -sum(f*log(f))
+H_N <- H/log(k); H_N
+```
+
+4.  Si aggiunga al dataset una variabile `factor` chiamata `arrival` e che assuma modalità "hearly", "on time" e "delay" sulla base del fatto che l'aereo sia arrivato in anticipo, puntuale o in ritardo.
+
+```{r}
+#| echo: true
+#| eval: false
+#| code-fold: true
+#| code-summary: "Soluzione"
+
+flights$arrival <- 
+  factor(ifelse(flights$arr_delay < 0, "early",
+            ifelse(flights$arr_delay > 0, "delay", 
+                   "on time")))
+table(flights$arrival)
+```
+
+5.  Si aggiunga al dataset una nuova variabile `total_delay`, data dalla somma del ritardo alla partenza e ritardo all'arrivo.
+
+```{r}
+#| echo: true
+#| eval: false
+#| code-fold: true
+#| code-summary: "Soluzione"
+
+flights$total_delay <- flights$dep_delay + flights$arr_delay
+```
+
+6.  Si calcoli il ritardo totale medio per compagnia aerea (in inglese carrier). Quale compagnia sembra essere la più efficiente, sulla base di questa semplice analisi?
+
+```{r}
+#| echo: true
+#| eval: false
+#| code-fold: true
+#| code-summary: "Soluzione"
+
+media_ritardi <- aggregate(total_delay ~ carrier, data = flights, FUN = mean, na.rm = TRUE)
+
+# altrimenti possiamo procedere filtrando:
+
+media_ritardi_2 <- numeric(length(unique(flights$carrier)))
+names(media_ritardi_2) <- unique(flights$carrier)
+
+for(i in 1:length(unique(flights$carrier))){
+  sub <- 
+    subset(flights, carrier == unique(flights$carrier)[i])
+  
+  media_ritardi_2[i] <- mean(sub$total_delay, na.rm = T)
+}
+
+media_ritardi
+media_ritardi_2
+
+which.min(media_ritardi_2)
+```
+
+7.  Si proponga un metodo per costruire la variabile `route` (tratta). Si determini quante sono le tratte osservate e quale, tra queste, è la più frequentata.
+
+```{r}
+#| echo: true
+#| eval: false
+#| code-fold: true
+#| code-summary: "Soluzione"
+
+flights$route <- paste(flights$origin, " - ", flights$dest, sep="")
+
+length(unique(flights$route))
+
+tt_route <- table(flights$route)
+names(tt_route)[which.max(tt_route)]
+```
+
+8.  In future analisi legate al turismo, si vorrà studiare i soli voli decollati nel periodo estivo. A tal fine, si costruisca un dataset `flights_summer` riguardanti i voli partiti tra il 1 giugno ed il 31 agosto.
+
+```{r}
+#| echo: true
+#| eval: false
+#| code-fold: true
+#| code-summary: "Soluzione"
+
+flights_summer <- subset(flights, month %in% c(6,7,8))
+
+```
+
+### Esercizio 2.4
+
+Si consideri il dataset `olympics.RData` (scaricabile al seguente [link](https://robertoascari.github.io/data/olympics.RData)), contenente dati relativi alle Olimpiadi di Londra 2012. In particolare, il dataset contiente le seguenti variabili:
+
+-   `Country`: nome del paese;
+-   `GoldMedals`: numero di medaglie d'oro vinte a Londra 2012;
+-   `Silver`: numero di medaglie d'argento vinte a Londra 2012;
+-   `Bronze`: numero di medaglie di bronzo vinte a Londra 2012;
+-   `TotalMedals`: numero totale di medaglie vinte a Londra 2012;
+-   `Income`: reddito pro capite (in 10,000\$);
+-   `PopnSize`: popolazione del paese (in miliardi);
+-   `GDP`: gross domestic product (PIL).
+
+1.  Si carichi in memoria il dataset.
+
+```{r}
+#| echo: true
+#| eval: false
+#| code-fold: true
+#| code-summary: "Soluzione"
+
+load("olympics.RData")
+```
+
+2.  Si modifichi il nome della variabile `GoldMedals` in `Gold`.
+
+```{r}
+#| echo: true
+#| eval: false
+#| code-fold: true
+#| code-summary: "Soluzione"
+
+colnames(Olympics)[2] <- "Gold"
+```
+
+3.  Si modifichi il `data.frame` in modo tale che il nome delle righe corrisponda al nome del paese. Rimuovere quindi eventuali variabili divenute ormai ridondanti.
+
+```{r}
+#| echo: true
+#| eval: false
+#| code-fold: true
+#| code-summary: "Soluzione"
+
+rownames(Olympics) <- Olympics$Country
+Olympics <- subset(Olympics, select=-Country)
+```
+
+4.  Qual è il paese che ha vinto il minor numero di medaglie d'oro? E quello che ha vinto complessivamente meno medaglie?
+
+```{r}
+#| echo: true
+#| eval: false
+#| code-fold: true
+#| code-summary: "Soluzione"
+
+Olympics[which.min(Olympics$Gold),]
+Olympics[which.min(Olympics$TotalMedals),]
+```
+
+5.  Si definisca una finestra grafica che possa contenere quattro grafici, distribuiti su due righe e due colonne. Il grafico in alto a sinistra deve contenere una opportuna rappresentazione grafica della variabile `TotalMedals`, mentre i restanti tre devono essere diagrammi a dispersione tra la variabile `TotalMedals` e `Income`, `PopnSize` e `GDP`.
+
+```{r}
+#| echo: true
+#| eval: false
+#| code-fold: true
+#| code-summary: "Soluzione"
+
+par(mfrow=c(2,2))
+plot(table(Olympics$TotalMedals), ylab = "Freq.", xlab = "Medaglie totali")
+plot(Olympics$TotalMedals ~ Olympics$Income, pch=20, ylab="Medaglie totali", xlab="Reddito")
+plot(Olympics$TotalMedals ~ Olympics$PopnSize, pch=20, ylab="Medaglie totali", xlab="Popolazione")
+plot(Olympics$TotalMedals ~ Olympics$GDP, pch=20, ylab="Medaglie totali", xlab="PIL")
+par(mfrow=c(1,1))
+```
+
+6.  Creare un `data.frame` denominato `medals_composition` che faccia riferimenti ai soli paesi che hanno conquistato almeno una medaglia e che contenga la [composizione](https://en.wikipedia.org/wiki/Compositional_data) delle medaglie vinte da ciascun paese, specificata in base alle diverse tipologie di medaglie. Più precisamente, si deve costruire un dataset con tre variabili contenenti, rispettivamente, la **proporzione** di medaglie d'oro, d'argento e di bronzo vinte da ciascun paese.
+
+```{r}
+#| echo: true
+#| eval: false
+#| code-fold: true
+#| code-summary: "Soluzione"
+
+medals_composition <- 
+  subset(Olympics, 
+         TotalMedals > 0,
+         select=c(Gold, Silver, Bronze))
+
+medals_composition <- t(apply(medals_composition, 1, function(x) x/sum(x)))
+```
+
+7.  Una caratteristica dei dati composizionali è che ogni unità statistica è associata ad un vettore con elementi positivi, i quali sommano a 1. Si verifichino queste due caratteristiche in merito al dataset `medals_composition`.
+
+```{r}
+#| echo: true
+#| eval: false
+#| code-fold: true
+#| code-summary: "Soluzione"
+
+all(apply(medals_composition, 1, function(x) all(x >= 0)))
+
+all(rowSums(medals_composition) == 1)
+```
+
+8.  Si noti che, per via del vincolo di somma a 1, la matrice di varianze e covarianze di dati composizionali è a rango non pieno. Infatti, è possibibile dimostrare che la somma di ogni riga (o di ogni colonna) vale 0.\
+    Si ottenga la matrice di varianze e covarianze del dataset `medals_composition` e si verifichi tale proprietà.
+
+```{r}
+#| echo: true
+#| eval: false
+#| code-fold: true
+#| code-summary: "Soluzione"
+
+Sigma <- cov(medals_composition)
+
+colSums(Sigma)
+rowSums(Sigma)
+```
+
+### Esercizio 2.5
+
+Si importi il dataset `animals.csv`, scaricabile al seguente [link](https://robertoascari.github.io/data/animals.csv), contenente informazioni su 38 specie di animali. In particolare, il dataset contiene le seguenti variabili:
+
+-   `specie_tr`: specie dell'animale;
+-   `peso_corpo`: peso del corpo, in Kg;
+-   `peso_cerv`: peso del cervello, in grammi;
+-   `leggero`: numero di ore di sonno leggero (ore al giorno);
+-   `profondo`: numero di ore di sonno profondo (ore al giorno);
+-   `anni_vita`: speranza di vita alla nascita, in anni;
+-   `gestazione`: tempo di gestazione, in giorni;
+-   `preda`: indice qualitativo di predazione (0 = *raramente è una preda*, 1 = *è molto spesso una preda*);
+-   `esposto`: indice qualitativo di esposizione durante il sonno (0 = *poco esposto*, 1 = *molto esposto*);
+-   `pericolo`: indice qualitativo di pericolo (0 = *gli altri animali non rappresentano un pericolo per lui*, 1 = *gli altri animali rappresentano un grave pericolo per lui*).
+
+1.  Convertire le variabili qualitative in factor.
+
+```{r}
+#| echo: true
+#| eval: false
+#| code-fold: true
+#| code-summary: "Soluzione"
+
+animals <- read.table("animals.csv", header = T, sep = ";")
+
+
+
+animals$preda <- as.factor(animals$preda)
+animals$esposto <- as.factor(animals$esposto)
+animals$pericolo <- as.factor(animals$pericolo)
+```
+
+2.  Si aggiunga al dataset la nuova variabile `sonno`, rappresentante il numero totale di ore di sonno giornaliere.
+
+```{r}
+#| echo: true
+#| eval: false
+#| code-fold: true
+#| code-summary: "Soluzione"
+
+animals$sonno <- animals$leggero + animals$profondo
+```
+
+3.  Quale animale dorme complessivamente di più? E quale dorme di meno?
+
+```{r}
+#| echo: true
+#| eval: false
+#| code-fold: true
+#| code-summary: "Soluzione"
+
+animals$specie_tr[which.max(animals$sonno)]
+animals$specie_tr[which.min(animals$sonno)]
+
+```
+
+4.  Si ottenga il quantile di ordine 0.6 della variabile `sonno` e lo si interpreti.
+
+```{r}
+#| echo: true
+#| eval: false
+#| code-fold: true
+#| code-summary: "Soluzione"
+
+quantile(animals$sonno, probs = .6)
+```
+
+5.  Si proponga un opportuno grafico per studiare la relazione tra `sonno` e `peso_cerv`. Si commenti il risultato ottenuto.
+
+```{r}
+#| echo: true
+#| eval: false
+#| code-fold: true
+#| code-summary: "Soluzione"
+
+plot(animals$sonno ~ animals$peso_cerv, pch = 20, 
+     main = "Sonno - Peso Cervello", xlab = "Peso cervello", ylab = "Sonno")
+```
+
+6.  Si proponga un opportuno grafico per studiare la relazione tra `sonno` e `preda`. Si commenti il risultato ottenuto.
+
+```{r}
+#| echo: true
+#| eval: false
+#| code-fold: true
+#| code-summary: "Soluzione"
+
+boxplot(animals$sonno ~ animals$preda, pch = 20, 
+        main = "Sonno - Preda", xlab = "Preda", ylab = "Sonno")
+```
+
+7.  Si ritiene possibile costruire un grafico per studiare la relazione tra `sonno` e `peso_cerv`, tenendo conto anche della presenza della variabile `preda`? Se si, si riporti tale grafico e lo si commenti. Altrimenti, si motivi il perché non lo si ritiene possibile.
+
+```{r}
+#| echo: true
+#| eval: false
+#| code-fold: true
+#| code-summary: "Soluzione"
+
+plot(animals$sonno ~ animals$peso_cerv, col = animals$preda, 
+     pch = 20, main = "Sonno - Peso Cervello", 
+     xlab = "Peso cervello", ylab = "Sonno")
+
+levels(animals$preda)
+# neri: 0
+# rossi: 1
+```
+
+### Esercizio 2.6
+
+Si importi in memoria il dataset `datasaurus.csv`, scaricabile al seguente [link](https://robertoascari.github.io/data/datasaurus.csv), contenente tre colonne:
+
+-   `x` e `y`, che rappresentano coordinate cartesiane;
+-   `dataset`, che identifica il gruppo di appartenenza di ciascuna riga.
+
+Ogni sottoinsieme di righe con lo stesso valore nella colonna `dataset` costituisce un dataset distinto. Ad esempio, tutte le righe con `dataset` pari a `"ABC"` compongono il dataset denominato `"ABC"`.
+
+1.  Si rimuovano dal `data.frame` tutte le righe che fanno riferimento al dataset `"slant_down"`.
+
+```{r}
+#| echo: true
+#| eval: false
+#| code-fold: true
+#| code-summary: "Soluzione"
+
+datasaurus <- 
+  read.table("datasaurus.csv", sep = ",", header = T)
+
+datasaurus2 <- 
+  subset(datasaurus, dataset != "slant_down")
+```
+
+2.  Quante modalità assume adesso la variabile `dataset`? Si salvi questo valore in un oggetto chiamato `D`.
+
+```{r}
+#| echo: true
+#| eval: false
+#| code-fold: true
+#| code-summary: "Soluzione"
+
+D <- length(unique(datasaurus2$dataset)); D
+```
+
+3.  Si vogliono studiare alcune statistiche di sintesi ($\bar{x}, \bar{y}, s^2_{x}, s^2_{y}$ e $\rho_{x,y}$) per ognuno dei `D` dataset. Si salvino queste statistiche in una matrice `stat_sintesi` avente 5 colonne (i.e., le 5 statistiche di sintesi) e `D` righe (i.e., i `D` dataset).
+
+```{r}
+#| echo: true
+#| eval: false
+#| code-fold: true
+#| code-summary: "Soluzione"
+
+stat_sintesi <- matrix(NA, ncol = 5, nrow = D)
+
+colnames(stat_sintesi) <- c("Media_X", "Media_Y",
+                            "Var_X", "Var_Y", "Cov_XY")
+
+
+for(d in 1:D){
+  data_sub <- subset(datasaurus2, dataset == unique(datasaurus2$dataset)[d])
+  
+  stat_sintesi[d,1] <- mean(data_sub$x)
+  stat_sintesi[d,2] <- mean(data_sub$y)
+  stat_sintesi[d,3] <- var(data_sub$x)
+  stat_sintesi[d,4] <- var(data_sub$y)
+  stat_sintesi[d,5] <- cov(data_sub$x, data_sub$y)
+}
+
+stat_sintesi
+```
+
+4.  Si imposti una finestra grafica che possa contenere `D` grafici. Si ottengano i diagrammi a dispersione delle variabili `x` e `y` per ciascuno dei dataset. Che conclusione possiamo trarre dall'analisi congiunta di `stat_sintesi` e del grafico appena costruito?
+
+```{r}
+#| echo: true
+#| eval: false
+#| code-fold: true
+#| code-summary: "Soluzione"
+
+par(mfrow=c(3,4))
+for(d in 1:D){
+  
+  data_sub <- subset(datasaurus2, dataset == unique(datasaurus2$dataset)[d])
+  
+  plot(data_sub$x, data_sub$y, pch = 20, main = unique(datasaurus2$dataset)[d])
+}
+par(mfrow=c(1,1))
+```
+
+## Parte 3: Probabilità
+
+### Esecizio 3.1
+
+1.  Si rappresentino graficamente e sullo stesso grafico le funzioni di densità di una variabile casuale $\chi^2_g$ con $g \in \{1, 2, 5, 10\}$, differenziando le linee delle curve a piacere. Si costruisca anche un'opportuna legenda.
+
+```{r}
+#| echo: true
+#| eval: false
+#| code-fold: true
+#| code-summary: "Soluzione"
+
+curve(dchisq(x, 1), xlim=c(0,40))
+curve(dchisq(x, 2), add = T, col="red", lty="dashed")
+curve(dchisq(x, 5), add = T, col="blue", lty="dotted")
+curve(dchisq(x, 10), add = T, col="green", lty="dotdash")
+legend(20, .5, 
+       c("g = 1","g = 2","g = 5","g = 10"),
+       col=c("black","red","blue","green"),
+       lty=c("solid","dashed","dotted","dotdash"),
+    bty="n")
+```
+
+2.  Si ricorda che se $Y \sim Gamma(g/2, 1/2)$, allora $Y \sim \chi^2_g$. Si fissi $g = 50$ e si estraggano `5000` valori da una $Gamma(g/2, 1/2)$ e si confronti la distribuzione empirica ottenuta con quella di una $\chi^2_g$.
+
+```{r}
+#| echo: true
+#| eval: false
+#| code-fold: true
+#| code-summary: "Soluzione"
+
+set.seed(42)
+g <- 50
+gamma <- rgamma(5000, g/2, rate = .5)
+
+par(mfrow=c(1,2))
+hist(gamma, prob = T, main = "Istogramma valori estratti da Gamma")
+curve(dchisq(x, g), col = 2, add = T)
+plot(ecdf(gamma))
+curve(pchisq(x, g), col = 2, add = T)
+par(mfrow=c(1,1))
+```
+
+3.  Si ricorda che se $X_1, \dots, X_g$ sono i.i.d. e $X_j \sim N(0,1)$, allora $\displaystyle \sum_{j=1}^g X_j^2 \sim \chi^2_g$. Si usi questo risultato teorico per ottenere un campione di `8000` valori da una $\chi^2_{10}$ sfruttando unicamente la funzione `rnorm()`.
+
+```{r}
+#| echo: true
+#| eval: false
+#| code-fold: true
+#| code-summary: "Soluzione"
+
+B <- 8000
+g <- 10
+# Tanti, tanti modi. Ne vediamo due:
+
+# Primo, poco efficiente:
+chi2_10_primo <- numeric(B)
+
+set.seed(42)
+for(b in 1:B){
+  chi2_10_primo[b] <- sum(rnorm(g, mean = 0, sd = 1)^2)
+}
+
+
+# Secondo:
+valori_normale <- matrix(rnorm(B*g)^2, ncol = g, nrow = B)
+chi2_10_secondo <- rowSums(valori_normale)
+
+par(mfrow=c(1,2))
+hist(chi2_10_primo, prob = T, main="Proposta 1")
+curve(dchisq(x, g), add = T, col = "red")
+
+hist(chi2_10_secondo, prob = T, main="Proposta 2")
+curve(dchisq(x, g), add = T, col = "red")
+par(mfrow=c(1,1))
+```
+
+4.  Nell'inferenza è spesso necessario ricavare dei quantili di una $\chi^2_g$. Si utilizzi `R` per ottenere il quantile di ordine 0.95 di una $\chi^2_{10}$ in due modi differenti, uno esatto ed uno approssimato.
+
+```{r}
+#| echo: true
+#| eval: false
+#| code-fold: true
+#| code-summary: "Soluzione"
+
+qchisq(.95, 10)
+
+quantile(chi2_10_primo, probs = .95)
+```
+
+### Esercizio 3.2 (difficile):
+
+In una foresta incantata, alla fine del giorno 0 vengono piantati 6 semi magici. Dal giorno 1 in avanti, alla fine di ogni giornata, ogni seme ha una probabilità pari a 0.5 di trasformarsi in un albero. Una volta trasformato, esso resterà un albero per sempre.\
+Si implementi una simulazione per approssimare il numero atteso (medio) di giorni necessari affinchè tutti i semi diventino degli alberi.
+
+La fonte dell'esercizio e la sua risoluzione analitica possono essere trovati in [questo video](https://www.youtube.com/watch?v=RY7YKSw1t_M&t=669s).
+
+```{r}
+#| echo: true
+#| eval: false
+#| code-fold: true
+#| code-summary: "Soluzione"
+
+n <- 6
+nsim <- 50000
+
+days <- numeric(nsim)
+for(s in 1:nsim){
+  tree <- numeric(n)
+  d <- 0 # giorno 0
+  succ <- 0 # quanti semi sono diventati alberi
+  
+  while(succ < 6){
+    tree[which(tree==0)] <- rbinom(sum(tree==0),1,.5)
+    succ <- sum(tree)
+    d <- d+1
+  }
+  days[s] <- d
+}
+
+mean(days)
+
+# Oppure:
+mean(replicate(nsim, max(rgeom(6,0.5))+1))
+```
+
+### Esercizio 3.3
+
+Siano $p_1(x)$ e $p_2(x)$ due funzioni di probabilità associate a due variabili casuali discrete $X_1$ e $X_2$ caratterizzate sullo stesso supporto $\mathcal{S} = \{x_1, \dots, x_k\}$. La divergenza di Kullback-Leibler di $X_1$ da $X_2$ è definita come $KL(p_1 || p_2) = \displaystyle \sum_{j=1}^k p_1(x_j) \log \left(\frac{p_1(x_j)}{p_2(x_j)}\right).$
+
+1.  Si calcoli il valore della divergenza di Kullback-Leibler di $X_1$ da $X_2$ considerando $X_1$ e $X_2$ distribuite come Binomiali di parametro $n = 20$ e probabilità di successo rispettivamente $\theta_1 = 0.2$ e $\theta_2 = 0.1$.
+
+```{r}
+#| echo: true
+#| eval: false
+#| code-fold: true
+#| code-summary: "Soluzione"
+
+n <- 20
+theta1 <- 0.2
+theta2 <- 0.1
+
+p1 <- dbinom(0:n, n, theta1)
+p2 <- dbinom(0:n, n, theta2)
+
+sum(p1*log(p1/p2))
+```
+
+2.  La divergenza di Kullback-Leibler gode della proprietà di simmetria?
+
+```{r}
+#| echo: true
+#| eval: false
+#| code-fold: true
+#| code-summary: "Soluzione"
+
+n <- 20
+theta1 <- 0.2
+theta2 <- 0.1
+
+p1 <- dbinom(0:n, n, theta1)
+p2 <- dbinom(0:n, n, theta2)
+
+KL_x1_da_x2 <- sum(p1*log(p1/p2))
+KL_x2_da_x1 <- sum(p2*log(p2/p1))
+
+KL_x1_da_x2; KL_x2_da_x1
+```
+
+3.  Si calcoli la stessa quantità del punto 1 facendo variare $\theta_2 \in \{0.05, 0.1, 0.2, 0.3, 0.5, 0.7, 0.9\}$. Da questi risultati è possibile intuire quale aspetto viene misurato da questo indice?
+
+```{r}
+#| echo: true
+#| eval: false
+#| code-fold: true
+#| code-summary: "Soluzione"
+
+n <- 20
+theta1 <- 0.2
+theta2_vec <- c(.05, .1, .2, .3, .5, .7, .9)
+
+p1 <- dbinom(0:n, n, theta1)
+
+KL <- numeric(length(theta2_vec))
+
+for(i in 1:length(theta2_vec)){
+  theta2 <- theta2_vec[i]
+  
+  p2 <- dbinom(0:n, n, theta2)
+
+  KL[i] <- sum(p1*log(p1/p2))
+}
+plot(theta2_vec, KL)
+```
+
+4.  Ci si convinca che $\displaystyle KL(p_1 || p_2) = \mathbb{E}\left[\log\left\{\frac{p_1(X_1)}{p_2(X_1)} \right\} \right]$. Si utilizzi questo risultato per ottenere un'approssimazione Monte Carlo di quanto ottenuto al punto 1.
+
+```{r}
+#| echo: true
+#| eval: false
+#| code-fold: true
+#| code-summary: "Soluzione"
+
+B <- 8000
+n <- 20
+theta1 <- .2
+theta2 <- .1
+KL_sim <- numeric(B)
+
+for(b in 1:B){
+  x_j <- rbinom(1, n, theta1)
+  
+  KL_sim[b] <- log(dbinom(x_j, n, theta1)/dbinom(x_j, n, theta2))
+}
+mean(KL_sim)
+```
+
+5.  Si considerino ora $X_1$ e $X_2$ distribuite secondo distribuzioni Poisson di parametri $\lambda_1$ e $\lambda_2$. Dato che il supporto della Poisson è illimitato, per calcolare la divergenza di Kullback-Leibler bisognerebbe calcolare una serie numerica. Si proponga almeno un modo per ottenere la divergenza di Kullback-Leibler considerando $\lambda_1 = 2$ e $\lambda_2 = 10$.
+
+```{r}
+#| echo: true
+#| eval: false
+#| code-fold: true
+#| code-summary: "Soluzione"
+
+# Modo 1: Tronco il supporto ad un elemento sufficientemente alto
+
+lambda1 <- 2
+lambda2 <- 10
+
+S_X <- 0:100
+
+p1 <- dpois(S_X, lambda1)
+p2 <- dpois(S_X, lambda2)
+KL <- sum(p1*log(p1/p2))
+
+
+# Modo 2: uso Monte Carlo:
+
+B <- 15000
+lambda1 <- 2
+lambda2 <- 10
+KL_sim <- numeric(B)
+
+for(b in 1:B){
+  x_j <- rpois(1, lambda1)
+  
+  KL_sim[b] <- log(dpois(x_j, lambda1)/dpois(x_j, lambda2))
+}
+
+KL
+mean(KL_sim)
+```
+
+6.  Si replichi quanto fatto nel punto 5 considerando due distribuzioni Geometriche di probabilità pari a $\pi_1 = 0.45$ e $\pi_2 = 0.9$, rispettivamente.
+
+```{r}
+#| echo: true
+#| eval: false
+#| code-fold: true
+#| code-summary: "Soluzione"
+
+# Modo 1: Tronco il supporto ad un elemento sufficientemente alto
+
+pi1 <- .45
+pi2 <- .9
+
+S_X <- 0:100
+
+p1 <- dgeom(S_X, pi1)
+p2 <- dgeom(S_X, pi2)
+KL <- sum(p1*log(p1/p2))
+
+
+# Modo 2: uso Monte Carlo:
+
+B <- 15000
+pi1 <- .45
+pi2 <- .9
+KL_sim <- numeric(B)
+
+x <- rgeom(B, pi1)
+
+KL_sim <- log(dgeom(x, pi1)/dgeom(x, pi2))
+
+KL
+mean(KL_sim)
+```
+
+### Esercizio 3.4
+
+In un popolare gioco di ruolo, giocatori e giocatrici devono lanciare dei dadi a 20 facce per superare delle prove.
+
+Per superare la prima prova, viene chiesto di lanciare $K$ dadi a 20 facce. La prova si ritiene superata se almeno $L$ dei $K$ dadi presenta valore **maggiore** di 13.
+
+1.  Si scriva una funzione `prova1(K, L, B)` che approssimi, tramite una simulazione basata su `B` repliche, la probabilità di superare la prova.
+
+```{r}
+#| echo: true
+#| eval: false
+#| code-fold: true
+#| code-summary: "Soluzione"
+
+prova1 <- function(K, L, B=2000){
+  successo <- numeric(B)
+  
+  for(b in 1:B){
+    dadi <- sample(1:20, K, replace=T)
+    dadi_vincenti <- sum(dadi > 13)
+    successo[b] <- dadi_vincenti > L
+  }
+  
+  return(mean(successo))
+}
+```
+
+2.  Si utilizzi la funzione definita al punto precedente considerando i valori $K = 10$, $L = 6$ e $B = 50000$ per approssimare la probabilità di superare la prima prova.
+
+```{r}
+#| echo: true
+#| eval: false
+#| code-fold: true
+#| code-summary: "Soluzione"
+
+prova1(10, 5, B=50000)
+
+```
+
+3.  Si consideri la variabile casuale $X$ definita dal numero di dadi che hanno portato ad un valore **maggiore** di 13 tra i $K$ lanciati. Si ottenga una rappresentazione grafica della funzione di probabilità di $X$.
+
+```{r}
+#| echo: true
+#| eval: false
+#| code-fold: true
+#| code-summary: "Soluzione"
+
+K <- 10
+B <- 50000
+supporto <- 0:K
+esiti <- numeric(B)
+
+for(b in 1:B){
+  dadi <- sample(1:20, K, replace=T)
+  dadi_vincenti <- sum(dadi > 13)
+  esiti[b] <- dadi_vincenti
+}
+
+table(esiti)/B
+
+plot(table(esiti)/B, main = "Distribuzione di probabilità di X", ylab="Prob. (approx.)")
+```
+
+### Esercizio 3.5
+
+La variabile casuale Weibull, molto utilizzata nella teoria dei valori estremi, è caratterizzata dalla seguente funzione di densità:
+
+$$ f(y; \alpha, \beta) = \alpha \beta y^{\beta - 1} e^{-\alpha y^\beta},$$ se $y > 0$, dove $\alpha$ e $\beta$ sono due parametri positivi.
+
+1.  Si scriva una funzione in `R` chiamata `my_dweibull` che calcoli la funzione di densità di una Weibull.
+
+```{r}
+#| echo: true
+#| eval: false
+#| code-fold: true
+#| code-summary: "Soluzione"
+
+my_dweibull <- function(x, alpha, beta){
+  dens <- alpha*beta*(x^(beta-1))*exp(-alpha*(x^beta))
+  return(dens)
+}
+
+my_dweibull(4, 1, .2)
+```
+
+2.  Si ottenga analiticamente la funzione di ripartizione di una Weibull e la si implementi in R, creando una funzione `my_pweibull`.
+
+<details>
+
+<summary>Soluzione</summary>
+
+La funzione di ripartizione può essere ottenuta risolvendo il seguente integrale: $F(t; \alpha, \beta) = \displaystyle \int_0^t \alpha \beta y^{\beta - 1} e^{-\alpha y^\beta} dy$.
+
+Tramite sostituzione $(s = y^\beta, ds = \beta y^{\beta -1} dy)$, si ottiene $\displaystyle F(t; \alpha, \beta) = \int_0^{t^\beta} \alpha  e^{-\alpha s} ds = 1 - e^{-\alpha t^\beta}$.
+
+```{r}
+#| eval: false
+
+my_pweibull <- function(q, alpha, beta){
+  rip <- ifelse(q < 0, 0, 1 - exp(-alpha * (q^beta)))
+  return(rip)
+}
+
+my_pweibull(4, 1, .2)
+```
+
+</details>
+
+3.  Si ottenga analiticamente la funzione quantile (inversa della funzione di ripartizione) di una Weibull e la si implementi in R, creando una funzione `my_qweibull`.
+
+<details>
+
+<summary>Soluzione</summary>
+
+Per ottenere la funzione quantile è necessario invertire la funzione di ripartizione ottenuta al punto precedente: $\displaystyle Q(u) = F^{-1}(u), u \in (0,1)$. Isolando $t$ dall'espressione $1- e^{-\alpha t^\beta}$, si ottiene $Q(u) = \left[ -\frac{1}{\alpha} \log(1-u) \right]^{1/\beta}$.
+
+```{r}
+#| eval: false
+
+my_qweibull <- function(u, alpha, beta){
+  q <- (-alpha^(-1) * log(1-u))^(1/beta)
+  return(q)
+}
+
+my_qweibull(.73, 1, .2)
+```
+
+</details>
+
+4.  Si utilizzi il metodo della trasformata inversa per creare una funzione `my_rweibull` per generare `n` valori pseudo-casuali da una Weibull.
+
+```{r}
+#| echo: true
+#| eval: false
+#| code-fold: true
+#| code-summary: "Soluzione"
+
+my_rweibull <- function(n, alpha, beta){
+  sample <- numeric(n)
+  
+  for(i in 1:n){
+    sample[i] <- my_qweibull(u = runif(1), alpha, beta)
+  }
+  return(sample)
+}
+```
+
+5.  Si verifichi che la funzione `my_rweibull` permette di estrarre valori pseudo-casuali dalla funzione di densità in analisi. (Si scelgano dei valori arbitrari per $\alpha$ e $\beta$.)
+
+```{r}
+#| echo: true
+#| eval: false
+#| code-fold: true
+#| code-summary: "Soluzione"
+
+n <- 8000
+sample <- my_rweibull(n, 5, 2)
+
+par(mfrow=c(1,2))
+hist(sample, prob = T)
+curve(my_dweibull(x, 5, 2), add=T, col = 2)
+plot(ecdf(sample))
+curve(my_pweibull(x, 5, 2), add=T, col = 2)
+par(mfrow=c(1,1))
+
+```
+
+### Esercizio 3.6
+
+Si consideri una variabile casuale discreta $X$ con supporto $\mathcal{S}_X = \{2, 4, 6, 8, 10, 12\}$ e funzione di probabilità: $\displaystyle p(x) = \frac{1}{441} \left(\frac{x}{2} \right)^3, x \in \mathcal{S}_X$.
+
+1.  Si verifichi che la funzione $p(x)$ è una funzione di probabilità.
+
+```{r}
+#| echo: true
+#| eval: false
+#| code-fold: true
+#| code-summary: "Soluzione"
+
+S_X <- 2*(1:6)
+p_x <- (1/441)*(S_X/2)^3
+
+sum(p_x)
+```
+
+2.  Si propongano due metodi per estrarre `n` valori pseudo casuali da $X$.
+
+```{r}
+#| echo: true
+#| eval: false
+#| code-fold: true
+#| code-summary: "Soluzione"
+
+n <- 8000
+
+# Metodo 1:
+set.seed(369)
+
+aa <- cumsum(c(0, p_x))
+
+u <- runif(n)
+sample1 <- S_X[as.numeric(cut(u, aa))]
+
+# Metodo 2:
+sample2 <- sample(S_X, n, replace = T, prob = p_x)
+```
+
+3.  Si proponga un modo per verificare se i metodi proposti sembrano generare valori proprio dalla distribuzione desiderata.
+
+```{r}
+#| echo: true
+#| eval: false
+#| code-fold: true
+#| code-summary: "Soluzione"
+
+round(cbind(p_x, 
+            table(sample1)/n, 
+            table(sample2)/n), 4)
+```
+
+4.  Si usi uno dei campioni ottenuti per approssimare il valore atteso, il momento secondo e la varianza di $X$.
+
+```{r}
+#| echo: true
+#| eval: false
+#| code-fold: true
+#| code-summary: "Soluzione"
+
+mu <- mean(sample1)
+mom2 <- mean(sample1^2)
+var <- mean((sample1-mean(sample1))^2)
+# Oppure 
+#var <- mom2 - mu^2
+```
+
+### Esercizio 3.7
+
+Si estragga un campione di ampiezza $n = 200$ da una Normale con media $\mu = 15$ e varianza $\sigma^2 = 20$.
+
+```{r}
+#| echo: true
+#| eval: false
+#| code-fold: true
+#| code-summary: "Soluzione"
+
+n <- 200
+mu <- 15
+sigma2 <- 20
+
+set.seed(678)
+y <- rnorm(n, mu, sqrt(sigma2))
+```
+
+1.  Si considerino $\mu$ e $\sigma^2$ entrambi ignoti e si fornisca una stima per entrambi i parametri. Qual è l'errore commesso dai due stimatori, in questo caso?
+
+```{r}
+#| echo: true
+#| eval: false
+#| code-fold: true
+#| code-summary: "Soluzione"
+
+mu_hat <- mean(y); mu_hat
+sigma2_hat <- var(y); sigma2_hat
+
+mu - mu_hat
+sigma2 - sigma2_hat
+```
+
+2.  Si vuole sottoporre a verifica $H_0: \mu = 5$ vs. $H_1: \mu \neq 5$ ad un livello $\alpha = 0.05$. Si determini la conclusione inferenziale, ricorrendo alla regione critica.
+
+```{r}
+#| echo: true
+#| eval: false
+#| code-fold: true
+#| code-summary: "Soluzione"
+
+mu_star <- 5
+alpha <- 0.05
+
+stat_test <- (mu_hat - mu_star)/sqrt(sigma2_hat/n)
+
+soglia <- qt(1 - (alpha/2), n - 1)
+
+ifelse(abs(stat_test) >= abs(soglia), "Rifiuto H0", "Non rifiuto H0")
+
+```
+
+3.  Si risolva il punto precedente ricorrendo al concetto di p-value.
+
+```{r}
+#| echo: true
+#| eval: false
+#| code-fold: true
+#| code-summary: "Soluzione"
+
+p_value <- pnorm(-abs(stat_test)); p_value
+
+ifelse(p_value < alpha, "Rifiuto H0", "Non rifiuto H0")
+```
+
+### Esercizio 3.8
+
+Una distribuzione (multivariata) per [dati composizionali](https://en.wikipedia.org/wiki/Compositional_data) è la distribuzione [Dirichlet](https://en.wikipedia.org/wiki/Dirichlet_distribution). Siano $\displaystyle \textbf{x} = (x_1, \dots, x_D)^\intercal \in \mathcal{S}^D = \left\{ \textbf{x} = (x_1, \dots, x_D)^\intercal : x_d > 0, \sum_{d=1}^D x_d = 1\right\}$, $\boldsymbol{\alpha} = (\alpha_1, \dots, \alpha_D)^\intercal$ un vettore $D$-dimensionale con elementi positivi e $\displaystyle \alpha^+ = \sum_{d=1}^D \alpha_d$; allora la funzione di densità congiunta della Dirichlet è data da $$\displaystyle f(\textbf{x}; \boldsymbol{\alpha}) = \frac{\Gamma(\alpha^+)}{\prod_{d=1}^D \Gamma(\alpha_d)} \prod_{d=1}^D x_d^{\alpha_d - 1},$$ se $\textbf{x}\in\mathcal{S}^D$ e 0 altrimenti.
+
+1.  Si implementi una funzione `ddir` che permetta di calcolare la densità congiunta di un vettore composizionale $\textbf{x}$ e la si valuti nel punto $\textbf{x} = (.2, .1, .4, .05, .25)^\intercal$ con $\boldsymbol{\alpha} = (4, 1, 10, 5, 2)^\intercal$.
+
+```{r}
+#| echo: true
+#| eval: false
+#| code-fold: true
+#| code-summary: "Soluzione"
+
+ddir <- function(x, alpha){
+  aplus <- sum(alpha)
+  
+  dens <- gamma(aplus)/(prod(gamma(alpha)))* prod(x^(alpha-1))
+  
+  return(dens)
+}
+
+x <- c(.2, .1, .4, .05, .25)
+alpha <- c(4, 1, 10, 5, 2)
+
+ddir(x, alpha)
+```
+
+2.  Siano $Y_1, \dots Y_D$ delle variabili casuali indipendenti tali che $Y_d \sim Gamma(\alpha_d, 1)$. Definendo $\displaystyle Y^+ = \sum_{d=1}^D Y_d$, si può dimostrare che $\displaystyle (Y_1 / Y^+, \dots, Y_D/Y^+)^\intercal \sim Dirichlet(\boldsymbol{\alpha})$. Si utilizzi questa relazione per costruire un oggetto (vettore? matrice? lista? altro?) `sample_dir` contenente `B = 5000` dati composizionali pseudo-casuali da una Dirichlet con $D = 5$ e $\boldsymbol{\alpha} = (4, 2, 10, 5, 3)^\intercal$.
+
+```{r}
+#| echo: true
+#| eval: false
+#| code-fold: true
+#| code-summary: "Soluzione"
+
+D <- 5
+B <- 5000
+
+alpha <- c(4, 2, 10, 5, 3)
+y_matrix <- matrix(NA, ncol = D, nrow = B)
+
+for(d in 1:D){
+  y_matrix[,d] <- rgamma(B, alpha[d], 1)
+}
+
+sample_dir <- t(apply(y_matrix, 1, function(x) x/sum(x)))
+```
+
+3.  Si confronti la distribuzione del terzo elemento di `sample_dir` con quella di una $Beta(\alpha_3, \alpha^+ - \alpha_3)$. Si commenti questo confronto, facendo autonomamente una ricerca sul legame che intercorre tra queste due distribuzioni.
+
+```{r}
+#| echo: true
+#| eval: false
+#| code-fold: true
+#| code-summary: "Soluzione"
+
+par(mfrow=c(1, 2))
+hist(sample_dir[,3], main = "Istogramma X_3", prob = T)
+curve(dbeta(x, alpha[3], sum(alpha) - alpha[3]), col = "red", add = T)
+
+plot(ecdf(sample_dir[,3]))
+curve(pbeta(x, alpha[3], sum(alpha) - alpha[3]), col = "red", add = T)
+par(mfrow=c(1, 1))
+```
+
+### Esercizio 3.9
+
+Si supponga di essere interessato ad approssimare, mediante il metodo Monte Carlo, il valore del seguente integrale: $$\int_{-\infty}^{+\infty} \frac{f(x)}{g(x)} \phi(x) dx,$$ dove $\phi(x)$ rappresenta la funzione di densità di una Normale standard.
+
+1.  Si dica perché il seguente funzione non porta ad una soluzione corretta.
+
+```{r}
+my_integral <- function(B = 5000) {
+  int <- mean(f(rnorm(B)) / g(rnorm(B)))
+  
+  return(int)
+}
+```
+
+2.  Si costruisca una funzione che permetta di calcolare il corretto valore dell'integrale proposto.
+
+```{r}
+#| echo: true
+#| eval: false
+#| code-fold: true
+#| code-summary: "Soluzione"
+
+my_integral_2 <- function(B = 5000) {
+  y <- rnorm(B)
+  int <- mean(f(y) / g(y))
+  
+  return(int)
+}
+```
+
+3.  Si considerino le funzioni $f(x) = \sqrt{|x|}$ e $g(x) = x^2 + 1$. Si calcoli il valore dell'integrale con gli approcci del punto 1 e punto 2 e li si confronti con il risultato della funzione `integrate`.
+
+```{r}
+#| echo: true
+#| eval: false
+#| code-fold: true
+#| code-summary: "Soluzione"
+
+my_integral <- function(B = 5000) {
+  int <- mean(sqrt(abs(rnorm(B))) / (rnorm(B)^2+1))
+  
+  return(int)
+}
+
+my_integral_2 <- function(B = 5000) {
+  
+  y <- rnorm(B)
+  
+  int <- mean(sqrt(abs(y)) / (y^2+1))
+  
+  return(int)
+}
+
+my_integral()
+my_integral_2()
+
+integrate(function(x) sqrt(abs(x))/(x^2+1) * dnorm(x), lower=-Inf, upper=Inf)
+```
+
+### Esercizio 3.10
+
+Si consideri la variabile casuale continua [Half-Normal](https://en.wikipedia.org/wiki/Half-normal_distribution), caratterizzata dalla seguente funzione di densità:
+
+$$f(y) = \sqrt{\frac{2}{\pi}} \exp\lbrace-y^2/2\rbrace,$$ se y \> 0.
+
+Questa variabile casuale può essere vista come trasformazione di una Normale Standard: se $Z \sim N(0,1)$, allora $Y = |Z| \sim$ Half-Normal.
+
+1.  Scrivere una funzione in R chiamata `dhalf` che calcoli la funzione di densità di una Half-Normal.
+
+```{r}
+#| echo: true
+#| eval: false
+#| code-fold: true
+#| code-summary: "Soluzione"
+
+dhalf <- function(y) sqrt(2/pi)*exp(-y^2/2)
+```
+
+2.  Si sviluppi una strategia che permetta di generare valori pseudo-casuali da $Y$.
+
+```{r}
+#| echo: true
+#| eval: false
+#| code-fold: true
+#| code-summary: "Soluzione"
+
+B <- 10000
+
+y <- abs(rnorm(B))
+```
+
+3.  Confrontare l'istogramma di 10000 valori pseudo-casuali generati da una Half-Normal con la relativa funzione di densità.
+
+```{r}
+#| echo: true
+#| eval: false
+#| code-fold: true
+#| code-summary: "Soluzione"
+
+hist(y, prob = T, main = "Istogramma Half-Normal")
+curve(dhalf(y = x), col = 2, add = T)
+```
+
+4.  Si approssimi il valore atteso di una Half-Normal.
+
+```{r}
+#| echo: true
+#| eval: false
+#| code-fold: true
+#| code-summary: "Soluzione"
+
+mean(y)
+```
+
+## Parte 4: Inferenza
+
+### Esercizio 4.1
+
+Sia $Y_1, \dots, Y_n$ un campione casuale semplice estratto da una Esponenziale di media 5.
+
+1.  Si ottengano 4 realizzazioni campionarie di ampiezza $n \in \{10, 50, 100, 1000\}$, salvandoli all'interno di una lista.
+
+```{r}
+#| echo: true
+#| eval: false
+#| code-fold: true
+#| code-summary: "Soluzione"
+
+n <- c(10, 50, 100, 1000)
+y <- list()
+
+for(i in 1:4){
+  y[[i]] <- rexp(n[i], rate = 1/5)
+}
+```
+
+2.  Si ottengano le stime di massima verosimiglianza (MV) per i 4 campioni considerati, misurando l'errore di stima commesso.
+
+```{r}
+#| echo: true
+#| eval: false
+#| code-fold: true
+#| code-summary: "Soluzione"
+
+stime <- numeric(4)
+
+for(i in 1:4){
+  stime[i] <- mean(y[[i]])
+}
+
+stime - 5
+```
+
+3.  Si implementi uno studio di simulazione per verificare empiricalmente la convergenza in distribuzione dello stimatore MV. Per ciascuna delle 4 numerosità campionarie considerate, si considerino 10000 repliche.
+
+```{r}
+#| echo: true
+#| eval: false
+#| code-fold: true
+#| code-summary: "Soluzione"
+
+B <- 10000
+stime_n <- matrix(NA, ncol = length(n), nrow = B)
+colnames(stime_n) <- n
+
+par(mfrow=c(2,2))
+for(i in 1:length(n)){
+  for(b in 1:B){
+    y <- rexp(n[i], rate = 1/5)
+    
+    stime_n[b,i] <- mean(y)
+  }
+  hist(stime_n[,i], prob = T, 
+       main = paste("Distr. media camp. con n = ", n[i], sep=""), xlab = "stima")
+  curve(dnorm(x, 5, sqrt((5^2)/n[i])), col = 2, add = T)
+}
+par(mfrow=c(1,1))
+```
+
+4.  Si valuti empiricamente la consistenza dello stimatore MV.
+
+```{r}
+#| echo: true
+#| eval: false
+#| code-fold: true
+#| code-summary: "Soluzione"
+
+boxplot(stime_n)
+abline(h = 5, col = 2)
+```
+
+5.  Come varia l'MSE (mean squared error) all'aumentare di $n$?
+
+```{r}
+#| echo: true
+#| eval: false
+#| code-fold: true
+#| code-summary: "Soluzione"
+
+MSE <- apply(stime_n, 2, function(x) mean((x-5)^2))
+plot(n, MSE, pch = 20)
+abline(h = 0, col = 2)
+```
+
+### Esercizio 4.2
+
+Si consideri un campione casuale di ampiezza $n$ estratto da una popolazione Normale di parametri $\mu$ e $\sigma^2$. Si scelgano a piacere dei valori per gli ignoti parametri e si generi un campione di ampiezza $n = 35$.
+
+```{r}
+#| echo: true
+#| eval: false
+#| code-fold: true
+#| code-summary: "Soluzione"
+
+n <- 35
+
+mu <- 13
+sigma2 <- 5
+
+set.seed(42)
+y <- rnorm(n, mu, sqrt(sigma2))
+```
+
+1.  Si consideri $\sigma^2$ **noto e pari al vero valore scelto**. Si implementi la funzione `loglik_mu(mu, y)` che permetta di calcolare la funzione di log-verosimiglianza. Si rappresenti graficamente tale funzione in un opportuno intervallo.
+
+```{r}
+#| echo: true
+#| eval: false
+#| code-fold: true
+#| code-summary: "Soluzione"
+
+loglik_mu <- function(mu, y){
+  sum(log(dnorm(y, mu, sqrt(sigma2))))
+}
+
+loglik_mu <- Vectorize(loglik_mu, vectorize.args = "mu")
+
+curve(loglik_mu(mu = x, y), xlim = c(0, 25))
+```
+
+2.  Nonostante si conosca la forma della stima MV per $\mu$, si utilizzi una procedura di ottimizzazione numerica per ottenerla.
+
+```{r}
+#| echo: true
+#| eval: false
+#| code-fold: true
+#| code-summary: "Soluzione"
+
+MV_mu <- nlminb(start = 0,
+       objective = function(x) -loglik_mu(x, y))
+MV_mu$par
+mean(y)
+```
+
+3.  Adesso si consideri **ignoto** anche il parametro $\sigma^2$. Si implementi la funzione `loglik_mu_sigma2(mu, y)` che permetta di calcolara la funzione di log-verosimiglianza per entrambi i parametri. Si rappresenti graficamente questa funzione.
+
+```{r}
+#| echo: true
+#| eval: false
+#| code-fold: true
+#| code-summary: "Soluzione"
+
+loglik_mu_sigma2 <- function(par, y){
+  mu <- par[1]
+  sigma2 <- par[2]
+  sum(log(dnorm(y, mu, sqrt(sigma2))))
+}
+
+griglia_mu <- seq(-5, 25, by = 0.1)
+griglia_sigma2 <- seq(0.01, 10, by = 0.01)
+
+griglia_parametri <- expand.grid(griglia_mu, griglia_sigma2)
+
+log_lik_values <- apply(griglia_parametri, 1, function(x) loglik_mu_sigma2(x, y))
+
+log_lik_values <- matrix(log_lik_values, nrow = length(griglia_mu), 
+                         ncol = length(griglia_sigma2), byrow = F)
+
+# Per ottenere un grafico più leggibile,
+# traspongo affinché abbia mu su asse y 
+# e sigma2 su asse x.
+log_lik_values <- t(log_lik_values)
+
+contour(x = griglia_sigma2, 
+        y = griglia_mu, 
+        z = log_lik_values,
+        nlevels = 30,
+        xlab = expression(sigma2),
+        ylab = expression(mu),
+        col = 4)
+
+# Noto che aumentando nlevels, si aggiungono curve nella parte iniziale del grafico,
+# ma queste curve aggiuntive non mi aiutano a comprendere il grafico. 
+# Scelgo io dei livelli basandomi sui valori osservati di log_lik_values.
+
+llog_unique <- unique(log_lik_values[which(log_lik_values != -Inf)])
+
+levels <- quantile(llog_unique, probs=c(seq(.05,.95,.05),.96,.97,.98,.99))
+
+contour(x = griglia_sigma2, 
+        y = griglia_mu, 
+        z = log_lik_values,
+        levels = levels,
+        xlab = expression(sigma2),
+        ylab = expression(mu),
+        col = 4)
+```
+
+4.  Si utilizzi una procedura di ottimizzazione numerica per ottenere la stima ML degli ignoti parametri.
+
+```{r}
+#| echo: true
+#| eval: false
+#| code-fold: true
+#| code-summary: "Soluzione"
+
+MV_mu_sigma2 <- nlminb(start = c(0,1),
+       objective = function(x) -loglik_mu_sigma2(x, y))
+MV_mu_sigma2$par
+mean(y)
+var(y)
+```
+
+5.  Si riportino, sul grafico ottenuto al punto 3, due punti corrispondenti al vero valore dei parametri e alla stima MV. Si commenti il grafico ottenuto, ragionando sull'eventuale distanza tra questi due punti.
+
+```{r}
+#| echo: true
+#| eval: false
+#| code-fold: true
+#| code-summary: "Soluzione"
+
+contour(x = griglia_sigma2, 
+        y = griglia_mu, 
+        z = log_lik_values,
+        levels = levels,
+        xlab = expression(sigma2),
+        ylab = expression(mu),
+        col = 4)
+
+points(sigma2, mu, pch = 20, col = "red")
+points(MV_mu_sigma2$par[2], MV_mu_sigma2$par[1], pch = 20, col = "blue")
+```
+
+### Esercizio 4.3
+
+Sia $\textbf{y} = (y_1, \dots, y_n)^\intercal$ un campione di realizzazioni i.i.d. da una variabile casuale Poisson di parametro $\theta >0$. La funzione di log-verosimiglianza associata a tale campione, a meno di una costante additiva, è specificata come $$l(\theta; \textbf{y}) = -n\theta + \log(\theta) \sum_{i=1}^n y_i.$$
+
+1.  Si definisca in `R` una funzione `loglik(theta, y)` che restituisca il valore della log-verosimiglianza in corrispondenza del valore `theta` indicato dall'utente.
+
+```{r}
+#| echo: true
+#| eval: false
+#| code-fold: true
+#| code-summary: "Soluzione"
+
+loglik <- function(theta, y){
+  n <- length(y)
+  
+  ll <- -n*theta + sum(y)*log(theta)
+  return(ll)
+}
+```
+
+2.  D'ora in avanti si consideri il campione $\textbf{y} = (5, 10,  7,  7,  9,  9,  5)^\intercal$. Quanto vale la funzione di log-verosimiglianza nel punto $\theta = 10$?
+
+```{r}
+#| echo: true
+#| eval: false
+#| code-fold: true
+#| code-summary: "Soluzione"
+
+y <- c(5,10,7,7,9,9,5)
+loglik(10, y)
+```
+
+3.  Si utilizzi una apposita funzione di ottimizzazione numerica per calcolare la stima di massima verosimiglianza $\hat{\theta}$. Si riporti il valore $\hat{\theta}$.
+
+```{r}
+#| echo: true
+#| eval: false
+#| code-fold: true
+#| code-summary: "Soluzione"
+
+res <-
+optim(par = 10, # valore iniziale 
+      fn = function(x) -loglik(x, y), 
+      lower = 1e-5, 
+      method = "L-BFGS-B", 
+      hessian = TRUE # restituisce l'hessiana valutata nel minimo
+)
+
+res$par
+mean(y)
+```
+
+4.  Si rappresenti graficamente la funzione di log-verosimiglianza nell'intervallo $(0, 15)$. Si sovraimponga una linea verticale **rossa** e **tratteggiata** in corrispondenza della stima di massima verosimiglianza individuata al punto precedente.
+
+```{r}
+#| echo: true
+#| eval: false
+#| code-fold: true
+#| code-summary: "Soluzione"
+
+curve(loglik(x,y=y), xlim=c(0,15), ylab = "loglik", xlab = expression(theta))
+abline(v=res$par, col="red", lty="dashed")
+```
+
+### Esercizio 4.4
+
+Sia $Y_1, \dots, Y_n$ un campione casuale estratto da una Poisson$(\lambda)$. È noto che il parametro $\lambda >0$ di una Poisson coincide sia con il suo valore atteso che con la sua varianza.
+
+Di conseguenza, due stimatori ragionevoli per $\lambda$ sono la media campionaria $$\displaystyle \bar{Y} = \frac{1}{n} \sum_{i=1}^n Y_i$$ e la varianza campionaria non distorta $$\displaystyle  S^2 = \frac{1}{n-1} \sum_{i=1}^n \left(Y_i - \bar{Y} \right)^2.$$
+
+1.  Quale stimatore risulta preferibile se il vero valore del parametro fosse $\lambda=10$ e se le stime fossero basate su campioni di ampiezza $n = 50$? Si risponda utilizzando un approccio basato su simulazioni.
+
+```{r}
+#| echo: true
+#| eval: false
+#| code-fold: true
+#| code-summary: "Soluzione"
+
+B <- 10000
+
+lambda_true <- 10
+n <- 50
+
+stime_media <- numeric(B)
+stime_var <- numeric(B)
+
+for(b in 1:B){
+  x <- rpois(n, lambda=lambda_true)
+  
+  stime_media[b] <- mean(x)
+  stime_var[b] <- var(x)
+}
+
+MSE_media <- mean((stime_media - lambda_true)^2); MSE_media
+MSE_var <- mean((stime_var - lambda_true)^2); MSE_var
+
+```
+
+2.  Si ottenga e si commenti una approssimazione della distribuzione dei due stimatori. Il risultato grafico è coerente con la risposta data al punto precedente?
+
+```{r}
+#| echo: true
+#| eval: false
+#| code-fold: true
+#| code-summary: "Soluzione"
+
+par(mfrow=c(1,2))
+hist(stime_media, prob=T)
+abline(v=lambda_true, col=2, lwd=2)
+hist(stime_var, prob=T)
+abline(v=lambda_true, col=2, lwd=2)
+par(mfrow=c(1,1))
+
+```
+
+3.  Sempre considerando campioni di ampiezza $n=50$, si implementi uno studio di simulazione per valutare se uno dei due stimatori proposti possa ritenersi più efficiente dell'altro per ogni possibile valore di $\lambda$. Si commenti il risultato prodotto.
+
+```{r}
+#| echo: true
+#| eval: false
+#| code-fold: true
+#| code-summary: "Soluzione"
+
+B <- 5000
+# lambda può assumere infiniti valori: tronco a 50
+lambda_grid <- seq(0.5, 50, by=.5)
+
+MSE_mean <- numeric(length(lambda_grid))
+MSE_var <- numeric(length(lambda_grid))
+
+for(l in 1:length(lambda_grid)){
+  
+  stime_media <- numeric(B)
+  stime_var <- numeric(B)
+  
+  for(b in 1:B){
+    x <- rpois(n, lambda=lambda_grid[l])
+    
+    stime_media[b] <- mean(x)
+    stime_var[b] <- var(x)
+  }
+  
+  MSE_mean[l] <- mean((stime_media - lambda_grid[l])^2)
+  MSE_var[l] <- mean((stime_var - lambda_grid[l])^2)
+}
+
+plot(lambda_grid, MSE_var, type="l", col=1)
+points(lambda_grid, MSE_mean, type="l", col=2)
+legend(0,90, c("MSE(S2)", "MSE(X_bar)"), col=c(1,2), lty="solid")
+```
+
+### Esercizio 4.5
+
+Siano $x_1, \dots, x_n$ delle realizzazioni i.i.d. da $X \sim N(5, 15)$. Si realizzi uno studio di simulazione che confronti la media campionaria e la media troncata di livello $\alpha = 5\%$. Si tratta di stimatori consistenti per la media della popolazione?
+
+La media troncata non considera le prime ed ultime $k$ osservazioni, dove $k = n \cdot\alpha$ (approssimato all'intero più vicino). Se $x_{(1)},\dots,x_{(n)}$ è il campione ordinato, la media troncata è quindi definita come
+
+$$
+\hat{\mu}_\text{tr} = \frac{1}{n - 2 k } \sum_{i=k+1}^{n-k} x_{(i)}.
+$$
+
+In `R` si può usare il comando `mean(x, trim = alpha)`.
+
+```{r}
+#| echo: true
+#| eval: false
+#| code-fold: true
+#| code-summary: "Soluzione"
+
+mu <- 5 
+sigma <- sqrt(15)
+
+B <- 8000
+  
+n <- c(5, 20, 50, 100, 200, 500)
+alpha <- 0.05
+
+stime_mean <- matrix(NA, ncol = length(n), nrow = B)
+stime_trimmed_mean <- matrix(NA, ncol = length(n), nrow = B)
+
+colnames(stime_mean) <- paste0("n = ", n, sep="")
+colnames(stime_trimmed_mean) <- paste0("n = ", n, sep="")
+
+for(b in 1:B){
+  for(j in 1:length(n)){
+    y <- rnorm(n[j], mu, sigma)
+    
+    stime_mean[b,j] <- mean(y)
+    stime_trimmed_mean[b,j] <- mean(y, trim = alpha)
+  }
+}
+
+par(mfrow=c(2,1))
+boxplot(stime_mean, main = "Media Campionaria")
+abline(h = mu, col = 2, lty = "dashed")
+boxplot(stime_trimmed_mean, main = "Media Campionaria Troncata")
+abline(h = mu, col = 2, lty = "dashed")
+par(mfrow=c(2,1))
+```
+
+### Esercizio 4.6
+
+Si consideri un campione casuale semplice di ampiezza $n$ estratto da una Normale con varianza $\sigma^2$ **ignota**. Si è interessati a fare inferenza sull'ignota media $\mu$ della popolazione.
+
+Ai fini di questo esercizio e con le assunzioni fatte, si ricorda che un intervallo di confidenza a livello $1-\alpha$ per l'ignota media ha forma $$\bar{y} \pm t_{n-1; 1-\alpha/2} \sqrt{\frac{s^2}{n}},$$ dove $\bar {y}$ e $s^2$ rapprentano rispettivamente la media e la varianza campionaria non distorta.
+
+1.  Si consideri il campione $\textbf{y} = (17.6,  8.3, 12.7, 14, 12.9, 10.5, 18.2)^\intercal$. Si costruisca un intervallo di confidenza a livello 98% per $\mu$ e se ne riportino gli estremi nel seguente riquadro.
+
+```{r}
+#| echo: true
+#| eval: false
+#| code-fold: true
+#| code-summary: "Soluzione"
+
+y <- c(17.6, 8.3, 12.7, 14, 12.9, 10.5, 18.2)
+
+alpha <- .02
+n <- length(y)
+
+mean(y) + c(-1,1)*qt(1-alpha/2, n-1)*sqrt(var(y)/length(y))
+```
+
+2.  Si implementi uno studio di simulazione atto a verificare empiricamente che, costruendo intervalli di confidenza al 95% per $\mu$ con la precedente formula, il 95% degli intervalli costruiti contiene il vero valore del parametro, mentre il restante 5% no. Si basi la simulazione su $B = 10'000$ repliche e campioni di ampiezza $n=100$; si considerino inoltre i valori $\mu = 11$ e $\sigma^2 = 23$ come veri valori dei parametri. Si imposti il proprio numero di matricola come seme (seed).
+
+```{r}
+#| echo: true
+#| eval: false
+#| code-fold: true
+#| code-summary: "Soluzione"
+
+set.seed(42)
+
+B <- 10000
+coverage <- numeric(B)
+
+n <- 100
+mu_true <- 11
+var_true <- 23
+
+alpha <- 0.05
+
+for(b in 1:B){
+  y <- rnorm(n, mu_true, sqrt(var_true))
+  IC <- mean(y) + c(-1,1)*qt(1-alpha/2, n-1)*sqrt(var(y)/n)
+  
+  coverage[b] <- IC[2] >= mu_true & IC[1] <= mu_true
+}
+
+mean(coverage)
+```
+
+3.  Si implementi uno studio di simulazione basato su $B = 5'000$ repliche per studiare la lunghezza media degli intervalli di confidenza per $\mu$ a livello 95% su campioni di ampiezza crescente, considerando $n \in \{10, 20, 50, 100\}$. Si rappresenti graficamente la relazione tra $n$ e la lunghezza media dell'intervallo.
+
+```{r}
+#| echo: true
+#| eval: false
+#| code-fold: true
+#| code-summary: "Soluzione"
+
+B <- 5000
+n_vec <- c(10, 20, 50, 100)
+lunghezza <- matrix(NA, ncol = length(n_vec), nrow = B)
+
+alpha <- 0.05
+
+for(b in 1:B){
+  for(nn in 1:length(n_vec)){
+    n <- n_vec[nn]
+    
+    y <- rnorm(n, mu_true, sqrt(var_true))
+    IC <- mean(y) + c(-1,1)*qt(1-alpha/2, n-1)*sqrt(var(y)/n)
+    
+    lunghezza[b, nn] <- IC[2] - IC[1]
+  }
+}
+
+plot(n_vec, colMeans(lunghezza))
+```
+
+4.  Si implementi uno studio di simulazione basato su $B = 5'000$ repliche per studiare la lunghezza media degli intervalli di confidenza per $\mu$ su campioni di ampiezza $n=100$ considerando i seguenti livelli di confidenza $1-\alpha \in \{0.85, 0.9, 0.95, 0.99\}$. Si rappresenti graficamente la relazione tra $1-\alpha$ e la lunghezza media dell'intervallo.
+
+```{r}
+#| echo: true
+#| eval: false
+#| code-fold: true
+#| code-summary: "Soluzione"
+
+B <- 5000
+conf_vec <- c(.85, .9, .95, .99)
+lunghezza <- matrix(NA, ncol = length(conf_vec), nrow = B)
+
+n <- 100
+
+for(b in 1:B){
+  for(aa in 1:length(conf_vec)){
+    alpha <- 1-conf_vec[aa]
+
+    y <- rnorm(n, mu_true, sqrt(var_true))
+    IC <- mean(y) + c(-1,1)*qt(1-alpha/2, n-1)*sqrt(var(y)/n)
+    
+    lunghezza[b, aa] <- IC[2] - IC[1]
+  }
+}
+
+plot(conf_vec, colMeans(lunghezza))
+```

@@ -1,0 +1,20 @@
+project:
+  type: website
+  output-dir: docs
+  resources:
+    - /files
+    - /img
+    - /data
+
+website:
+  title: "ASM"
+
+
+format:
+  html:
+    theme: simplex
+    css: styles.css
+    toc: true
+
+editor: visual
+
