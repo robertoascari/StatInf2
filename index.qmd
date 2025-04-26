@@ -36,7 +36,7 @@ editor: visual
 # Scripts
 1 - [link](Code1.qmd).
 
-
+[rrr](data/cardiac.csv)
 
 ## Libri di testo
 
