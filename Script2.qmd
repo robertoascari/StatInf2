@@ -41,7 +41,7 @@ Beta.Mode <- function(a, b){
 }
 ```
 
-The updated hyperparameters and the posterior mode $\tilde{\theta}}$ are:
+The updated hyperparameters and the posterior mode $\tilde{\theta}$ are:
 
 ```{r}
 #| echo: true
@@ -58,7 +58,7 @@ b.post <- b + n - sum_y; b.post
 post.mode <- Beta.Mode(a.post, b.post); post.mode
 ```
 
-Finally, the variance of the approximated normal distribution, namely the **inverse** of $\left. -\frac{\partial^2 \log \pi(\theta | \textbf)}{\partial \theta^2} \right|_{\theta = \tilde{\theta}}$.
+Finally, the variance of the approximated normal distribution, namely the **inverse** of $\left. -\frac{\partial^2 \log \pi(\theta | \textbf{y})}{\partial \theta^2} \right|_{\theta = \tilde{\theta}}$.
 
 ```{r}
 #| echo: true
@@ -75,8 +75,8 @@ Let's compare the true posterior distribution with its Normal approximation:
 #| echo: true
 #| eval: true
 
-curve(dbeta(x, a.post, b.post), xlim=c(.3,.4))
-curve(dnorm(x, post.mode, sqrt(sigma_approx)), add=T, col="red")
+curve(dbeta(x, a.post, b.post), xlim=c(.35,.36), lty = "dashed")
+curve(dnorm(x, post.mode, sqrt(sigma_approx)), add=T, col="red", lty = "dotted")
 ```
 
 The Normal approximation is quite useful in computing HPDs, since they coincide with CSs due to the simmetry of the Normal distribution.
@@ -125,9 +125,7 @@ When it is not possible to compute some quantity of interest directly from the p
 
 Let us consider the following example.
 
-A biostatistician aims to compare two treatments: 
-- 1) a new vaccine for COVID-19;
-- 2) a placebo.
+A biostatistician aims to compare two treatments: - 1) a new vaccine for COVID-19; - 2) a placebo.
 
 He/She collects a sample of 200 patients and randomly assigns them into two groups of equal size.
 
@@ -141,9 +139,11 @@ n2 <- 100
 
 The first group receives the new vaccine, while the second group receives the placebo.
 
-After the treatments, the biostatistician records the number of deaths in each group, denoted by  $Y_1$ and $Y_2$, respectively.
+After the treatments, the biostatistician records the number of deaths in each group, denoted by $Y_1$ and $Y_2$, respectively.
 
-$Y_1 \sim Bernoulli(\theta_1)$\\ $Y_2 \sim Bernoulli(\theta_2)$
+$Y_1|\theta_1 \sim Bernoulli(\theta_1)$
+
+$Y_2| \theta_2 \sim Bernoulli(\theta_2)$
 
 $\theta_j$ represents the probability of death in group $j$.
 
@@ -196,8 +196,7 @@ legend(0.4,10,c("Posterior 1","Posterior 2"),lty=c(1,3),cex=0.8,lwd=2,bty="n")
 
 These posterior distributions suggest that $\theta_1$ and $\theta_2$ are concentrated around different values.
 
-The biostatistician's goal is to study the **log odds ratio** $$\eta = \log \frac{\frac{\theta_1}{1-\theta_1}}{\frac{\theta_2}{1-\theta_2}}.$$ 
-It is important to note that while we have obtained the posterior distributions of $\theta_1$ and $\theta_2$, we have not directly computed the posterior distribution of $\eta$.
+The biostatistician's goal is to study the **log odds ratio** $$\eta = \log \frac{\frac{\theta_1}{1-\theta_1}}{\frac{\theta_2}{1-\theta_2}}.$$ It is important to note that while we have obtained the posterior distributions of $\theta_1$ and $\theta_2$, we have not directly computed the posterior distribution of $\eta$.
 
 ```{r}
 #| echo: true
@@ -214,7 +213,6 @@ eta <- log(theta1/(1-theta1)*(1-theta2)/theta2)
 mean(eta)
 ```
 
-
 ```{r}
 #| echo: true
 #| eval: true
@@ -223,7 +221,6 @@ mean(eta)
 var(eta)
 ```
 
-
 ```{r}
 #| echo: true
 #| eval: true
@@ -231,7 +228,6 @@ var(eta)
 # CS
 CS <- quantile(eta, p=c(.025,.975)); CS
 ```
-
 
 ```{r}
 #| echo: true
@@ -242,8 +238,5 @@ hist(eta, prob=T, xlab=expression(eta), main="Posterior distribution of log OR")
 lines(density(eta), col="red")
 ```
 
-
-
-Using Monte Carlo sampling, the biostatistician estimates that, with 95\% probability, the log odds ratio falls within the interval
-(-3.453943, -2.069884).
+Using Monte Carlo sampling, the biostatistician estimates that, with 95% probability, the log odds ratio falls within the interval (-3.453943, -2.069884). \
 This indicates that the odds of death in the "Vaccine" group are significantly lower than those in the "Placebo" group.

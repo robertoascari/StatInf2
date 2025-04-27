@@ -198,7 +198,7 @@ window.Quarto = {
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ifelse</span>(a<span class="sc">&gt;</span><span class="dv">1</span> <span class="sc">&amp;</span> b<span class="sc">&gt;</span><span class="dv">1</span>, (a<span class="dv">-1</span>)<span class="sc">/</span>(a<span class="sc">+</span>b<span class="dv">-2</span>), <span class="cn">NA</span>)</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>The updated hyperparameters and the posterior mode <span class="math inline">\(\tilde{\theta}}\)</span> are:</p>
+<p>The updated hyperparameters and the posterior mode <span class="math inline">\(\tilde{\theta}\)</span> are:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>a.post <span class="ot">&lt;-</span> a <span class="sc">+</span> sum_y; a.post</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -215,7 +215,7 @@ window.Quarto = {
 <pre><code>[1] 0.3559923</code></pre>
 </div>
 </div>
-<p>Finally, the variance of the approximated normal distribution, namely the <strong>inverse</strong> of <span class="math inline">\(\left. -\frac{\partial^2 \log \pi(\theta | \textbf)}{\partial \theta^2} \right|_{\theta = \tilde{\theta}}\)</span>.</p>
+<p>Finally, the variance of the approximated normal distribution, namely the <strong>inverse</strong> of <span class="math inline">\(\left. -\frac{\partial^2 \log \pi(\theta | \textbf{y})}{\partial \theta^2} \right|_{\theta = \tilde{\theta}}\)</span>.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>sigma_approx <span class="ot">&lt;-</span> ((a.post<span class="dv">-1</span>)<span class="sc">/</span>(post.mode<span class="sc">^</span><span class="dv">2</span>) <span class="sc">+</span> (b.post<span class="dv">-1</span>)<span class="sc">/</span>(<span class="dv">1</span><span class="sc">-</span>post.mode)<span class="sc">^</span><span class="dv">2</span>)<span class="sc">^</span>(<span class="sc">-</span><span class="dv">1</span>)</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -226,8 +226,8 @@ window.Quarto = {
 </div>
 <p>Let’s compare the true posterior distribution with its Normal approximation:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(<span class="fu">dbeta</span>(x, a.post, b.post), <span class="at">xlim=</span><span class="fu">c</span>(.<span class="dv">3</span>,.<span class="dv">4</span>))</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(<span class="fu">dnorm</span>(x, post.mode, <span class="fu">sqrt</span>(sigma_approx)), <span class="at">add=</span>T, <span class="at">col=</span><span class="st">"red"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(<span class="fu">dbeta</span>(x, a.post, b.post), <span class="at">xlim=</span><span class="fu">c</span>(.<span class="dv">35</span>,.<span class="dv">36</span>), <span class="at">lty =</span> <span class="st">"dashed"</span>)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(<span class="fu">dnorm</span>(x, post.mode, <span class="fu">sqrt</span>(sigma_approx)), <span class="at">add=</span>T, <span class="at">col=</span><span class="st">"red"</span>, <span class="at">lty =</span> <span class="st">"dotted"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -288,7 +288,8 @@ window.Quarto = {
 </div>
 <p>The first group receives the new vaccine, while the second group receives the placebo.</p>
 <p>After the treatments, the biostatistician records the number of deaths in each group, denoted by <span class="math inline">\(Y_1\)</span> and <span class="math inline">\(Y_2\)</span>, respectively.</p>
-<p><span class="math inline">\(Y_1 \sim Bernoulli(\theta_1)\)</span>\ <span class="math inline">\(Y_2 \sim Bernoulli(\theta_2)\)</span></p>
+<p><span class="math inline">\(Y_1|\theta_1 \sim Bernoulli(\theta_1)\)</span></p>
+<p><span class="math inline">\(Y_2| \theta_2 \sim Bernoulli(\theta_2)\)</span></p>
 <p><span class="math inline">\(\theta_j\)</span> represents the probability of death in group <span class="math inline">\(j\)</span>.</p>
 <p>The biostatistician chooses to use non-informative priors for the parameters.</p>
 <div class="cell">
@@ -369,7 +370,8 @@ window.Quarto = {
 </div>
 </div>
 </div>
-<p>Using Monte Carlo sampling, the biostatistician estimates that, with 95% probability, the log odds ratio falls within the interval (-3.453943, -2.069884). This indicates that the odds of death in the “Vaccine” group are significantly lower than those in the “Placebo” group.</p>
+<p>Using Monte Carlo sampling, the biostatistician estimates that, with 95% probability, the log odds ratio falls within the interval (-3.453943, -2.069884).<br>
+This indicates that the odds of death in the “Vaccine” group are significantly lower than those in the “Placebo” group.</p>
 
 
 </section>
