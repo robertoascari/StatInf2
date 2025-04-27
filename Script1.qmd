@@ -6,7 +6,6 @@ editor: visual
 toc: true
 ---
 
-You can download the `R` script [here](data/Script1_BernoulliBeta.R).
 
 In this section, we will explore the Bernoulli-Beta model applied to the [cardiac](data/cardiac.csv) dataset. Specifically, we assume that $Y_i | \theta \sim Bernoulli(\theta)$ and that $\theta \sim Beta(a, b)$. With these choices, we showed that the posterior distribution is $$\theta | \textbf{y} \sim Beta\left(a + \sum_{i=1}^n y_i, b + n - \sum_{i=1}^n y_i\right).$$
 
