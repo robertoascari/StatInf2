@@ -1,5 +1,5 @@
 ---
-title: "Script 2 - Normal Approximation & Monte Carlo"
+title: "Script 2 - Normal & Monte Carlo Approximations"
 author: "Roberto Ascari"
 format: html
 editor: visual
