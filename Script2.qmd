@@ -238,7 +238,8 @@ CS <- quantile(eta, p=c(.025,.975)); CS
 #| eval: true
 # Histogram and kernel estimate:
 
-hist(eta, prob=T, xlab=expression(eta), main="Posterior distribution of log OR") lines(density(eta), col="red")
+hist(eta, prob=T, xlab=expression(eta), main="Posterior distribution of log OR")
+lines(density(eta), col="red")
 ```
 
 
