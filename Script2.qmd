@@ -238,5 +238,5 @@ hist(eta, prob=T, xlab=expression(eta), main="Posterior distribution of log OR")
 lines(density(eta), col="red")
 ```
 
-Using Monte Carlo sampling, the biostatistician estimates that, with 95% probability, the log odds ratio falls within the interval (-3.453943, -2.069884). \
+Using Monte Carlo sampling, the biostatistician estimates that, with 95% probability, the log odds ratio falls within the interval (`r CS[1]`, `r CS[2]`).\
 This indicates that the odds of death in the "Vaccine" group are significantly lower than those in the "Placebo" group.
