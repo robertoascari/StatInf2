@@ -417,7 +417,7 @@ for(i in 1:length(unique(x))){
 }
 
 points(x, y, pch=20)
-abline(h = .5, col = "red", lty = "dashed")
+abline(h = .5, col = "#D55E00", lty = "dashed")
 
 x_grid <- seq(min(x)-1, max(x)+1, by = .5)
 theta_grid <- numeric(length(x_grid))

@@ -76,7 +76,7 @@ Let's compare the true posterior distribution with its Normal approximation:
 #| eval: true
 
 curve(dbeta(x, a.post, b.post), xlim=c(.35,.36), lty = "dashed")
-curve(dnorm(x, post.mode, sqrt(sigma_approx)), add=T, col="red", lty = "dotted")
+curve(dnorm(x, post.mode, sqrt(sigma_approx)), add=T, col="#D55E00", lty = "dotted")
 ```
 
 The Normal approximation is quite useful in computing HPDs, since they coincide with CSs due to the simmetry of the Normal distribution.
@@ -235,7 +235,7 @@ CS <- quantile(eta, p=c(.025,.975)); CS
 # Histogram and kernel estimate:
 
 hist(eta, prob=T, xlab=expression(eta), main="Posterior distribution of log OR")
-lines(density(eta), col="red")
+lines(density(eta), col="#D55E00")
 ```
 
 Using Monte Carlo sampling, the biostatistician estimates that, with 95% probability, the log odds ratio falls within the interval (`r CS[1]`, `r CS[2]`).\

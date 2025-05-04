@@ -6,15 +6,12 @@ editor: visual
 toc: true
 ---
 
-
-
-In this section we show two Gibbs sampler: the first one aims to estimate the parameters $(\mu, \sigma^2)$ of a Normal likelihood, whereas the second one estimates the the parameters of a linear regression model.
+In this section, we show two Gibbs sampler: the first one aims to estimate the parameters $(\mu, \sigma^2)$ of a Normal likelihood, whereas the second one estimates the the parameters of a linear regression model.
 
 # Gibbs Sampling for the Mean and Variance of a Normal Distribution
 
-
-
 In a simulation framework, we need to specify the true values of the parameters generating the data.
+
 ```{r}
 #| echo: true
 #| eval: true
@@ -25,6 +22,7 @@ n <- 100
 ```
 
 Then, we can generate a sample...
+
 ```{r}
 #| echo: true
 #| eval: true
@@ -48,6 +46,7 @@ beta <- 10
 ```
 
 The prior expectation is
+
 ```{r}
 #| echo: true
 #| eval: true
@@ -56,16 +55,13 @@ beta/(alpha-1)
 ```
 
 and the prior variance is:
+
 ```{r}
 #| echo: true
 #| eval: true
 
 (beta^2)/((alpha-1)*(alpha-2))
 ```
-
-
-
-
 
 ## Initialization:
 
@@ -84,8 +80,8 @@ mu.chain[1] <- rnorm(1, mu0, sqrt(sigma2.0))
 sigma2.chain[1] <- 1/rgamma(1, alpha, rate = beta)
 ```
 
-
 Then, we can implement the Gibbs sampling by generating each parameter from its full-conditional distribution:
+
 ```{r}
 #| echo: true
 #| eval: true
@@ -106,13 +102,12 @@ for(b in 2:B){
 }
 ```
 
-
 ```{r}
 #| echo: true
 #| eval: true
 
 plot(mu.chain, sigma2.chain, pch=20)
-points(mu.true, sigma2.true, col="red", pch=20)
+points(mu.true, sigma2.true, col="#D55E00", pch=20)
 ```
 
 We can now generate some diagnostic plots.
@@ -145,9 +140,9 @@ for(b in 2:B){
 
 par(mfrow=c(2,1))
 plot(mu.means[-1], pch=20, type="l")
-abline(h=mu.true, col="red")
+abline(h=mu.true, col="#D55E00")
 plot(sigma2.means[-1], pch=20, type="l")
-abline(h=sigma2.true, col="red")
+abline(h=sigma2.true, col="#D55E00")
 par(mfrow=c(1,1))
 ```
 
@@ -160,7 +155,6 @@ acf(mu.chain)
 acf(sigma2.chain)
 par(mfrow=c(1,1))
 ```
-
 
 Once we have a chain for each parameter, we need to remove the warm-up (i.e., the part of the chains for which we cannot assume the convergence to the stationary distribution).
 
@@ -179,7 +173,6 @@ plot(sigma2.new, pch=20, type="l")
 par(mfrow=c(1,1))
 ```
 
-
 The new vectors can be used to compute estimates, CSs, and probabilities:
 
 ```{r}
@@ -189,7 +182,6 @@ The new vectors can be used to compute estimates, CSs, and probabilities:
 mean(mu.new)
 quantile(mu.new, probs = c(.025, .975))
 ```
-
 
 ```{r}
 #| echo: true
@@ -213,13 +205,12 @@ mean(mu.new > 10)
 par(mfrow=c(2,1))
 hist(mu.new, prob=T, xlab=expression(mu),
      main="Posterior distribution of mu")
-lines(density(mu.new), col="red")
+lines(density(mu.new), col="#D55E00")
 hist(sigma2.new, prob=T, xlab=expression(sigma2),
      main="Posterior distribution of sigma2")
-lines(density(sigma2.new), col="red")
+lines(density(sigma2.new), col="#D55E00")
 par(mfrow=c(1,1))
 ```
-
 
 ```{r}
 #| echo: true
@@ -227,8 +218,6 @@ par(mfrow=c(1,1))
 
 plot(mu.new, sigma2.new, pch = 20)
 ```
-
-
 
 We can define a function to fit this Gibbs sampler more easily on new data.
 
@@ -272,7 +261,6 @@ normal_GS <- function(y, B = 5000,
 }
 ```
 
-
 ## Gala dataset (I)
 
 ```{r}
@@ -296,7 +284,6 @@ str(gala_GS)
 head(gala_GS)
 ```
 
-
 ```{r}
 #| echo: true
 #| eval: true
@@ -305,11 +292,11 @@ plot(gala_GS, pch = 20)
 
 hist(gala_GS[,1], prob = T, 
      main="Posterior distribution of mu")
-lines(density(gala_GS[,1]), col="red")
+lines(density(gala_GS[,1]), col="#D55E00")
 
 hist(gala_GS[,2], prob = T, 
      main="Posterior distribution of sigma2")
-lines(density(gala_GS[,2]), col="red")
+lines(density(gala_GS[,2]), col="#D55E00")
 
 colMeans(gala_GS)
 t(apply(gala_GS, 2, function(x) quantile(x, probs=c(.025, .975))))
@@ -322,7 +309,6 @@ t(apply(gala_GS, 2, function(x) quantile(x, probs=c(.025, .975))))
 mean(gala_GS[,1] > 70)
 mean(gala_GS[,1] > 70 & gala_GS[,2] < 5500)
 ```
-
 
 # Gibbs Sampling for the parameters of a Linear Regression Model
 
@@ -351,13 +337,13 @@ y <- as.numeric(X%*%beta + rnorm(n, 0, sqrt(sigma2)))
 ```
 
 Classical OLS/ML estimates:
+
 ```{r}
 #| echo: true
 #| eval: true
 
 summ <- summary(lm(y~X[,2]+X[,3])); summ
 ```
-
 
 ```{r}
 #| echo: true
@@ -369,7 +355,6 @@ Sigma0 <- 100*diag(3)
 a0 <- 10
 b0 <- 10
 ```
-
 
 ```{r}
 #| echo: true
@@ -393,7 +378,7 @@ beta.chain[1,] <- rep(0,3)
 sigma2.chain[1] <- 1
 ```
 
-Gibbs sampling: 
+Gibbs sampling:
 
 ```{r}
 #| echo: true
@@ -414,7 +399,6 @@ for(b in 2:B){
 }
 ```
 
-
 Diagnostic plots:
 
 ```{r}
@@ -423,20 +407,19 @@ Diagnostic plots:
 
 # Traceplots:
 par(mfrow=c(2,2))
-plot(beta.chain[,1], pch=20, type="l");abline(h=beta[1], col="red")
-plot(beta.chain[,2], pch=20, type="l");abline(h=beta[2], col="red")
-plot(beta.chain[,3], pch=20, type="l");abline(h=beta[3], col="red")
-plot(sigma2.chain, pch=20, type="l");abline(h=sigma2, col="red")
+plot(beta.chain[,1], pch=20, type="l");abline(h=beta[1], col="#D55E00")
+plot(beta.chain[,2], pch=20, type="l");abline(h=beta[2], col="#D55E00")
+plot(beta.chain[,3], pch=20, type="l");abline(h=beta[3], col="#D55E00")
+plot(sigma2.chain, pch=20, type="l");abline(h=sigma2, col="#D55E00")
 par(mfrow=c(1,1))
 
 par(mfrow=c(2,2))
-plot(beta.chain[-1,1], pch=20, type="l");abline(h=beta[1], col="red")
-plot(beta.chain[-1,2], pch=20, type="l");abline(h=beta[2], col="red")
-plot(beta.chain[-1,3], pch=20, type="l");abline(h=beta[3], col="red")
-plot(sigma2.chain[-1], pch=20, type="l");abline(h=sigma2, col="red")
+plot(beta.chain[-1,1], pch=20, type="l");abline(h=beta[1], col="#D55E00")
+plot(beta.chain[-1,2], pch=20, type="l");abline(h=beta[2], col="#D55E00")
+plot(beta.chain[-1,3], pch=20, type="l");abline(h=beta[3], col="#D55E00")
+plot(sigma2.chain[-1], pch=20, type="l");abline(h=sigma2, col="#D55E00")
 par(mfrow=c(1,1))
 ```
-
 
 ```{r}
 #| echo: true
@@ -468,7 +451,6 @@ acf(beta_mean[,3])
 acf(sigma2.means)
 ```
 
-
 ```{r}
 #| echo: true
 #| eval: true
@@ -492,23 +474,21 @@ mean(sigma2.new)
 par(mfrow=c(2,2))
 hist(beta.new[,1], prob=T, xlab=expression(beta0),
      main="Posterior distribution of beta0")
-lines(density(beta.new[,1]), col="red")
+lines(density(beta.new[,1]), col="#D55E00")
 ##############################################
 hist(beta.new[,2], prob=T, xlab=expression(beta1),
      main="Posterior distribution of beta1")
-lines(density(beta.new[,2]), col="red")
+lines(density(beta.new[,2]), col="#D55E00")
 ##############################################
 hist(beta.new[,3], prob=T, xlab=expression(beta2),
      main="Posterior distribution of beta2")
-lines(density(beta.new[,3]), col="red")
+lines(density(beta.new[,3]), col="#D55E00")
 ##############################################
 hist(sigma2.new, prob=T, xlab=expression(sigma2),
      main="Posterior distribution of sigma2")
-lines(density(sigma2.new), col="red")
+lines(density(sigma2.new), col="#D55E00")
 par(mfrow=c(1,1))
 ```
-
-
 
 ```{r}
 #| echo: true
@@ -518,9 +498,8 @@ round(var(beta.new), 5)
 round((2.483^2)*summ$cov.unscaled,5)
 ```
 
-
-
 Defining a function:
+
 ```{r}
 #| echo: true
 #| eval: true
@@ -560,7 +539,6 @@ LM_GS <- function(y, X, B = 5000,
 }
 ```
 
-
 ## Gala dataset (II)
 
 ```{r}
@@ -575,7 +553,6 @@ X <- model.matrix(Species ~ ., data = gala[,-2])
 lm_gala <- LM_GS(y, X)
 str(lm_gala)
 ```
-
 
 ```{r}
 #| echo: true
@@ -596,14 +573,12 @@ colMeans(betas)
 t(apply(betas, 2, function(x) quantile(x, probs=c(.025, .975))))
 ```
 
-
 ```{r}
 #| echo: true
 #| eval: true
 
 mean(sigma2)
 ```
-
 
 ```{r}
 #| echo: true
