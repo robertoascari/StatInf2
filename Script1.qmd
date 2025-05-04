@@ -6,7 +6,6 @@ editor: visual
 toc: true
 ---
 
-
 In this section, we will explore the Bernoulli-Beta model applied to the [cardiac](data/cardiac.csv) dataset. Specifically, we assume that $Y_i | \theta \sim Bernoulli(\theta)$ and that $\theta \sim Beta(a, b)$. With these choices, we showed that the posterior distribution is $$\theta | \textbf{y} \sim Beta\left(a + \sum_{i=1}^n y_i, b + n - \sum_{i=1}^n y_i\right).$$
 
 We will examine four different scenarios, each corresponding to a distinct choice of hyperparameters for the Beta prior.
@@ -37,6 +36,7 @@ table(y)
 sum(y)
 length(y)
 ```
+
 ```{r}
 #| echo: true
 #| eval: true
@@ -52,9 +52,13 @@ length(y)
 ```
 
 These are the four scenarios we consider:
-- A: $\theta \sim Beta(1,1)$;
-- B: $\theta \sim Beta(10,10)$;
-- C: $\theta \sim Beta(10,5)$;
+
+- A: $\theta \sim Beta(1,1)$; 
+
+- B: $\theta \sim Beta(10,10)$; 
+
+- C: $\theta \sim Beta(10,5)$; 
+
 - D: $\theta \sim Beta(5,10)$.
 
 ```{r}
@@ -85,21 +89,21 @@ L_Binom(y, theta=0.001)
 ```
 
 Obviously, the likelihood function does not depend on the prior distribution we impose on $\theta$. In this case, the MLE corresponds to the sample mean (blue dashed line).
+
 ```{r}
 #| echo: true
 #| eval: true
 
 curve(L_Binom(y, theta=x), main="Likelihood",
       xlab=expression(theta), lwd=2)
-abline(v=mean(y), col="blue", lty="dashed")
+abline(v=mean(y), col="#0072B2", lty="dashed")
 
 ```
-
-
 
 # Scenario A:
 
 In this scenario, the prior distribution coincides with a uniform distribution on the $(0,1)$ interval. Thus, the prior mean (red dashed line) is equal to 0.5.
+
 ```{r}
 #| echo: true
 #| eval: true
@@ -108,10 +112,11 @@ a1 <- 1; b1 <- 1
 
 curve(dbeta(x, a1, b1), main="Prior A", ylim=c(0,1.4),
       xlab=expression(theta), lwd=2)
-abline(v=a1/(a1+b1), col="red", lty="dashed")
+abline(v=a1/(a1+b1), col="#D55E00", lty="dashed")
 ```
 
-The posterior distribution is $\theta | \textbf{y} \sim Beta()
+The posterior distribution is \$\theta \| \textbf{y} \sim Beta()
+
 ```{r}
 #| echo: true
 #| eval: true
@@ -123,24 +128,18 @@ b1.post <- b1 + n - sum(y)
 curve(dbeta(x, a1.post, b1.post), main="Scenario A",
       xlab=expression(theta), lwd=2)
 curve(dbeta(x, a1, b1), lty="dashed", add=T, lwd=2)
-abline(v=a1/(a1+b1), col="red", lty="dashed", lwd=2)
-abline(v=mean(y), col="green", lty="dotted", lwd=2)
-abline(v=a1.post/(a1.post+b1.post), col="blue", lty="dashed", lwd=2)
-legend(.8,8, c("Prior", "Posterior", "Prior Mean", "MLE", "Post. Mean"), lwd=2,
-       col=c("black", "black", "red", "green", "blue"), lty=c(2,1,2,3,2), bty="n")
+abline(v=a1/(a1+b1), col="#D55E00", lty="dashed", lwd=2)
+abline(v=mean(y), col="#009E73", lty="dotted", lwd=2)
+abline(v=a1.post/(a1.post+b1.post), col="#0072B2", lty="dashed", lwd=2)
+legend(.6,8, c("Prior", "Posterior", "Prior Mean", "MLE", "Post. Mean"), lwd=2,
+       col=c("black", "black", "#D55E00", "#009E73", "#0072B2"), lty=c(2,1,2,3,2), bty="n")
 ```
 
-
-
-
-
-The chosen prior distribution does not favor any particular value of $\theta$. Thus, we selected a non-informative prior.
-As a result, the posterior distribution is centered around the maximum likelihood estimate (MLE).
-
+The chosen prior distribution does not favor any particular value of $\theta$. Thus, we selected a non-informative prior. As a result, the posterior distribution is centered around the maximum likelihood estimate (MLE).
 
 # Scenario B:
 
-In this scenario, we use a prior distribution for $\theta$  that is still symmetric (meaning it treats values below and above 0.5 in the same way). However, unlike the uniform prior, it is not flat: it expresses a preference for values closer to 0.5.
+In this scenario, we use a prior distribution for $\theta$ that is still symmetric (meaning it treats values below and above 0.5 in the same way). However, unlike the uniform prior, it is not flat: it expresses a preference for values closer to 0.5.
 
 ```{r}
 #| echo: true
@@ -150,9 +149,8 @@ a2 <- 10; b2 <- 10
 
 curve(dbeta(x, a2, b2), main="Prior B",
       xlab=expression(theta), lwd=2)
-abline(v=a2/(a2+b2), col="red", lty="dashed")
+abline(v=a2/(a2+b2), col="#D55E00", lty="dashed")
 ```
-
 
 ```{r}
 #| echo: true
@@ -165,20 +163,16 @@ b2.post <- b2 + n - sum(y)
 curve(dbeta(x, a2.post, b2.post), main="Scenario B",
       xlab=expression(theta), lwd=2)
 curve(dbeta(x, a2, b2), lty="dashed", add=T, lwd=2)
-abline(v=a2/(a2+b2), col="red", lty="dashed", lwd=2)
-abline(v=mean(y), col="green", lty="dotted", lwd=2)
-abline(v=a2.post/(a2.post+b2.post), col="blue", lty="dashed", lwd=2)
-legend(.8,8, c("Prior", "Posterior", "Prior Mean", "MLE", "Post. Mean"), lwd=2,
-       col=c("black", "black", "red", "green", "blue"), lty=c(2,1,2,3,2), bty="n")
+abline(v=a2/(a2+b2), col="#D55E00", lty="dashed", lwd=2)
+abline(v=mean(y), col="#009E73", lty="dotted", lwd=2)
+abline(v=a2.post/(a2.post+b2.post), col="#0072B2", lty="dashed", lwd=2)
+legend(.6,8, c("Prior", "Posterior", "Prior Mean", "MLE", "Post. Mean"), lwd=2,
+       col=c("black", "black", "#D55E00", "#009E73", "#0072B2"), lty=c(2,1,2,3,2), bty="n")
 ```
-
 
 Since we are still considering a symmetric prior, the prior mean is equal to 0.5. However, unlike the uniform prior, it does not assign the same probability density to every value or interval of $\theta$. As a consequence, the posterior mean becomes a weighted average between the prior mean and the MLE.
 
-
-
-
-# Scenario C \& D:
+# Scenario C & D:
 
 Scenarios C and D consider asymmetric prior distributions.
 
@@ -190,7 +184,7 @@ a3 <- 10; b3 <- 5
 
 curve(dbeta(x, a3, b3), main="Prior C",
       xlab=expression(theta), lwd=2)
-abline(v=a3/(a3+b3), col="red", lty="dashed")
+abline(v=a3/(a3+b3), col="#D55E00", lty="dashed")
 ```
 
 ```{r}
@@ -204,14 +198,13 @@ b3.post <- b3 + n - sum(y)
 curve(dbeta(x, a3.post, b3.post), main="Scenario C",
       xlab=expression(theta), lwd=2)
 curve(dbeta(x, a3, b3), lty="dashed", add=T, lwd=2)
-abline(v=a3/(a3+b3), col="red", lty="dashed", lwd=2)
-abline(v=mean(y), col="green", lty="dotted", lwd=2)
-abline(v=a3.post/(a3.post+b3.post), col="blue", lty="dashed", lwd=2)
-legend(.8,8, c("Prior", "Posterior", "Prior Mean", "MLE", "Post. Mean"), lwd=2,
-       col=c("black", "black", "red", "green", "blue"), lty=c(2,1,2,3,2), bty="n")
+abline(v=a3/(a3+b3), col="#D55E00", lty="dashed", lwd=2)
+abline(v=mean(y), col="#009E73", lty="dotted", lwd=2)
+abline(v=a3.post/(a3.post+b3.post), col="#0072B2", lty="dashed", lwd=2)
+legend(.65,8, c("Prior", "Posterior", "Prior Mean", "MLE", "Post. Mean"), lwd=2,
+       col=c("black", "black", "#D55E00", "#009E73", "#0072B2"), lty=c(2,1,2,3,2), bty="n")
 
 ```
-
 
 ```{r}
 #| echo: true
@@ -221,7 +214,7 @@ a4 <- 5; b4 <- 10
 
 curve(dbeta(x, a4, b4), main="Prior D",
       xlab=expression(theta), lwd=2)
-abline(v=a4/(a4+b4), col="red", lty="dashed")
+abline(v=a4/(a4+b4), col="#D55E00", lty="dashed")
 ```
 
 ```{r}
@@ -235,18 +228,15 @@ b4.post <- b4 + n - sum(y)
 curve(dbeta(x, a4.post, b4.post), main="Scenario D",
       xlab=expression(theta), lwd=2)
 curve(dbeta(x, a4, b4), lty="dashed", add=T, lwd=2)
-abline(v=a4/(a4+b4), col="red", lty="dashed", lwd=2)
-abline(v=mean(y), col="green", lty="dotted", lwd=2)
-abline(v=a4.post/(a4.post+b4.post), col="blue", lty="dashed", lwd=2)
-legend(.8,8, c("Prior", "Posterior", "Prior Mean", "MLE", "Post. Mean"), lwd=2,
-       col=c("black", "black", "red", "green", "blue"), lty=c(2,1,2,3,2), bty="n")
+abline(v=a4/(a4+b4), col="#D55E00", lty="dashed", lwd=2)
+abline(v=mean(y), col="#009E73", lty="dotted", lwd=2)
+abline(v=a4.post/(a4.post+b4.post), col="#0072B2", lty="dashed", lwd=2)
+legend(.6,8, c("Prior", "Posterior", "Prior Mean", "MLE", "Post. Mean"), lwd=2,
+       col=c("black", "black", "#D55E00", "#009E73", "#0072B2"), lty=c(2,1,2,3,2), bty="n")
 ```
 
+We may summarize the (prior and) posterior distribution by some measures:
 
-
-
- We may summarize the (prior and) posterior distribution by some measures:
- 
 ```{r}
 #| echo: true
 #| eval: true
@@ -283,13 +273,9 @@ for(i in 1:4){
 round(measures,4)
 ```
 
-
-
-In this simple setting, even when using different priors, the resulting posterior distributions do not lead to substantially different point estimates.
-This happens because the empirical evidence (i.e., the information provided by the sample `y`) is much stronger than the prior beliefs.
+In this simple setting, even when using different priors, the resulting posterior distributions do not lead to substantially different point estimates. This happens because the empirical evidence (i.e., the information provided by the sample `y`) is much stronger than the prior beliefs.
 
 To better illustrate the impact of a strong prior, we now consider an additional scenario where we strongly believe that most people do not have cardiovascular disease.
-
 
 ```{r}
 #| echo: true
@@ -298,9 +284,8 @@ a5 <- 100; b5 <- 1000
 
 curve(dbeta(x, a5, b5), main="Prior E",
       xlab=expression(theta))
-abline(v=a5/(a5+b5), col="red", lty="dashed")
+abline(v=a5/(a5+b5), col="#D55E00", lty="dashed")
 ```
-
 
 ```{r}
 #| echo: true
@@ -313,11 +298,11 @@ b5.post <- b5 + n - sum(y)
 curve(dbeta(x, a5.post, b5.post), main="Scenario E",
       xlab=expression(theta), lwd=2)
 curve(dbeta(x, a5, b5), lty="dashed", add=T, lwd=2)
-abline(v=a5/(a5+b5), col="red", lty="dashed", lwd=2)
-abline(v=mean(y), col="green", lty="dotted", lwd=2)
-abline(v=a5.post/(a5.post+b5.post), col="blue", lty="dashed", lwd=2)
-legend(.8,40, c("Prior", "Posterior", "Prior Mean", "MLE", "Post. Mean"), lwd=2,
-       col=c("black", "black", "red", "green", "blue"), lty=c(2,1,2,3,2), bty="n")
+abline(v=a5/(a5+b5), col="#D55E00", lty="dashed", lwd=2)
+abline(v=mean(y), col="#009E73", lty="dotted", lwd=2)
+abline(v=a5.post/(a5.post+b5.post), col="#0072B2", lty="dashed", lwd=2)
+legend(.6,40, c("Prior", "Posterior", "Prior Mean", "MLE", "Post. Mean"), lwd=2,
+       col=c("black", "black", "#D55E00", "#009E73", "#0072B2"), lty=c(2,1,2,3,2), bty="n")
 ```
 
 ```{r}
@@ -333,12 +318,6 @@ measures <- rbind(measures,
 rownames(measures)[5] <- "E"
 round(measures,4)
 ```
-
-
-
-
-
-
 
 ## Interval Estimates:
 
@@ -360,16 +339,15 @@ curve(dbeta(x, a, b), main="Scenario D",
 
 # CS of level 0.95
 CS <- qbeta(c(0.025,0.975), a, b); CS
-abline(v=CS,lty="dashed", col="blue")
+abline(v=CS,lty="dashed", col="#0072B2")
 legend(0.8,8,c("Posterior", "Credible Set"),
-       lty=c(1,2), col=c("black", "blue"), bty="n")
+       lty=c(1,2), col=c("black", "#0072B2"), bty="n")
 ```
-
 
 # Highest posterior density (HPD):
 
- Let's start by considering an initial value for $h$.
- 
+Let's start by considering an initial value for $h$.
+
 ```{r}
 #| echo: true
 #| eval: true
@@ -381,12 +359,9 @@ curve(dbeta(x, a, b),
 abline(h=h,lty=2)
 ```
 
-
 We need to find the values of theta such that $P(\theta|\textbf{y}) = h$.
 
 To do this, we progressively lower the posterior density curve by an amount $h$.
-
-
 
 ```{r}
 #| echo: true
@@ -404,7 +379,6 @@ abline(h = 0, lty = 3)
 
 The values we are looking for are those where the `translated` curve ---that is, the original posterior density minus $h$--- becomes zero.
 
-
 ```{r}
 #| echo: true
 #| eval: true
@@ -414,7 +388,6 @@ hpd2 <- uniroot(translated,c(.45, .5),a,b)$root; hpd2
 
 integrate(dbeta, lower=hpd1, upper=hpd2, shape1=a, shape2=b)
 ```
-
 
 We have a probability equal to 0.9152. Thus, we have to select a smaller $h$. Iteratively:
 
@@ -448,6 +421,7 @@ CS
 ```
 
 We can compare the two interval estimates in a graphical way:
+
 ```{r}
 #| echo: true
 #| eval: true
@@ -455,17 +429,14 @@ We can compare the two interval estimates in a graphical way:
 curve(dbeta(x, a, b), main="Scenario D",
       xlab=expression(theta), lwd=2)
 
-abline(v=CS,lty="dashed", col="blue")
-abline(v=HPD,lty="dashed", col="red")
+abline(v=CS,lty="dashed", col="#0072B2")
+abline(v=HPD,lty="dashed", col="#D55E00")
 
-legend(0.8,8,c("Posterior", "Credible Set", "HPD"),
-       lty=c(1,2,2), col=c("black", "blue", "red"), bty="n")
+legend(0.6,8,c("Posterior", "Credible Set", "HPD"),
+       lty=c(1,2,2), col=c("black", "#0072B2", "#D55E00"), bty="n")
 ```
 
-
 HPD and CS are very similar, since the posterior is unimodal and almost symmetrical.
-
-
 
 # Hypothesis testing:
 
@@ -478,26 +449,22 @@ Let consider $H_0: \theta <= 0.3$ vs $H_1: \theta > 0.3$.
 pbeta(.3, a4, b4)
 pbeta(.3, a4.post, b4.post)
 
-ODDS.prior <- pbeta(.3, a4, b4)/(1-pbeta(.3, a4, b4)); ODDS.prior
-ODDS.post <- pbeta(.3, a4.post, b4.post)/(1-pbeta(.3, a4.post, b4.post)); ODDS.post
-
-Bayes_Factor <- ODDS.post/ODDS.prior; Bayes_Factor
+# ODDS.prior <- pbeta(.3, a4, b4)/(1-pbeta(.3, a4, b4)); ODDS.prior
+# ODDS.post <- pbeta(.3, a4.post, b4.post)/(1-pbeta(.3, a4.post, b4.post)); ODDS.post
+# 
+# Bayes_Factor <- ODDS.post/ODDS.prior; Bayes_Factor
 ```
 
 Data do not support $H_0$: by adding data to the prior belief, our confidence on $H_0$ strongly decreases
 
+# HOMEWORK:
 
+Consider a sample of size $n = 10$ composed of Bernoulli trials, for which we observed $s = 3$ successes. Consider the prior $\theta \sim Beta(2, 8)$.
 
-# HOMEWORK: 
+- 1. Compute the posterior distribution of theta. 
 
-Consider a sample of size $n = 10$ composed of Bernoulli trials, for which we observed $s = 3$ successes.
-Consider the prior $\theta \sim Beta(2, 8)$.
+- 2. Compute the MLE and the prior and posterior means. 
 
--1. Compute the posterior distribution of theta.
--2. Compute the MLE and the prior and posterior means. 
--3. Compute and compare the 95\% CS and HPD.
--4. Let $H_0 : \theta \in (0.3, 0.5)$ vs.
-        $H_1 : \theta \in (0, 0.3) \cup (0.5, 1)$.
-Which hypothesis do you support?
+- 3. Compute and compare the 95% CS and HPD. 
 
-
+- 4. Let $H_0 : \theta \in (0.3, 0.5)$ vs. $H_1 : \theta \in (0, 0.3) \cup (0.5, 1)$. Which hypothesis do you support?

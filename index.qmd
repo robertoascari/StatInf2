@@ -34,11 +34,11 @@ editor: visual
 - Linear and generalized linear models from a Bayesian perspective. 
 
 # Scripts
-- [Scrip 1:](Script1.qmd) The Bernoulli-Beta model.
-- [Scrip 2:](Script2.qmd) Normal approximation and Monte Carlo.
-- [Scrip 3:](Script3.qmd) MCMC - Gibbs sampling.
-- [Scrip 4:](Script4.qmd) MCMC - Metropolis Hasting.
-- [Scrip 5:](Script5.qmd) MCMC - Stan.
+- The Bernoulli-Beta model: [Code](Script1.qmd).
+- Normal approximation and Monte Carlo: [Code](Script2.qmd).
+- MCMC - Gibbs sampling: [Code](Script3.qmd). 
+- MCMC - Metropolis Hasting: [Code](Script4.qmd).
+- MCMC - Stan: [Code](Script5.qmd).
 
 
 
