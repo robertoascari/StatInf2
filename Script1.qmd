@@ -201,7 +201,7 @@ curve(dbeta(x, a3, b3), lty="dashed", add=T, lwd=2)
 abline(v=a3/(a3+b3), col="#D55E00", lty="dashed", lwd=2)
 abline(v=mean(y), col="#009E73", lty="dotted", lwd=2)
 abline(v=a3.post/(a3.post+b3.post), col="#0072B2", lty="dashed", lwd=2)
-legend(.65,8, c("Prior", "Posterior", "Prior Mean", "MLE", "Post. Mean"), lwd=2,
+legend(.7,8, c("Prior", "Posterior", "Prior Mean", "MLE", "Post. Mean"), lwd=2,
        col=c("black", "black", "#D55E00", "#009E73", "#0072B2"), lty=c(2,1,2,3,2), bty="n")
 
 ```
