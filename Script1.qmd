@@ -117,7 +117,9 @@ curve(dbeta(x, a1, b1), main="Prior A", ylim=c(0,1.4),
 abline(v=a1/(a1+b1), col="#D55E00", lty="dashed")
 ```
 
-The posterior distribution is \$\theta \| \textbf{y} \sim Beta()
+The posterior distribution is 
+
+$\theta \| \textbf{y} \sim Beta(44, 58)$.
 
 ```{r}
 #| echo: true
