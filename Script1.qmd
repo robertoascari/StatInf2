@@ -6,6 +6,8 @@ editor: visual
 toc: true
 ---
 
+# Posterior distribution:
+
 In this section, we will explore the Bernoulli-Beta model applied to the [cardiac](data/cardiac.csv) dataset. Specifically, we assume that $Y_i | \theta \sim Bernoulli(\theta)$ and that $\theta \sim Beta(a, b)$. With these choices, we showed that the posterior distribution is $$\theta | \textbf{y} \sim Beta\left(a + \sum_{i=1}^n y_i, b + n - \sum_{i=1}^n y_i\right).$$
 
 We will examine four different scenarios, each corresponding to a distinct choice of hyperparameters for the Beta prior.
@@ -100,7 +102,7 @@ abline(v=mean(y), col="#0072B2", lty="dashed")
 
 ```
 
-# Scenario A:
+## Scenario A:
 
 In this scenario, the prior distribution coincides with a uniform distribution on the $(0,1)$ interval. Thus, the prior mean (red dashed line) is equal to 0.5.
 
@@ -137,7 +139,7 @@ legend(.6,8, c("Prior", "Posterior", "Prior Mean", "MLE", "Post. Mean"), lwd=2,
 
 The chosen prior distribution does not favor any particular value of $\theta$. Thus, we selected a non-informative prior. As a result, the posterior distribution is centered around the maximum likelihood estimate (MLE).
 
-# Scenario B:
+## Scenario B:
 
 In this scenario, we use a prior distribution for $\theta$ that is still symmetric (meaning it treats values below and above 0.5 in the same way). However, unlike the uniform prior, it is not flat: it expresses a preference for values closer to 0.5.
 
@@ -172,7 +174,7 @@ legend(.6,8, c("Prior", "Posterior", "Prior Mean", "MLE", "Post. Mean"), lwd=2,
 
 Since we are still considering a symmetric prior, the prior mean is equal to 0.5. However, unlike the uniform prior, it does not assign the same probability density to every value or interval of $\theta$. As a consequence, the posterior mean becomes a weighted average between the prior mean and the MLE.
 
-# Scenario C & D:
+## Scenario C & D:
 
 Scenarios C and D consider asymmetric prior distributions.
 
@@ -234,6 +236,8 @@ abline(v=a4.post/(a4.post+b4.post), col="#0072B2", lty="dashed", lwd=2)
 legend(.6,8, c("Prior", "Posterior", "Prior Mean", "MLE", "Post. Mean"), lwd=2,
        col=c("black", "black", "#D55E00", "#009E73", "#0072B2"), lty=c(2,1,2,3,2), bty="n")
 ```
+
+# Point Estimates:
 
 We may summarize the (prior and) posterior distribution by some measures:
 
@@ -319,9 +323,9 @@ rownames(measures)[5] <- "E"
 round(measures,4)
 ```
 
-## Interval Estimates:
+# Interval Estimates:
 
-# Credible Sets (CS).
+## Credible Sets (CS).
 
 The CS are very easy to compute in this scenario. Indeed, it is sufficient to calculate the appropriate quantiles of the posterior distribution.
 
@@ -344,7 +348,7 @@ legend(0.8,8,c("Posterior", "Credible Set"),
        lty=c(1,2), col=c("black", "#0072B2"), bty="n")
 ```
 
-# Highest posterior density (HPD):
+## Highest posterior density (HPD):
 
 Let's start by considering an initial value for $h$.
 

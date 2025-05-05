@@ -146,14 +146,18 @@ window.Quarto = {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#scenario-a" id="toc-scenario-a" class="nav-link active" data-scroll-target="#scenario-a">Scenario A:</a></li>
-  <li><a href="#scenario-b" id="toc-scenario-b" class="nav-link" data-scroll-target="#scenario-b">Scenario B:</a></li>
-  <li><a href="#scenario-c-d" id="toc-scenario-c-d" class="nav-link" data-scroll-target="#scenario-c-d">Scenario C &amp; D:</a>
+  <li><a href="#posterior-distribution" id="toc-posterior-distribution" class="nav-link active" data-scroll-target="#posterior-distribution">Posterior distribution:</a>
   <ul class="collapse">
-  <li><a href="#interval-estimates" id="toc-interval-estimates" class="nav-link" data-scroll-target="#interval-estimates">Interval Estimates:</a></li>
+  <li><a href="#scenario-a" id="toc-scenario-a" class="nav-link" data-scroll-target="#scenario-a">Scenario A:</a></li>
+  <li><a href="#scenario-b" id="toc-scenario-b" class="nav-link" data-scroll-target="#scenario-b">Scenario B:</a></li>
+  <li><a href="#scenario-c-d" id="toc-scenario-c-d" class="nav-link" data-scroll-target="#scenario-c-d">Scenario C &amp; D:</a></li>
   </ul></li>
+  <li><a href="#point-estimates" id="toc-point-estimates" class="nav-link" data-scroll-target="#point-estimates">Point Estimates:</a></li>
+  <li><a href="#interval-estimates" id="toc-interval-estimates" class="nav-link" data-scroll-target="#interval-estimates">Interval Estimates:</a>
+  <ul class="collapse">
   <li><a href="#credible-sets-cs." id="toc-credible-sets-cs." class="nav-link" data-scroll-target="#credible-sets-cs.">Credible Sets (CS).</a></li>
   <li><a href="#highest-posterior-density-hpd" id="toc-highest-posterior-density-hpd" class="nav-link" data-scroll-target="#highest-posterior-density-hpd">Highest posterior density (HPD):</a></li>
+  </ul></li>
   <li><a href="#hypothesis-testing" id="toc-hypothesis-testing" class="nav-link" data-scroll-target="#hypothesis-testing">Hypothesis testing:</a></li>
   <li><a href="#homework" id="toc-homework" class="nav-link" data-scroll-target="#homework">HOMEWORK:</a></li>
   </ul>
@@ -187,6 +191,8 @@ window.Quarto = {
 </header>
 
 
+<section id="posterior-distribution" class="level1">
+<h1>Posterior distribution:</h1>
 <p>In this section, we will explore the Bernoulli-Beta model applied to the <a href="data/cardiac.csv">cardiac</a> dataset. Specifically, we assume that <span class="math inline">\(Y_i | \theta \sim Bernoulli(\theta)\)</span> and that <span class="math inline">\(\theta \sim Beta(a, b)\)</span>. With these choices, we showed that the posterior distribution is <span class="math display">\[\theta | \textbf{y} \sim Beta\left(a + \sum_{i=1}^n y_i, b + n - \sum_{i=1}^n y_i\right).\]</span></p>
 <p>We will examine four different scenarios, each corresponding to a distinct choice of hyperparameters for the Beta prior.</p>
 <div class="cell">
@@ -294,8 +300,8 @@ window.Quarto = {
 </div>
 </div>
 </div>
-<section id="scenario-a" class="level1">
-<h1>Scenario A:</h1>
+<section id="scenario-a" class="level2">
+<h2 class="anchored" data-anchor-id="scenario-a">Scenario A:</h2>
 <p>In this scenario, the prior distribution coincides with a uniform distribution on the <span class="math inline">\((0,1)\)</span> interval. Thus, the prior mean (red dashed line) is equal to 0.5.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>a1 <span class="ot">&lt;-</span> <span class="dv">1</span>; b1 <span class="ot">&lt;-</span> <span class="dv">1</span></span>
@@ -335,8 +341,8 @@ window.Quarto = {
 </div>
 <p>The chosen prior distribution does not favor any particular value of <span class="math inline">\(\theta\)</span>. Thus, we selected a non-informative prior. As a result, the posterior distribution is centered around the maximum likelihood estimate (MLE).</p>
 </section>
-<section id="scenario-b" class="level1">
-<h1>Scenario B:</h1>
+<section id="scenario-b" class="level2">
+<h2 class="anchored" data-anchor-id="scenario-b">Scenario B:</h2>
 <p>In this scenario, we use a prior distribution for <span class="math inline">\(\theta\)</span> that is still symmetric (meaning it treats values below and above 0.5 in the same way). However, unlike the uniform prior, it is not flat: it expresses a preference for values closer to 0.5.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>a2 <span class="ot">&lt;-</span> <span class="dv">10</span>; b2 <span class="ot">&lt;-</span> <span class="dv">10</span></span>
@@ -375,8 +381,8 @@ window.Quarto = {
 </div>
 <p>Since we are still considering a symmetric prior, the prior mean is equal to 0.5. However, unlike the uniform prior, it does not assign the same probability density to every value or interval of <span class="math inline">\(\theta\)</span>. As a consequence, the posterior mean becomes a weighted average between the prior mean and the MLE.</p>
 </section>
-<section id="scenario-c-d" class="level1">
-<h1>Scenario C &amp; D:</h1>
+<section id="scenario-c-d" class="level2">
+<h2 class="anchored" data-anchor-id="scenario-c-d">Scenario C &amp; D:</h2>
 <p>Scenarios C and D consider asymmetric prior distributions.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>a3 <span class="ot">&lt;-</span> <span class="dv">10</span>; b3 <span class="ot">&lt;-</span> <span class="dv">5</span></span>
@@ -448,6 +454,10 @@ window.Quarto = {
 </div>
 </div>
 </div>
+</section>
+</section>
+<section id="point-estimates" class="level1">
+<h1>Point Estimates:</h1>
 <p>We may summarize the (prior and) posterior distribution by some measures:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>Beta.Exp <span class="ot">&lt;-</span> <span class="cf">function</span>(a, b) a<span class="sc">/</span>(a<span class="sc">+</span>b)</span>
@@ -539,12 +549,11 @@ D     48     67 0.4174 0.4159 0.4169 0.0021
 E    143   1057 0.1192 0.1185 0.1190 0.0001</code></pre>
 </div>
 </div>
-<section id="interval-estimates" class="level2">
-<h2 class="anchored" data-anchor-id="interval-estimates">Interval Estimates:</h2>
 </section>
-</section>
-<section id="credible-sets-cs." class="level1">
-<h1>Credible Sets (CS).</h1>
+<section id="interval-estimates" class="level1">
+<h1>Interval Estimates:</h1>
+<section id="credible-sets-cs." class="level2">
+<h2 class="anchored" data-anchor-id="credible-sets-cs.">Credible Sets (CS).</h2>
 <p>The CS are very easy to compute in this scenario. Indeed, it is sufficient to calculate the appropriate quantiles of the posterior distribution.</p>
 <p>Let us consider scenario D:</p>
 <div class="cell">
@@ -571,8 +580,8 @@ E    143   1057 0.1192 0.1185 0.1190 0.0001</code></pre>
 </div>
 </div>
 </section>
-<section id="highest-posterior-density-hpd" class="level1">
-<h1>Highest posterior density (HPD):</h1>
+<section id="highest-posterior-density-hpd" class="level2">
+<h2 class="anchored" data-anchor-id="highest-posterior-density-hpd">Highest posterior density (HPD):</h2>
 <p>Let’s start by considering an initial value for <span class="math inline">\(h\)</span>.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>h <span class="ot">&lt;-</span> <span class="dv">2</span></span>
@@ -712,6 +721,7 @@ E    143   1057 0.1192 0.1185 0.1190 0.0001</code></pre>
 </div>
 </div>
 <p>HPD and CS are very similar, since the posterior is unimodal and almost symmetrical.</p>
+</section>
 </section>
 <section id="hypothesis-testing" class="level1">
 <h1>Hypothesis testing:</h1>
