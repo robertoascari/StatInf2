@@ -186,9 +186,14 @@ window.Quarto = {
 </header>
 
 
-<p>In this section, we show two Gibbs sampler: the first one aims to estimate the parameters <span class="math inline">\((\mu, \sigma^2)\)</span> of a Normal likelihood, whereas the second one estimates the the parameters of a linear regression model.</p>
+<p>In this section, we show two Gibbs samplers: the first one aims to estimate the parameters <span class="math inline">\((\mu, \sigma^2)\)</span> of a Normal likelihood, whereas the second one estimates the parameters of a linear regression model.</p>
 <section id="gibbs-sampling-for-the-mean-and-variance-of-a-normal-distribution" class="level1">
 <h1>Gibbs Sampling for the Mean and Variance of a Normal Distribution</h1>
+<p>We consider a scenario characterized where <span class="math inline">\(Y| \mu, \sigma^2 \sim N(\mu, \sigma^2)\)</span>. Furthermore, we impose <strong>prior independence</strong>, meaning that <span class="math inline">\(\pi(\mu, \sigma^2) = \pi(\mu)\pi(\sigma^2)\)</span>. Then, we specify the following priors:</p>
+<ul>
+<li><p><span class="math inline">\(\mu \sim N(\mu_0, \sigma^2_0)\)</span>;</p></li>
+<li><p><span class="math inline">\(\sigma^2 \sim Inv.Gamma(a_0, b_0)\)</span>.</p></li>
+</ul>
 <p>In a simulation framework, we need to specify the true values of the parameters generating the data.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>mu.true <span class="ot">&lt;-</span> <span class="dv">10</span></span>
@@ -238,7 +243,11 @@ window.Quarto = {
 <span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>mu.chain[<span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">1</span>, mu0, <span class="fu">sqrt</span>(sigma2<span class="fl">.0</span>))</span>
 <span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>sigma2.chain[<span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">/</span><span class="fu">rgamma</span>(<span class="dv">1</span>, alpha, <span class="at">rate =</span> beta)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Then, we can implement the Gibbs sampling by generating each parameter from its full-conditional distribution:</p>
+<p>Then, we can implement the Gibbs sampling by generating each parameter from its full-conditional distribution. The full-conditionals are the following:</p>
+<ul>
+<li><p><span class="math inline">\(\mu| \sigma^2, \textbf{y} \sim N\left(\frac{n\sigma^2_0 \bar{y} + \sigma^2 \mu_0}{n\sigma^2_0 + \sigma^2}, \frac{\sigma^2 \sigma^2_0}{n\sigma^2_0 + \sigma^2}\right)\)</span>;</p></li>
+<li><p><span class="math inline">\(\sigma^2| \mu, \textbf{y} \sim Inv.Gamma\left(a_0 + \frac{n}{2}, b_0 + \frac{\sum_{i=1}^n (y_i - \mu)^2}{2}\right)\)</span>.</p></li>
+</ul>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">42</span>)</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(b <span class="cf">in</span> <span class="dv">2</span><span class="sc">:</span>B){</span>
