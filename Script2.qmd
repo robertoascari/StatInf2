@@ -58,7 +58,7 @@ b.post <- b + n - sum_y; b.post
 post.mode <- Beta.Mode(a.post, b.post); post.mode
 ```
 
-Finally, the variance of the approximated normal distribution, namely the **inverse** of $\left. -\frac{\partial^2 \log \pi(\theta | \textbf{y})}{\partial \theta^2} \right|_{\theta = \tilde{\theta}}$.
+Finally, the variance of the approximated normal distribution, namely the **inverse** of $$\left. -\frac{\partial^2 \log \pi(\theta | \textbf{y})}{\partial \theta^2} \right|_{\theta = \tilde{\theta}}.$$
 
 ```{r}
 #| echo: true

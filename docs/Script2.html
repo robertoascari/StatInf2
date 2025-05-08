@@ -215,7 +215,7 @@ window.Quarto = {
 <pre><code>[1] 0.3559923</code></pre>
 </div>
 </div>
-<p>Finally, the variance of the approximated normal distribution, namely the <strong>inverse</strong> of <span class="math inline">\(\left. -\frac{\partial^2 \log \pi(\theta | \textbf{y})}{\partial \theta^2} \right|_{\theta = \tilde{\theta}}\)</span>.</p>
+<p>Finally, the variance of the approximated normal distribution, namely the <strong>inverse</strong> of <span class="math display">\[\left. -\frac{\partial^2 \log \pi(\theta | \textbf{y})}{\partial \theta^2} \right|_{\theta = \tilde{\theta}}.\]</span></p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>sigma_approx <span class="ot">&lt;-</span> ((a.post<span class="dv">-1</span>)<span class="sc">/</span>(post.mode<span class="sc">^</span><span class="dv">2</span>) <span class="sc">+</span> (b.post<span class="dv">-1</span>)<span class="sc">/</span>(<span class="dv">1</span><span class="sc">-</span>post.mode)<span class="sc">^</span><span class="dv">2</span>)<span class="sc">^</span>(<span class="sc">-</span><span class="dv">1</span>)</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
