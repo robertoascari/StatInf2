@@ -573,6 +573,9 @@ LM_GS <- function(y, X, B = 5000,
 #| echo: true
 #| eval: true
 
+gala_lm <- lm(Species ~ ., data = gala[,-2])
+summ <- summary(gala_lm); summ
+
 # Definition of y and X:
 y <- gala$Species
 X <- model.matrix(Species ~ ., data = gala[,-2])
@@ -612,6 +615,5 @@ mean(sigma2)
 #| echo: true
 #| eval: true
 
-cov(betas)
-
+round(cov(betas), 5)
 ```
