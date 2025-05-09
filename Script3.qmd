@@ -148,13 +148,21 @@ for(b in 2:B){
   sigma2.means[b] <- mean(sigma2.chain[2:b])
 }
 
-par(mfrow=c(2,1))
-plot(mu.means[-1], pch=20, type="l")
+plot(mu.means[-1], pch=20, type="l", ylim=c(9.2, 10.8))
 abline(h=mu.true, col="#D55E00")
-plot(sigma2.means[-1], pch=20, type="l")
-abline(h=sigma2.true, col="#D55E00")
-par(mfrow=c(1,1))
 ```
+
+
+```{r}
+#| echo: true
+#| eval: true
+
+plot(sigma2.means[-1], pch=20, type="l", ylim=c(3,7))
+abline(h=sigma2.true, col="#D55E00")
+```
+
+
+
 
 ```{r}
 #| echo: true
@@ -178,8 +186,12 @@ mu.new <- mu.chain[round(B*warm_perc+1):B]
 sigma2.new <- sigma2.chain[round(B*warm_perc+1):B]
 
 par(mfrow=c(2,1))
-plot(mu.new, pch=20, type="l")
-plot(sigma2.new, pch=20, type="l")
+plot(mu.new, pch=20, type="l", ylim=c(9.2, 10.8))
+abline(h=mu.true, col="#D55E00")
+
+plot(sigma2.new, pch=20, type="l", ylim=c(3,7))
+abline(h=sigma2.true, col="#D55E00")
+
 par(mfrow=c(1,1))
 ```
 
@@ -212,14 +224,20 @@ mean(mu.new > 10)
 #| echo: true
 #| eval: true
 
-par(mfrow=c(2,1))
 hist(mu.new, prob=T, xlab=expression(mu),
      main="Posterior distribution of mu")
 lines(density(mu.new), col="#D55E00")
+abline(v=mu.true, col="black", lty="dashed")
+```
+
+```{r}
+#| echo: true
+#| eval: true
+
 hist(sigma2.new, prob=T, xlab=expression(sigma2),
      main="Posterior distribution of sigma2")
 lines(density(sigma2.new), col="#D55E00")
-par(mfrow=c(1,1))
+abline(v=sigma2.true, col="black", lty="dashed")
 ```
 
 ```{r}
