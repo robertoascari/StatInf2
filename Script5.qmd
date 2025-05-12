@@ -10,18 +10,18 @@ You can download the `R` script [here](data/Script1_BernoulliBeta.R).
 
 Some useful links for working with Stan:
 
-- [Stan](https://mc-stan.org/users/interfaces/)
+-   [Stan](https://mc-stan.org/users/interfaces/)
 
-- [rstan](https://mc-stan.org/users/interfaces/rstan)
+-   [rstan](https://mc-stan.org/users/interfaces/rstan)
 
-- [RStan: Getting Started](https://github.com/stan-dev/rstan/wiki/RStan-Getting-Started)
-
+-   [RStan: Getting Started](https://github.com/stan-dev/rstan/wiki/RStan-Getting-Started)
 
 # LM
 
 ```{r}
-#| echo: true
+#| echo: false
 #| eval: true
+#| include: false
 
 library(tidyverse)
 library(ggplot2)
@@ -34,6 +34,7 @@ library(car)
 In this part, we are going to fit a simple linear regression model through Stan. [Here](data/LM_Model.stan) you can download the `.stan` model.
 
 First of all, let's compile the model and save it into an R object.
+
 ```{r}
 #| echo: true
 #| eval: true
@@ -45,19 +46,20 @@ LM_Model
 
 We consider the `Prestige` data from the `car` package. Statistical units are occupations, for which we have:
 
-- `education`: average education of occupational incumbents, years, in 1971;
+-   `education`: average education of occupational incumbents, years, in 1971;
 
-- `income`: average income of incumbents, dollars, in 1971;
+-   `income`: average income of incumbents, dollars, in 1971;
 
-- `women`: percentage of incumbents who are women;
+-   `women`: percentage of incumbents who are women;
 
-- `prestige`: Pineo-Porter prestige score for occupation, from a social survey conducted in the mid-1960s;
+-   `prestige`: Pineo-Porter prestige score for occupation, from a social survey conducted in the mid-1960s;
 
-- `census`: canadian Census occupational code;
+-   `census`: canadian Census occupational code;
 
-- `type`: type of occupation (`bc`, Blue Collar; `prof`, Professional, Managerial, and Technical; `wc`, White Collar).
+-   `type`: type of occupation (`bc`, Blue Collar; `prof`, Professional, Managerial, and Technical; `wc`, White Collar).
 
 Let's transform the `income` variable so to reduce the asimmetry.
+
 ```{r}
 #| echo: true
 #| eval: true
@@ -69,18 +71,15 @@ Prestige2 <-
 Prestige2$income <- log(Prestige2$income)
 ```
 
+In order to fit the stan model, we need to pass some data: - `y`: the response vector;
 
+-   `X`: the design matrix;
 
-In order to fit the stan model, we need to pass some data: 
-- `y`: the response vector;
+-   `n`: the sample size;
 
-- `X`: the design matrix;
+-   `K`: the number of covariates (including the intercept term);
 
-- `n`: the sample size;
-
-- `K`: the number of covariates (including the intercept term);
-
-- `a0`, `b0`, `beta0`, `s2_0`: hyperparameters.
+-   `a0`, `b0`, `beta0`, `s2_0`: hyperparameters.
 
 ```{r}
 #| echo: true
@@ -93,7 +92,6 @@ X <- model.matrix(mod)
 n <- nrow(X)
 K <- ncol(X)
 ```
-
 
 We further create a list containing the objects to be passed to the stan model.
 
@@ -113,7 +111,8 @@ data.stan <- list(
 ) 
 ```
 
-We can now use the `` function to fit the model. We what two chains, each of length 10'000, and we want to discard the first 50% as warm-up.
+We can now use the `rstan::sampling` function to fit the model. We what two chains, each of length 10'000, and we want to discard the first 50% as warm-up.
+
 ```{r}
 #| echo: true
 #| eval: true
@@ -126,7 +125,8 @@ LM_stan <- rstan::sampling(
   data = data.stan,
   warmup = 0.5*n.iter, 
   iter = n.iter,
-  thin=1, chains = nchain
+  thin=1, chains = nchain,
+  refresh = n.iter/2     
   #, pars=c("beta", "sigma2")
   )
 ```
@@ -142,6 +142,7 @@ round(summ, 3)
 ```
 
 Traceplots:
+
 ```{r}
 #| echo: true
 #| eval: true
@@ -149,7 +150,6 @@ Traceplots:
 rstan::traceplot(LM_stan, pars = c('beta', 'sigma2'), inc_warmup = TRUE)
 rstan::traceplot(LM_stan, pars = c('beta', 'sigma2'), inc_warmup = FALSE)
 ```
-
 
 ```{r}
 #| echo: true
@@ -178,7 +178,6 @@ df_plot %>%
   theme(legend.position="false")
 ```
 
-
 ```{r}
 #| echo: true
 #| eval: true
@@ -193,7 +192,7 @@ acf(betas[,6])
 acf(sigma2)
 ```
 
-As classical MCMCs, we can use the sampled values to approximate any quantity of interest. For example, we can approximate $\mathbb{P}(\beta_1 > 4 \& \beta_3 > -0.5)$:
+As classical MCMCs, we can use the sampled values to approximate any quantity of interest. For example, we can approximate $\mathbb{P}(\beta_1 > 4, \beta_3 > -0.5)$:
 
 ```{r}
 #| echo: true
@@ -204,8 +203,7 @@ mean(betas[,2] > 4 & betas[,4] > -.5)
 
 # Logistic Regression
 
-Let's consider the logistic regression model.........METTERE LINK 
-to the [cardiac dataset](data/cardiac.csv).
+Let's consider the [logistic regression model](https://robertoascari.github.io/StatInf2/Script4.html#metropolis-hasting-for-a-logistic-regression-model) to the [cardiac dataset](data/cardiac.csv).
 
 The `Logistic_Model.stan` model can be downloaded [here](data/Logistic_Model.stan).
 
@@ -232,7 +230,6 @@ Logistic_Model <-
 Logistic_Model
 ```
 
-
 ```{r}
 #| echo: true
 #| eval: true
@@ -247,7 +244,6 @@ data.stan_logis <- list(
 ) 
 ```
 
-
 ```{r}
 #| echo: true
 #| eval: true
@@ -259,7 +255,8 @@ Logistic_stan <- rstan::sampling(
   object = Logistic_Model,
   data = data.stan_logis,
   warmup = 0.5*n.iter, iter = n.iter,
-  thin = 1, chains = nchain
+  thin = 1, chains = nchain,
+  refresh = n.iter/2
 )
 ```
 
@@ -279,7 +276,6 @@ round(summ, 3)
 rstan::traceplot(Logistic_stan, pars = "beta", inc_warmup = TRUE)
 rstan::traceplot(Logistic_stan, pars = "beta", inc_warmup = FALSE)
 ```
-
 
 ```{r}
 #| echo: true
@@ -301,7 +297,6 @@ df_plot %>%
   theme(legend.position="false")
 ```
 
-
 We can evaluate probabilities for each patients.
 
 ```{r}
@@ -312,4 +307,3 @@ probs_stan <- rstan::extract(Logistic_stan, "p")$p
 plot(cardiac$Age, colMeans(probs_stan), pch=20, type="l")
 plot(cardiac$Age, colMeans(probs_stan), pch=20)
 ```
-
