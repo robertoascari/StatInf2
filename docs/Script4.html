@@ -179,7 +179,7 @@ window.Quarto = {
 </header>
 
 
-<p>Let’s suppose that the posterior is a Gamma(alpha.post, beta.post) and let’s suppose to know just the kernel.</p>
+<p>Let’s suppose that the posterior is a Gamma(alpha.post, beta.post) and that we cannot compute the normalizing constant (i.e., we know only the kernel).</p>
 <p>We choose a an Exponential distribution with mean equal to the previous value of the chain as the <strong>proposal distribution</strong>.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span>(<span class="at">list =</span> <span class="fu">ls</span>())</span>
@@ -197,16 +197,22 @@ window.Quarto = {
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">15</span></span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>sum_yi <span class="ot">&lt;-</span> <span class="fu">sum</span>(<span class="fu">rpois</span>(n, <span class="dv">3</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Initialization:</p>
+<p>We initialize the MCMC with an initial value:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>k <span class="ot">&lt;-</span> <span class="dv">0</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>theta <span class="ot">&lt;-</span> <span class="fu">numeric</span>(B)</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>theta.mean <span class="ot">&lt;-</span> <span class="fu">numeric</span>(B)</span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>theta[<span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="dv">5</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>theta[<span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="dv">1</span></span>
 <span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>theta.mean[<span class="dv">1</span>] <span class="ot">&lt;-</span> theta[<span class="dv">1</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Implementing the Metropolis Hasting algorithm.</p>
+<p>Now, let’s implement the <strong>Metropolis Hasting algorithm</strong>. The main step here is to compute the probability <span class="math inline">\(\alpha\left(\theta^{(b)}, \theta^*\right)\)</span>, which has the following expression:</p>
+<p><span class="math display">\[\begin{equation*}
+    \alpha\left(\theta^{(b)}, \theta^*\right) = = \begin{cases}
+  \min\left(1, \frac{\pi(\theta^*|\textbf{y})q(\theta^{(b)}|\theta^*)}{\pi(\theta^{(b)}|\textbf{y}q(\theta^{*}|\theta^{(b)})} \right)  &amp; \text{ if } {\pi(\theta^{(b)}|\textbf{y}q(\theta^{*}|\theta^{(b)})} \neq 0 \\
+  1 &amp; \text{ otherwise}
+          \end{cases}.
+\end{equation*}\]</span></p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(bb <span class="cf">in</span> <span class="dv">2</span><span class="sc">:</span>B){</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  theta_star <span class="ot">&lt;-</span> <span class="fu">rexp</span>(<span class="dv">1</span>, <span class="at">rate=</span><span class="dv">1</span><span class="sc">/</span>theta[bb<span class="dv">-1</span>]) </span>
@@ -233,7 +239,7 @@ window.Quarto = {
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Acceptance rate:</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>k<span class="sc">/</span>B</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.132</code></pre>
+<pre><code>[1] 0.131</code></pre>
 </div>
 </div>
 <p>Traceplots:</p>
@@ -251,12 +257,12 @@ window.Quarto = {
 </div>
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Removing the warm-up period:</p>
+<p>We remove the warm-up period…</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>m <span class="ot">&lt;-</span> warmup<span class="sc">*</span>B</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>theta.new <span class="ot">&lt;-</span> theta[m<span class="sc">:</span>B]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Comparing the real and simulated posterior:</p>
+<p>… and compare the real and simulated posterior:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(theta.new,<span class="at">prob=</span>T,<span class="at">xlab=</span><span class="fu">expression</span>(theta))</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(<span class="fu">dgamma</span>(x, a<span class="sc">+</span>sum_yi, <span class="at">rate=</span>b<span class="sc">+</span>n),<span class="at">add=</span>T,<span class="at">lwd=</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -269,16 +275,16 @@ window.Quarto = {
 </div>
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>The acceptance rate is too small: to obtain a reliable sample from the stationary distribution we have to increase the length of the chain and include a thin period:</p>
+<p>The comparison suggests that the simulated posterior is not a good approximation of the true theoretical one. As an additional red-flag, we note that the acceptance rate is quite small. Thus, to obtain a reliable sample from the stationary distribution, we have to increase the length of the chain and include a thin period:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>B <span class="ot">&lt;-</span> <span class="dv">10000</span></span>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>B <span class="ot">&lt;-</span> <span class="dv">50000</span></span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>warmup <span class="ot">&lt;-</span> <span class="fl">0.6</span></span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>k <span class="ot">&lt;-</span> <span class="dv">0</span></span>
 <span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>theta <span class="ot">&lt;-</span> <span class="fu">numeric</span>(B)</span>
 <span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>theta.mean <span class="ot">&lt;-</span> <span class="fu">numeric</span>(B)</span>
 <span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>theta[<span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="dv">5</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>theta[<span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="dv">1</span></span>
 <span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>theta.mean[<span class="dv">1</span>] <span class="ot">&lt;-</span> theta[<span class="dv">1</span>]</span>
 <span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(bb <span class="cf">in</span> <span class="dv">2</span><span class="sc">:</span>B){</span>
@@ -346,6 +352,7 @@ window.Quarto = {
 </section>
 <section id="metropolis-hasting-for-a-logistic-regression-model" class="level1">
 <h1>Metropolis Hasting for a Logistic Regression model</h1>
+<p>Let’s consider <span class="math inline">\(Y_i \sim Bernoulli (\theta_i)\)</span>, where the probability of success depends on a quantitative covariate <span class="math inline">\(X\)</span> by means of the logit link function: <span class="math display">\[logit(\theta_i) = \log\left(\frac{\theta_i}1-\theta_i}\right) = \alpha + \betax_i.\]</span></p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span>(<span class="at">list=</span><span class="fu">ls</span>())</span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a></span>

@@ -6,7 +6,7 @@ editor: visual
 toc: true
 ---
 
-Let's suppose that the posterior is a Gamma(alpha.post, beta.post) and let's suppose to know just the kernel.
+Let's suppose that the posterior is a Gamma(alpha.post, beta.post) and that we cannot compute the normalizing constant (i.e., we know only the kernel).
 
 We choose a an Exponential distribution with mean equal to the previous value of the chain as the **proposal distribution**.
 
@@ -24,7 +24,6 @@ a <- 10
 b <- 3
 ```
 
-
 ```{r}
 #| echo: true
 #| eval: true
@@ -35,8 +34,8 @@ n <- 15
 sum_yi <- sum(rpois(n, 3))
 ```
 
+We initialize the MCMC with an initial value:
 
-Initialization:
 ```{r}
 #| echo: true
 #| eval: true
@@ -45,11 +44,19 @@ k <- 0
 theta <- numeric(B)
 theta.mean <- numeric(B)
 
-theta[1] <- 5
+theta[1] <- 1
 theta.mean[1] <- theta[1]
 ```
 
-Implementing the Metropolis Hasting algorithm.
+Now, let's implement the **Metropolis Hasting algorithm**. The main step here is to compute the probability $\alpha\left(\theta^{(b)}, \theta^*\right)$, which has the following expression:
+
+\begin{equation*}
+    \alpha\left(\theta^{(b)}, \theta^*\right) = = \begin{cases}
+  \min\left(1, \frac{\pi(\theta^*|\textbf{y})q(\theta^{(b)}|\theta^*)}{\pi(\theta^{(b)}|\textbf{y}q(\theta^{*}|\theta^{(b)})} \right)  & \text{ if } {\pi(\theta^{(b)}|\textbf{y}q(\theta^{*}|\theta^{(b)})} \neq 0 \\
+  1 & \text{ otherwise}
+          \end{cases}.
+\end{equation*}
+
 ```{r}
 #| echo: true
 #| eval: true
@@ -76,7 +83,6 @@ for(bb in 2:B){
 }
 ```
 
-
 ```{r}
 #| echo: true
 #| eval: true
@@ -86,6 +92,7 @@ k/B
 ```
 
 Traceplots:
+
 ```{r}
 #| echo: true
 #| eval: true
@@ -97,8 +104,7 @@ acf(theta)
 par(mfrow=c(1,1))
 ```
 
-
-Removing the warm-up period:
+We remove the warm-up period...
 
 ```{r}
 #| echo: true
@@ -108,8 +114,8 @@ m <- warmup*B
 theta.new <- theta[m:B]
 ```
 
+... and compare the real and simulated posterior:
 
-Comparing the real and simulated posterior:
 ```{r}
 #| echo: true
 #| eval: true
@@ -120,23 +126,20 @@ curve(dgamma(x, a+sum_yi, rate=b+n),add=T,lwd=2)
 par(mfrow=c(1,1))
 ```
 
-
-
-
-The acceptance rate is too small: to obtain a reliable sample from the stationary distribution we have to increase the length of the chain and include a thin period:
+The comparison suggests that the simulated posterior is not a good approximation of the true theoretical one. As an additional red-flag, we note that the acceptance rate is quite small. Thus, to obtain a reliable sample from the stationary distribution, we have to increase the length of the chain and include a thin period:
 
 ```{r}
 #| echo: true
 #| eval: true
 
-B <- 10000
+B <- 50000
 warmup <- 0.6
 
 k <- 0
 theta <- numeric(B)
 theta.mean <- numeric(B)
 
-theta[1] <- 5
+theta[1] <- 1
 theta.mean[1] <- theta[1]
 
 for(bb in 2:B){
@@ -161,6 +164,7 @@ for(bb in 2:B){
 ```
 
 Acceptance rate:
+
 ```{r}
 #| echo: true
 #| eval: true
@@ -168,7 +172,6 @@ Acceptance rate:
 
 k/B
 ```
-
 
 ```{r}
 #| echo: true
@@ -196,16 +199,13 @@ curve(dgamma(x, a+sum_yi, rate=b+n),add=T,lwd=2)
 par(mfrow=c(1,1))
 ```
 
+## HOMEWORK:
 
-
-## HOMEWORK: 
-Consider the same scenario of the latter example. Implement a Metropolis-Hasting algorithm by considering an independent MH generating the candidate `theta_star` from an exponential distribution with mean $X$. 
-Consider different values for $X$ to investigate whether it affects the acceptance rate.
-
-
+Consider the same scenario of the latter example. Implement a Metropolis-Hasting algorithm by considering an independent MH generating the candidate `theta_star` from an exponential distribution with mean $X$. Consider different values for $X$ to investigate whether it affects the acceptance rate.
 
 # Metropolis Hasting for a Logistic Regression model
 
+Let's consider $Y_i \sim Bernoulli (\theta_i)$, where the probability of success depends on a quantitative covariate $X$ by means of the logit link function: $$logit(\theta_i) = \log\left(\frac{\theta_i}1-\theta_i}\right) = \alpha + \betax_i.$$
 ```{r}
 #| echo: true
 #| eval: true
@@ -222,14 +222,14 @@ n <- nrow(cardiac)
 plot(x, y, pch=20)
 ```
 
-Fitting the classical (frequentist!) logistic regression through the `glm()` function. 
+Fitting the classical (frequentist!) logistic regression through the `glm()` function.
+
 ```{r}
 #| echo: true
 #| eval: true
 
 summary(glm(y ~ x, family="binomial"))
 ```
-
 
 ```{r}
 #| echo: true
@@ -238,7 +238,6 @@ summary(glm(y ~ x, family="binomial"))
 B <- 10000
 warmup <- 0.6
 ```
-
 
 For selecting the hyperparameters, we follow Robert & Casella:
 
@@ -253,7 +252,6 @@ m_norm <- 0.1109
 v_norm <- .02406^2
 
 ```
-
 
 ```{r}
 #| echo: true
@@ -275,6 +273,7 @@ beta.mean[1] <- beta[1]
 ```
 
 Likelihood function:
+
 ```{r}
 #| echo: true
 #| eval: true
@@ -288,6 +287,7 @@ Likelihood <- function(alpha, beta, y, x){
 ```
 
 Metropolis Hasting:
+
 ```{r}
 #| echo: true
 #| eval: true
@@ -318,6 +318,7 @@ for(bb in 2:B){
 ```
 
 Acceptance rate:
+
 ```{r}
 #| echo: true
 #| eval: true
@@ -325,7 +326,6 @@ Acceptance rate:
 # Acceptance rate:
 k/B
 ```
-
 
 ```{r}
 #| echo: true
@@ -345,6 +345,7 @@ par(mfrow=c(1,1))
 ```
 
 Removing the warm up period:
+
 ```{r}
 #| echo: true
 #| eval: true
@@ -362,7 +363,6 @@ beta.new <- beta[seq(m, B, thin)]
 mean(alpha)
 mean(beta)
 ```
-
 
 ```{r}
 #| echo: true
@@ -384,8 +384,6 @@ lines(density(beta.new),lwd=2)
 par(mfrow=c(1,1))
 ```
 
-
-
 ```{r}
 #| echo: true
 #| eval: true
@@ -400,7 +398,6 @@ for(i in 1:length(unique(x))){
 
 head(theta_i)
 ```
-
 
 ```{r}
 #| echo: true
@@ -429,5 +426,3 @@ for(i in 1:length(x_grid)){
 
 points(x_grid, theta_grid, type = "l", lwd = 1.5)
 ```
-
-

@@ -245,6 +245,7 @@ abline(v=sigma2.true, col="black", lty="dashed")
 #| eval: true
 
 plot(mu.new, sigma2.new, pch = 20)
+points(mu.true, sigma2.true, pch = 19, col = "#D55E00")
 ```
 
 We can define a function to fit this Gibbs sampler more easily on new data.
