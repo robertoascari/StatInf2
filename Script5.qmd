@@ -10,11 +10,12 @@ You can download the `R` script [here](data/Script1_BernoulliBeta.R).
 
 Some useful links for working with Stan:
 
--   [Stan](https://mc-stan.org/users/interfaces/)
+-   [List](https://mc-stan.org/users/interfaces/) of Language-Specific Stan Interfaces.
+ 
 
--   [rstan](https://mc-stan.org/users/interfaces/rstan)
+-   [Rstan](https://mc-stan.org/users/interfaces/rstan): an interface to Stan for R.
 
--   [RStan: Getting Started](https://github.com/stan-dev/rstan/wiki/RStan-Getting-Started)
+-   [RStan: Getting Started](https://github.com/stan-dev/rstan/wiki/RStan-Getting-Started).
 
 # LM
 
