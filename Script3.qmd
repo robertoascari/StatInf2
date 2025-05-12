@@ -12,9 +12,9 @@ In this section, we show two Gibbs samplers: the first one aims to estimate the 
 
 We consider a scenario characterized where $Y| \mu, \sigma^2 \sim N(\mu, \sigma^2)$. Furthermore, we impose **prior independence**, meaning that $\pi(\mu, \sigma^2) = \pi(\mu)\pi(\sigma^2)$. Then, we specify the following priors:
 
-- $\mu \sim N(\mu_0, \sigma^2_0)$;
+-   $\mu \sim N(\mu_0, \sigma^2_0)$;
 
-- $\sigma^2 \sim Inv.Gamma(a_0, b_0)$.
+-   $\sigma^2 \sim Inv.Gamma(a_0, b_0)$.
 
 In a simulation framework, we need to specify the true values of the parameters generating the data.
 
@@ -88,9 +88,9 @@ sigma2.chain[1] <- 1/rgamma(1, alpha, rate = beta)
 
 Then, we can implement the Gibbs sampling by generating each parameter from its full-conditional distribution. The full-conditionals are the following:
 
-- $\mu| \sigma^2, \textbf{y} \sim N\left(\frac{n\sigma^2_0 \bar{y} + \sigma^2 \mu_0}{n\sigma^2_0 + \sigma^2}, \frac{\sigma^2 \sigma^2_0}{n\sigma^2_0 + \sigma^2}\right)$;
+-   $\mu| \sigma^2, \textbf{y} \sim N\left(\frac{n\sigma^2_0 \bar{y} + \sigma^2 \mu_0}{n\sigma^2_0 + \sigma^2}, \frac{\sigma^2 \sigma^2_0}{n\sigma^2_0 + \sigma^2}\right)$;
 
-- $\sigma^2| \mu, \textbf{y} \sim Inv.Gamma\left(a_0 + \frac{n}{2}, b_0 + \frac{\sum_{i=1}^n (y_i - \mu)^2}{2}\right)$.
+-   $\sigma^2| \mu, \textbf{y} \sim Inv.Gamma\left(a_0 + \frac{n}{2}, b_0 + \frac{\sum_{i=1}^n (y_i - \mu)^2}{2}\right)$.
 
 ```{r}
 #| echo: true
@@ -152,7 +152,6 @@ plot(mu.means[-1], pch=20, type="l", ylim=c(9.2, 10.8))
 abline(h=mu.true, col="#D55E00")
 ```
 
-
 ```{r}
 #| echo: true
 #| eval: true
@@ -160,9 +159,6 @@ abline(h=mu.true, col="#D55E00")
 plot(sigma2.means[-1], pch=20, type="l", ylim=c(3,7))
 abline(h=sigma2.true, col="#D55E00")
 ```
-
-
-
 
 ```{r}
 #| echo: true

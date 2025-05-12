@@ -205,7 +205,7 @@ Consider the same scenario of the latter example. Implement a Metropolis-Hasting
 
 # Metropolis Hasting for a Logistic Regression model
 
-Let's consider $Y_i \sim Bernoulli (\theta_i)$, where the probability of success depends on a quantitative covariate $X$ by means of the logit link function: $$logit(\theta_i) = \log\left(\frac{\theta_i}1-\theta_i}\right) = \alpha + \betax_i.$$
+Let's consider $Y_i \sim Bernoulli (\theta_i)$, where the probability of success depends on a quantitative covariate $X$ by means of the logit link function: $$logit(\theta_i) = \log\left(\frac{\theta_i}{1-\theta_i}\right) = \alpha + \beta x_i.$$
 ```{r}
 #| echo: true
 #| eval: true
@@ -222,7 +222,7 @@ n <- nrow(cardiac)
 plot(x, y, pch=20)
 ```
 
-Fitting the classical (frequentist!) logistic regression through the `glm()` function.
+We fit the classical (frequentist!) logistic regression through the `glm()` function. This is going to be useful to set hyperparameters by following Robert & Casella.
 
 ```{r}
 #| echo: true
@@ -272,7 +272,7 @@ beta[1] <- rnorm(1, m_norm, sqrt(v_norm))
 beta.mean[1] <- beta[1]
 ```
 
-Likelihood function:
+The likelihood function is defined as $$L(\textbf{y} | \alpha, \beta) = \prod_{i=1}^n \left(\frac{\exp(\alpha+\beta x_i)}{1+\exp(\alpha+\beta x_i)}\right)^{y_i} \left(\frac{1}{1+\exp(\alpha+\beta x_i)}\right)^{1-y_i}.$$
 
 ```{r}
 #| echo: true
@@ -344,7 +344,7 @@ acf(beta)
 par(mfrow=c(1,1))
 ```
 
-Removing the warm up period:
+Removing the warm-up period:
 
 ```{r}
 #| echo: true
