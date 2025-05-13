@@ -101,7 +101,7 @@ for(b in 2:B){
   # Draw mu from the F.C.
   mu.chain[b] <-
     rnorm(1, 
-          (n*ybar*sigma2.0 + sigma2.chain[b-1])/(n*sigma2.0+sigma2.chain[b-1]),
+          (n*sigma2.0*ybar + sigma2.chain[b-1]*mu0)/(n*sigma2.0+sigma2.chain[b-1]),
           sqrt((sigma2.chain[b-1]*sigma2.0)/(n*sigma2.0+sigma2.chain[b-1])))
   
   # Draw sigma2 from the F.C.
@@ -250,7 +250,6 @@ We can define a function to fit this Gibbs sampler more easily on new data.
 #| echo: true
 #| eval: true
 
-
 normal_GS <- function(y, B = 5000, 
                       mu0 = 0, sigma2.0 = 1000, 
                       alpha = 10, beta = 10, 
@@ -270,7 +269,7 @@ normal_GS <- function(y, B = 5000,
     # Draw mu from the F.C.
     mu.chain[b] <-
       rnorm(1,
-            (n*ybar*sigma2.0 + sigma2.chain[b-1])/(n*sigma2.0+sigma2.chain[b-1]),
+            (n*sigma2.0*ybar + sigma2.chain[b-1]*mu0)/(n*sigma2.0+sigma2.chain[b-1]),
             sqrt((sigma2.chain[b-1]*sigma2.0)/(n*sigma2.0+sigma2.chain[b-1])))
     
     # Draw sigma2 from the F.C.
@@ -295,7 +294,6 @@ normal_GS <- function(y, B = 5000,
 library(faraway)
 data(gala)
 str(gala)
-help(gala)
 ```
 
 ```{r}
