@@ -40,7 +40,6 @@ We initialize the MCMC with an initial value:
 #| echo: true
 #| eval: true
 
-k <- 0
 theta <- numeric(B)
 theta.mean <- numeric(B)
 
@@ -57,12 +56,15 @@ Now, let's implement the **Metropolis Hasting algorithm**. The main step here is
           \end{cases}.
 \end{equation*}
 
-In this example, $$\frac{\pi(\theta^*|\textbf{y})q(\theta^{(b)}|\theta^*)}{\pi(\theta^{(b)}|\textbf{y})q(\theta^{*}|\theta^{(b)})} 
+In this example, we have $$\frac{\pi(\theta^*|\textbf{y})q(\theta^{(b)}|\theta^*)}{\pi(\theta^{(b)}|\textbf{y})q(\theta^{*}|\theta^{(b)})} 
 = \left(\frac{\theta^*}{\theta^{(b)}}\right)^{\alpha + \sum_{i=1}^n y_i -2} e^{-(\beta+n)\left(\theta^* - \theta^{(b)}\right)} e^{-\frac{\theta^{(b)}}{\theta^*} + \frac{\theta^*}{\theta^{(b)}}}.$$
 
 ```{r}
 #| echo: true
 #| eval: true
+
+# Counter:
+k <- 0
 
 for(bb in 2:B){
   theta_star <- rexp(1, rate=1/theta[bb-1]) 
@@ -74,7 +76,7 @@ for(bb in 2:B){
   
   alpha_prob <- min(alpha_prob, 1)
   
-  # Acceptance ?
+  # Accept?
   if(runif(1) <= alpha_prob){
     theta[bb] <- theta_star
     k <- k + 1

@@ -199,12 +199,11 @@ window.Quarto = {
 </div>
 <p>We initialize the MCMC with an initial value:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>k <span class="ot">&lt;-</span> <span class="dv">0</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>theta <span class="ot">&lt;-</span> <span class="fu">numeric</span>(B)</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>theta.mean <span class="ot">&lt;-</span> <span class="fu">numeric</span>(B)</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>theta[<span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="dv">1</span></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>theta.mean[<span class="dv">1</span>] <span class="ot">&lt;-</span> theta[<span class="dv">1</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>theta <span class="ot">&lt;-</span> <span class="fu">numeric</span>(B)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>theta.mean <span class="ot">&lt;-</span> <span class="fu">numeric</span>(B)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>theta[<span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>theta.mean[<span class="dv">1</span>] <span class="ot">&lt;-</span> theta[<span class="dv">1</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Now, let’s implement the <strong>Metropolis Hasting algorithm</strong>. The main step here is to compute the probability <span class="math inline">\(\alpha\left(\theta^{(b)}, \theta^*\right)\)</span>, which has the following expression:</p>
 <p><span class="math display">\[\begin{equation*}
@@ -213,29 +212,32 @@ window.Quarto = {
   1 &amp; \text{ otherwise}
           \end{cases}.
 \end{equation*}\]</span></p>
-<p>In this example, <span class="math display">\[\frac{\pi(\theta^*|\textbf{y})q(\theta^{(b)}|\theta^*)}{\pi(\theta^{(b)}|\textbf{y})q(\theta^{*}|\theta^{(b)})}
+<p>In this example, we have <span class="math display">\[\frac{\pi(\theta^*|\textbf{y})q(\theta^{(b)}|\theta^*)}{\pi(\theta^{(b)}|\textbf{y})q(\theta^{*}|\theta^{(b)})}
 = \left(\frac{\theta^*}{\theta^{(b)}}\right)^{\alpha + \sum_{i=1}^n y_i -2} e^{-(\beta+n)\left(\theta^* - \theta^{(b)}\right)} e^{-\frac{\theta^{(b)}}{\theta^*} + \frac{\theta^*}{\theta^{(b)}}}.\]</span></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(bb <span class="cf">in</span> <span class="dv">2</span><span class="sc">:</span>B){</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  theta_star <span class="ot">&lt;-</span> <span class="fu">rexp</span>(<span class="dv">1</span>, <span class="at">rate=</span><span class="dv">1</span><span class="sc">/</span>theta[bb<span class="dv">-1</span>]) </span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  alpha_prob <span class="ot">&lt;-</span> </span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    (theta_star<span class="sc">/</span>theta[bb<span class="dv">-1</span>])<span class="sc">^</span>(a<span class="sc">+</span>sum_yi<span class="dv">-2</span>)<span class="sc">*</span></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">exp</span>(<span class="sc">-</span>(b<span class="sc">+</span>n)<span class="sc">*</span>(theta_star<span class="sc">-</span>theta[bb<span class="dv">-1</span>]))<span class="sc">*</span></span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">exp</span>(<span class="sc">-</span>theta[bb<span class="dv">-1</span>]<span class="sc">/</span>theta_star <span class="sc">+</span> theta_star<span class="sc">/</span>theta[bb<span class="dv">-1</span>])</span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>  alpha_prob <span class="ot">&lt;-</span> <span class="fu">min</span>(alpha_prob, <span class="dv">1</span>)</span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Acceptance ?</span></span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(<span class="fu">runif</span>(<span class="dv">1</span>) <span class="sc">&lt;=</span> alpha_prob){</span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>    theta[bb] <span class="ot">&lt;-</span> theta_star</span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>    k <span class="ot">&lt;-</span> k <span class="sc">+</span> <span class="dv">1</span></span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>    theta[bb] <span class="ot">&lt;-</span> theta[bb<span class="dv">-1</span>]</span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>  theta.mean[bb] <span class="ot">&lt;-</span> <span class="fu">mean</span>(theta[<span class="dv">2</span><span class="sc">:</span>bb])</span>
-<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Counter:</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>k <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(bb <span class="cf">in</span> <span class="dv">2</span><span class="sc">:</span>B){</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  theta_star <span class="ot">&lt;-</span> <span class="fu">rexp</span>(<span class="dv">1</span>, <span class="at">rate=</span><span class="dv">1</span><span class="sc">/</span>theta[bb<span class="dv">-1</span>]) </span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  alpha_prob <span class="ot">&lt;-</span> </span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    (theta_star<span class="sc">/</span>theta[bb<span class="dv">-1</span>])<span class="sc">^</span>(a<span class="sc">+</span>sum_yi<span class="dv">-2</span>)<span class="sc">*</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">exp</span>(<span class="sc">-</span>(b<span class="sc">+</span>n)<span class="sc">*</span>(theta_star<span class="sc">-</span>theta[bb<span class="dv">-1</span>]))<span class="sc">*</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">exp</span>(<span class="sc">-</span>theta[bb<span class="dv">-1</span>]<span class="sc">/</span>theta_star <span class="sc">+</span> theta_star<span class="sc">/</span>theta[bb<span class="dv">-1</span>])</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>  alpha_prob <span class="ot">&lt;-</span> <span class="fu">min</span>(alpha_prob, <span class="dv">1</span>)</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Accept?</span></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(<span class="fu">runif</span>(<span class="dv">1</span>) <span class="sc">&lt;=</span> alpha_prob){</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>    theta[bb] <span class="ot">&lt;-</span> theta_star</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>    k <span class="ot">&lt;-</span> k <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>    theta[bb] <span class="ot">&lt;-</span> theta[bb<span class="dv">-1</span>]</span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>  theta.mean[bb] <span class="ot">&lt;-</span> <span class="fu">mean</span>(theta[<span class="dv">2</span><span class="sc">:</span>bb])</span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Acceptance rate:</span></span>
