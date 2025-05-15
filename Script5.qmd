@@ -11,13 +11,12 @@ You can download the `R` script [here](data/Script1_BernoulliBeta.R).
 Some useful links for working with Stan:
 
 -   [List](https://mc-stan.org/users/interfaces/) of Language-Specific Stan Interfaces.
- 
 
 -   [Rstan](https://mc-stan.org/users/interfaces/rstan): an interface to Stan for R.
 
 -   [RStan: Getting Started](https://github.com/stan-dev/rstan/wiki/RStan-Getting-Started).
 
-# LM
+# Linear Regression
 
 ```{r}
 #| echo: false

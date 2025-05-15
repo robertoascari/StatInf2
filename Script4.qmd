@@ -6,6 +6,8 @@ editor: visual
 toc: true
 ---
 
+# Metropolis Hasting for a Gamma posterior
+
 Let's suppose that the posterior is a Gamma(alpha.post, beta.post) and that we cannot compute the normalizing constant (i.e., we know only the kernel).
 
 We choose a an Exponential distribution with mean equal to the previous value of the chain as the **proposal distribution**.
@@ -204,7 +206,7 @@ curve(dgamma(x, a+sum_yi, rate=b+n),add=T,lwd=2)
 par(mfrow=c(1,1))
 ```
 
-## HOMEWORK:
+## HOMEWORK
 
 Consider the same scenario of the latter example. Implement a Metropolis-Hasting algorithm by considering an independent MH generating the candidate `theta_star` from an exponential distribution with mean $X$. Consider different values for $X$ to investigate whether it affects the acceptance rate.
 

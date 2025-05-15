@@ -69,7 +69,7 @@ and the prior variance is:
 (beta^2)/((alpha-1)*(alpha-2))
 ```
 
-## Initialization:
+## Initialization
 
 We initialize each element by drawing a value from the corresponding prior:
 

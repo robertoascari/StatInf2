@@ -19,36 +19,29 @@ editor: visual
 
 [**Statistical Inference II**]{.text-primary} provides an introduction to Bayesian data analysis, covering prior and posterior distributions, classical one-parameter models, prior elicitation, posterior-based inference, MCMC methods, and Bayesian approaches to linear and generalized linear models.
 
+# Syllabus
 
-
-
-
-
-
-## Syllabus
-- Introduction to Bayesian data analysis: prior and posterior distributions for inference.
-- One-parameter models: Binomial-Beta, Poisson-Gamma, Exponential-Gamma, and Normal-Normal.
-- Methods for prior elicitation.
-- Inference based on the posterior distribution (point and interval estimates; hypotheses testing).
-- Simulation-based inference: MCMC methods.
-- Linear and generalized linear models from a Bayesian perspective. 
+-   Introduction to Bayesian data analysis: prior and posterior distributions for inference.
+-   One-parameter models: Binomial-Beta, Poisson-Gamma, Exponential-Gamma, and Normal-Normal.
+-   Methods for prior elicitation.
+-   Inference based on the posterior distribution (point and interval estimates; hypotheses testing).
+-   Simulation-based inference: MCMC methods.
+-   Linear and generalized linear models from a Bayesian perspective.
 
 # Scripts
-- The Bernoulli-Beta model: [Code](Script1.qmd).
-- Normal approximation and Monte Carlo: [Code](Script2.qmd).
-- MCMC - Gibbs sampling: [Code](Script3.qmd). 
-- MCMC - Metropolis Hasting: [Code](Script4.qmd).
-- MCMC - Stan: [Code](Script5.qmd).
 
+-   The Bernoulli-Beta model: [Code](Script1.qmd).
+-   Normal approximation and Monte Carlo: [Code](Script2.qmd).
+-   MCMC - Gibbs sampling: [Code](Script3.qmd).
+-   MCMC - Metropolis Hasting: [Code](Script4.qmd).
+-   MCMC - Stan: [Code](Script5.qmd).
 
+# Textbooks
 
-## Textbooks
+-   Hoff, P. (2009). *A first course in Bayesian Statistical Methods*. Springer.
 
-- Hoff, P. (2009). *A first course in Bayesian Statistical Methods*. Springer.
+-   Gelman, A., Carlin, J., Stern, H., Dunson, D., Vehtari, A., and Rubin, D. (2013). *Bayesian Data Analysis*. Chapman & Hall/CRC Texts in Statistical Science.
 
-- Gelman, A., Carlin, J., Stern, H., Dunson, D., Vehtari, A., and Rubin, D. (2013). *Bayesian Data Analysis*. Chapman \& Hall/CRC Texts in Statistical Science.
-
-- Robert, C. and Casella, G. (2004). *Monte Carlo Statistical Methods*. Springer.
-
+-   Robert, C. and Casella, G. (2004). *Monte Carlo Statistical Methods*. Springer.
 
 ------------------------------------------------------------------------
