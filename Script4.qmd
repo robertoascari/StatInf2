@@ -51,11 +51,14 @@ theta.mean[1] <- theta[1]
 Now, let's implement the **Metropolis Hasting algorithm**. The main step here is to compute the probability $\alpha\left(\theta^{(b)}, \theta^*\right)$, which has the following expression:
 
 \begin{equation*}
-    \alpha\left(\theta^{(b)}, \theta^*\right) = = \begin{cases}
-  \min\left(1, \frac{\pi(\theta^*|\textbf{y})q(\theta^{(b)}|\theta^*)}{\pi(\theta^{(b)}|\textbf{y}q(\theta^{*}|\theta^{(b)})} \right)  & \text{ if } {\pi(\theta^{(b)}|\textbf{y}q(\theta^{*}|\theta^{(b)})} \neq 0 \\
+    \alpha\left(\theta^{(b)}, \theta^*\right) = \begin{cases}
+  \min\left(1, \frac{\pi(\theta^*|\textbf{y})q(\theta^{(b)}|\theta^*)}{\pi(\theta^{(b)}|\textbf{y})q(\theta^{*}|\theta^{(b)})} \right)  & \text{ if } {\pi(\theta^{(b)}|\textbf{y})q(\theta^{*}|\theta^{(b)})} \neq 0 \\
   1 & \text{ otherwise}
           \end{cases}.
 \end{equation*}
+
+In this example, $$\frac{\pi(\theta^*|\textbf{y})q(\theta^{(b)}|\theta^*)}{\pi(\theta^{(b)}|\textbf{y})q(\theta^{*}|\theta^{(b)})} 
+= \left(\frac{\theta^*}{\theta^{(b)}}\right)^{\alpha + \sum_{i=1}^n y_i -2} e^{-(\beta+n)\left(\theta^* - \theta^{(b)}\right)} e^{-\frac{\theta^{(b)}}{\theta^*} + \frac{\theta^*}{\theta^{(b)}}}.$$
 
 ```{r}
 #| echo: true
@@ -205,8 +208,7 @@ Consider the same scenario of the latter example. Implement a Metropolis-Hasting
 
 # Metropolis Hasting for a Logistic Regression model
 
-In this Section, we consider the [cardiac dataset](data/cardiac.csv).
-Let's consider $Y_i \sim Bernoulli (\theta_i)$, where the probability of success depends on a quantitative covariate $X$ by means of the logit link function: $$logit(\theta_i) = \log\left(\frac{\theta_i}{1-\theta_i}\right) = \alpha + \beta x_i.$$
+In this Section, we consider the [cardiac dataset](data/cardiac.csv). Let's consider $Y_i \sim Bernoulli (\theta_i)$, where the probability of success depends on a quantitative covariate $X$ by means of the logit link function: $$logit(\theta_i) = \log\left(\frac{\theta_i}{1-\theta_i}\right) = \alpha + \beta x_i.$$
 
 ```{r}
 #| echo: true

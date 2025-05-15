@@ -208,11 +208,13 @@ window.Quarto = {
 </div>
 <p>Now, let’s implement the <strong>Metropolis Hasting algorithm</strong>. The main step here is to compute the probability <span class="math inline">\(\alpha\left(\theta^{(b)}, \theta^*\right)\)</span>, which has the following expression:</p>
 <p><span class="math display">\[\begin{equation*}
-    \alpha\left(\theta^{(b)}, \theta^*\right) = = \begin{cases}
-  \min\left(1, \frac{\pi(\theta^*|\textbf{y})q(\theta^{(b)}|\theta^*)}{\pi(\theta^{(b)}|\textbf{y}q(\theta^{*}|\theta^{(b)})} \right)  &amp; \text{ if } {\pi(\theta^{(b)}|\textbf{y}q(\theta^{*}|\theta^{(b)})} \neq 0 \\
+    \alpha\left(\theta^{(b)}, \theta^*\right) = \begin{cases}
+  \min\left(1, \frac{\pi(\theta^*|\textbf{y})q(\theta^{(b)}|\theta^*)}{\pi(\theta^{(b)}|\textbf{y})q(\theta^{*}|\theta^{(b)})} \right)  &amp; \text{ if } {\pi(\theta^{(b)}|\textbf{y})q(\theta^{*}|\theta^{(b)})} \neq 0 \\
   1 &amp; \text{ otherwise}
           \end{cases}.
 \end{equation*}\]</span></p>
+<p>In this example, <span class="math display">\[\frac{\pi(\theta^*|\textbf{y})q(\theta^{(b)}|\theta^*)}{\pi(\theta^{(b)}|\textbf{y})q(\theta^{*}|\theta^{(b)})}
+= \left(\frac{\theta^*}{\theta^{(b)}}\right)^{\alpha + \sum_{i=1}^n y_i -2} e^{-(\beta+n)\left(\theta^* - \theta^{(b)}\right)} e^{-\frac{\theta^{(b)}}{\theta^*} + \frac{\theta^*}{\theta^{(b)}}}.\]</span></p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(bb <span class="cf">in</span> <span class="dv">2</span><span class="sc">:</span>B){</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  theta_star <span class="ot">&lt;-</span> <span class="fu">rexp</span>(<span class="dv">1</span>, <span class="at">rate=</span><span class="dv">1</span><span class="sc">/</span>theta[bb<span class="dv">-1</span>]) </span>
