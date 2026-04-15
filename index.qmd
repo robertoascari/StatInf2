@@ -23,8 +23,9 @@ editor: visual
 
 -   Introduction to Bayesian data analysis: prior and posterior distributions for inference.
 -   One-parameter models: Binomial-Beta, Poisson-Gamma, Exponential-Gamma, and Normal-Normal.
--   Methods for prior elicitation.
 -   Inference based on the posterior distribution (point and interval estimates; hypotheses testing).
+-   Methods for prior elicitation.
+-   Methods for dealing with Bayesian issues.
 -   Simulation-based inference: MCMC methods.
 -   Linear and generalized linear models from a Bayesian perspective.
 
