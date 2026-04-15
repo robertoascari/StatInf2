@@ -298,8 +298,8 @@ generated quantities{
 <pre><code>
 SAMPLING FOR MODEL 'anon_model' NOW (CHAIN 1).
 Chain 1: 
-Chain 1: Gradient evaluation took 0.000103 seconds
-Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 1.03 seconds.
+Chain 1: Gradient evaluation took 0.000106 seconds
+Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 1.06 seconds.
 Chain 1: Adjust your expectations accordingly!
 Chain 1: 
 Chain 1: 
@@ -308,15 +308,15 @@ Chain 1: Iteration: 5000 / 10000 [ 50%]  (Warmup)
 Chain 1: Iteration: 5001 / 10000 [ 50%]  (Sampling)
 Chain 1: Iteration: 10000 / 10000 [100%]  (Sampling)
 Chain 1: 
-Chain 1:  Elapsed Time: 3.253 seconds (Warm-up)
-Chain 1:                3.834 seconds (Sampling)
-Chain 1:                7.087 seconds (Total)
+Chain 1:  Elapsed Time: 2.63 seconds (Warm-up)
+Chain 1:                1.645 seconds (Sampling)
+Chain 1:                4.275 seconds (Total)
 Chain 1: 
 
 SAMPLING FOR MODEL 'anon_model' NOW (CHAIN 2).
 Chain 2: 
-Chain 2: Gradient evaluation took 2.2e-05 seconds
-Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 0.22 seconds.
+Chain 2: Gradient evaluation took 2.1e-05 seconds
+Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 0.21 seconds.
 Chain 2: Adjust your expectations accordingly!
 Chain 2: 
 Chain 2: 
@@ -325,9 +325,9 @@ Chain 2: Iteration: 5000 / 10000 [ 50%]  (Warmup)
 Chain 2: Iteration: 5001 / 10000 [ 50%]  (Sampling)
 Chain 2: Iteration: 10000 / 10000 [100%]  (Sampling)
 Chain 2: 
-Chain 2:  Elapsed Time: 3.331 seconds (Warm-up)
-Chain 2:                4.471 seconds (Sampling)
-Chain 2:                7.802 seconds (Total)
+Chain 2:  Elapsed Time: 1.619 seconds (Warm-up)
+Chain 2:                1.717 seconds (Sampling)
+Chain 2:                3.336 seconds (Total)
 Chain 2: </code></pre>
 </div>
 </div>
@@ -338,19 +338,19 @@ Chain 2: </code></pre>
 <span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(summ, <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>              mean se_mean    sd   2.5%    25%    50%    75%  97.5%    n_eff
-(Intercept) -3.017   0.042 3.117 -9.085 -5.129 -3.023 -0.902  3.032 5402.002
-education    4.307   0.007 0.456  3.414  3.996  4.312  4.621  5.201 3827.453
-income       0.513   0.010 0.618 -0.702  0.095  0.515  0.930  1.730 3738.289
-women       -0.060   0.000 0.024 -0.109 -0.077 -0.061 -0.044 -0.014 6449.091
-typeprof     6.085   0.034 2.268  1.671  4.550  6.092  7.624 10.504 4364.851
-typewc      -2.768   0.024 1.806 -6.315 -3.986 -2.793 -1.556  0.752 5572.891
-sigma2      48.748   0.083 6.746 37.150 43.887 48.257 52.927 63.397 6656.277
+(Intercept) -3.059   0.040 3.082 -9.173 -5.121 -3.041 -0.944  2.818 5803.763
+education    4.301   0.008 0.457  3.425  3.990  4.301  4.610  5.201 3310.568
+income       0.523   0.011 0.614 -0.692  0.112  0.530  0.943  1.716 3403.739
+women       -0.060   0.000 0.025 -0.109 -0.077 -0.060 -0.044 -0.012 7069.939
+typeprof     6.126   0.036 2.289  1.580  4.617  6.110  7.688 10.592 3946.372
+typewc      -2.759   0.024 1.805 -6.314 -3.968 -2.781 -1.534  0.763 5728.099
+sigma2      48.616   0.080 6.705 37.316 43.939 47.980 52.602 63.538 7102.886
              Rhat
 (Intercept) 1.000
-education   1.000
+education   1.001
 income      1.000
-women       1.001
-typeprof    1.000
+women       1.000
+typeprof    1.001
 typewc      1.000
 sigma2      1.000</code></pre>
 </div>
@@ -467,7 +467,7 @@ sigma2      1.000</code></pre>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(betas[,<span class="dv">2</span>] <span class="sc">&gt;</span> <span class="dv">4</span> <span class="sc">&amp;</span> betas[,<span class="dv">4</span>] <span class="sc">&gt;</span> <span class="sc">-</span>.<span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.748</code></pre>
+<pre><code>[1] 0.7441</code></pre>
 </div>
 </div>
 </section>
@@ -556,12 +556,9 @@ model {
 <div class="cell-output cell-output-stdout">
 <pre><code>
 SAMPLING FOR MODEL 'anon_model' NOW (CHAIN 1).
-Chain 1: Rejecting initial value:
-Chain 1:   Log probability evaluates to log(0), i.e. negative infinity.
-Chain 1:   Stan can't start sampling from this initial value.
 Chain 1: 
-Chain 1: Gradient evaluation took 0.000121 seconds
-Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 1.21 seconds.
+Chain 1: Gradient evaluation took 8.2e-05 seconds
+Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.82 seconds.
 Chain 1: Adjust your expectations accordingly!
 Chain 1: 
 Chain 1: 
@@ -570,15 +567,15 @@ Chain 1: Iteration: 5000 / 10000 [ 50%]  (Warmup)
 Chain 1: Iteration: 5001 / 10000 [ 50%]  (Sampling)
 Chain 1: Iteration: 10000 / 10000 [100%]  (Sampling)
 Chain 1: 
-Chain 1:  Elapsed Time: 3.475 seconds (Warm-up)
-Chain 1:                3.345 seconds (Sampling)
-Chain 1:                6.82 seconds (Total)
+Chain 1:  Elapsed Time: 3.258 seconds (Warm-up)
+Chain 1:                2.042 seconds (Sampling)
+Chain 1:                5.3 seconds (Total)
 Chain 1: 
 
 SAMPLING FOR MODEL 'anon_model' NOW (CHAIN 2).
 Chain 2: 
-Chain 2: Gradient evaluation took 7.2e-05 seconds
-Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 0.72 seconds.
+Chain 2: Gradient evaluation took 3.6e-05 seconds
+Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 0.36 seconds.
 Chain 2: Adjust your expectations accordingly!
 Chain 2: 
 Chain 2: 
@@ -587,9 +584,9 @@ Chain 2: Iteration: 5000 / 10000 [ 50%]  (Warmup)
 Chain 2: Iteration: 5001 / 10000 [ 50%]  (Sampling)
 Chain 2: Iteration: 10000 / 10000 [100%]  (Sampling)
 Chain 2: 
-Chain 2:  Elapsed Time: 3.624 seconds (Warm-up)
-Chain 2:                3.304 seconds (Sampling)
-Chain 2:                6.928 seconds (Total)
+Chain 2:  Elapsed Time: 1.927 seconds (Warm-up)
+Chain 2:                1.849 seconds (Sampling)
+Chain 2:                3.776 seconds (Total)
 Chain 2: </code></pre>
 </div>
 </div>
@@ -599,11 +596,11 @@ Chain 2: </code></pre>
 <span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(summ, <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>              mean se_mean    sd   2.5%    25%    50%    75%  97.5%    n_eff
-(Intercept) -4.417   0.021 0.932 -6.306 -5.045 -4.391 -3.777 -2.625 1977.078
-Age          0.092   0.000 0.020  0.054  0.079  0.092  0.106  0.133 1986.470
-            Rhat
-(Intercept)    1
-Age            1</code></pre>
+(Intercept) -4.435   0.022 0.944 -6.367 -5.058 -4.409 -3.785 -2.670 1792.686
+Age          0.093   0.000 0.020  0.055  0.079  0.092  0.106  0.134 1773.898
+             Rhat
+(Intercept) 1.002
+Age         1.002</code></pre>
 </div>
 </div>
 <div class="cell">
