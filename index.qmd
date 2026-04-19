@@ -37,6 +37,15 @@ editor: visual
 -   MCMC - Metropolis Hasting: [Code](Script4.qmd).
 -   MCMC - Stan: [Code](Script5.qmd).
 
+# Timetable
+
+| Date       | Time          | Room                  |
+|------------|---------------|-----------------------|
+| 05/05/2026 | 13:00 - 17:00 | U6-17                 |
+| 08/05/2026 | 13:30 - 17:30 | 3061/a (U6, 3° floor) |
+| 12/05/2026 | 9:30 - 13:30  | 3061/a (U6, 3° floor) |
+| 19/05/2026 | 13:00 - 17:00 | U6-41                 |
+
 # Textbooks
 
 -   Hoff, P. (2009). *A first course in Bayesian Statistical Methods*. Springer.
