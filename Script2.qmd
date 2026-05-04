@@ -6,7 +6,7 @@ editor: visual
 toc: true
 ---
 
-# Normal Approximation for the Bernoulli-Beta posterior:
+# Normal Approximation for the Bernoulli-Beta posterior
 
 Let us consider results of a general election, where party A collected 150'000 votes out of the 240'000 total votes.
 
