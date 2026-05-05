@@ -36,21 +36,7 @@ y <- cardiac$Chd
 table(y)
 
 sum(y)
-length(y)
-```
-
-```{r}
-#| echo: true
-#| eval: true
-
-sum(y)
-```
-
-```{r}
-#| echo: true
-#| eval: true
-
-length(y)
+n <- length(y); n
 ```
 
 These are the four scenarios we consider:
@@ -123,7 +109,6 @@ The posterior distribution is $\theta | \textbf{y} \sim Beta(44, 58)$.
 #| echo: true
 #| eval: true
 
-n <- length(y)
 a1.post <- a1 + sum(y)
 b1.post <- b1 + n - sum(y)
 
@@ -158,7 +143,6 @@ abline(v=a2/(a2+b2), col="#D55E00", lty="dashed")
 #| echo: true
 #| eval: true
 
-n <- length(y)
 a2.post <- a2 + sum(y)
 b2.post <- b2 + n - sum(y)
 
@@ -193,7 +177,6 @@ abline(v=a3/(a3+b3), col="#D55E00", lty="dashed")
 #| echo: true
 #| eval: true
 
-n <- length(y)
 a3.post <- a3 + sum(y)
 b3.post <- b3 + n - sum(y)
 
@@ -223,7 +206,6 @@ abline(v=a4/(a4+b4), col="#D55E00", lty="dashed")
 #| echo: true
 #| eval: true
 
-n <- length(y)
 a4.post <- a4 + sum(y)
 b4.post <- b4 + n - sum(y)
 
@@ -295,7 +277,6 @@ abline(v=a5/(a5+b5), col="#D55E00", lty="dashed")
 #| echo: true
 #| eval: true
 
-n <- length(y)
 a5.post <- a5 + sum(y)
 b5.post <- b5 + n - sum(y)
 
@@ -344,7 +325,7 @@ curve(dbeta(x, a, b), main="Scenario D",
 # CS of level 0.95
 CS <- qbeta(c(0.025,0.975), a, b); CS
 abline(v=CS,lty="dashed", col="#0072B2")
-legend(0.8,8,c("Posterior", "Credible Set"),
+legend(0.6,8,c("Posterior", "Credible Set"),
        lty=c(1,2), col=c("black", "#0072B2"), bty="n")
 ```
 
@@ -444,7 +425,7 @@ HPD and CS are very similar, since the posterior is unimodal and almost symmetri
 
 # Hypothesis testing
 
-Let consider $H_0: \theta <= 0.3$ vs $H_1: \theta > 0.3$.
+Let consider $H_0: \theta \leq 0.3$ vs $H_1: \theta > 0.3$.
 
 ```{r}
 #| echo: true
