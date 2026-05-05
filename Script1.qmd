@@ -434,10 +434,10 @@ Let consider $H_0: \theta \leq 0.3$ vs $H_1: \theta > 0.3$.
 pbeta(.3, a4, b4)
 pbeta(.3, a4.post, b4.post)
 
-# ODDS.prior <- pbeta(.3, a4, b4)/(1-pbeta(.3, a4, b4)); ODDS.prior
-# ODDS.post <- pbeta(.3, a4.post, b4.post)/(1-pbeta(.3, a4.post, b4.post)); ODDS.post
-# 
-# Bayes_Factor <- ODDS.post/ODDS.prior; Bayes_Factor
+ODDS.prior <- pbeta(.3, a4, b4)/(1-pbeta(.3, a4, b4)); ODDS.prior
+ODDS.post <- pbeta(.3, a4.post, b4.post)/(1-pbeta(.3, a4.post, b4.post)); ODDS.post
+
+Bayes_Factor <- ODDS.post/ODDS.prior; Bayes_Factor
 ```
 
 Data do not support $H_0$: by adding data to the prior belief, our confidence on $H_0$ strongly decreases

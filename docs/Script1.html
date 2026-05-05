@@ -720,10 +720,18 @@ E    143   1057 0.1192 0.1185 0.1190 0.0001</code></pre>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.004031738</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb59"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ODDS.prior &lt;- pbeta(.3, a4, b4)/(1-pbeta(.3, a4, b4)); ODDS.prior</span></span>
-<span id="cb59-2"><a href="#cb59-2" aria-hidden="true" tabindex="-1"></a><span class="co"># ODDS.post &lt;- pbeta(.3, a4.post, b4.post)/(1-pbeta(.3, a4.post, b4.post)); ODDS.post</span></span>
-<span id="cb59-3"><a href="#cb59-3" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
-<span id="cb59-4"><a href="#cb59-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Bayes_Factor &lt;- ODDS.post/ODDS.prior; Bayes_Factor</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb59"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a>ODDS.prior <span class="ot">&lt;-</span> <span class="fu">pbeta</span>(.<span class="dv">3</span>, a4, b4)<span class="sc">/</span>(<span class="dv">1</span><span class="sc">-</span><span class="fu">pbeta</span>(.<span class="dv">3</span>, a4, b4)); ODDS.prior</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.7117391</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb61"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a>ODDS.post <span class="ot">&lt;-</span> <span class="fu">pbeta</span>(.<span class="dv">3</span>, a4.post, b4.post)<span class="sc">/</span>(<span class="dv">1</span><span class="sc">-</span><span class="fu">pbeta</span>(.<span class="dv">3</span>, a4.post, b4.post)); ODDS.post</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.004048059</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb63"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a>Bayes_Factor <span class="ot">&lt;-</span> ODDS.post<span class="sc">/</span>ODDS.prior; Bayes_Factor</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.00568756</code></pre>
+</div>
 </div>
 <p>Data do not support <span class="math inline">\(H_0\)</span>: by adding data to the prior belief, our confidence on <span class="math inline">\(H_0\)</span> strongly decreases</p>
 </section>
