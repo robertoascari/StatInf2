@@ -44,6 +44,7 @@ editor: visual
 | 05/05/2026 | 13:00 - 17:00 | U6-17                 |
 | 08/05/2026 | 13:30 - 17:30 | 3061/a (U6, 3° floor) |
 | 12/05/2026 | CANCELLED     | CANCELLED             |
+| 14/05/2026 | 9:00 - 13:00  | U6-12                 |
 | 19/05/2026 | 13:00 - 17:00 | U6-41                 |
 
 # Textbooks
@@ -53,5 +54,7 @@ editor: visual
 -   Gelman, A., Carlin, J., Stern, H., Dunson, D., Vehtari, A., and Rubin, D. (2013). *Bayesian Data Analysis*. Chapman & Hall/CRC Texts in Statistical Science.
 
 -   Robert, C. and Casella, G. (2004). *Monte Carlo Statistical Methods*. Springer.
+
+<!-- - Agresti, A. (2026). *Foundations of Bayesian Statistics for Data Scientists: With R and Python*. Chapman & Hall. -->
 
 ------------------------------------------------------------------------
